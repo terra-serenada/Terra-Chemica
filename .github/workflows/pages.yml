@@ -1,1 +1,47 @@
-
+name: Build and deploy AEON Pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - name: Compile C++ to WebAssembly
+        uses: mymindstorm/setup-emsdk@v14
+        with:
+          version: 3.1.64
+          actions-cache-folder: emsdk-cache
+      - name: Build WASM module
+        run: >-
+          em++ src/aeon_wasm.cpp -O3 -std=c++17
+          -s WASM=1 -s MODULARIZE=0 -s EXPORT_NAME=Module
+          -s ENVIRONMENT=web -s ALLOW_MEMORY_GROWTH=1
+          -s EXPORTED_FUNCTIONS='["_aeon_calculate","_malloc","_free"]'
+          -s EXPORTED_RUNTIME_METHODS='[]'
+          -o aeon.js
+      - name: Assemble Pages artifact
+        run: |
+          mkdir -p _site
+          cp index.html manifest.webmanifest aeon.js aeon.wasm _site/
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
