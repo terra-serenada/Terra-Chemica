@@ -1839,6 +1839,8 @@ const fmt = (n, digits=3) => Number.isFinite(n) ? new Intl.NumberFormat('id-ID',
 const clamp = (x, lo=0, hi=1) => Math.max(lo, Math.min(hi, x));
 const HABITATS = ['vent','mix','ocean'];
 const HABITAT_NAMES = {vent:'Vent hidrotermal',mix:'Zona pencampuran',ocean:'Reservoir samudera'};
+// Remember open genotype detail panels across automatic per-generation leaderboard re-renders.
+const genotypeDetailOpenState = new Map();
 const MODULE_LABELS = {
  hydrogenase:'Hidrogenase',wlp:'Wood–Ljungdahl',atp_synthase:'ATP sintase',translation:'Ribosom / translasi',
  membrane:'Membran / kompartemen',dna_maintenance:'Pemeliharaan informasi genetik',
@@ -2892,6 +2894,16 @@ function innovationLedger(){
 function labelLineage(s){return s.domain==='ARCHAEA'?'Archaea stem':s.domain==='BACTERIA'?'Bacteria stem':'LUCA bersama';}
 function habitatLabel(s){const h=habitatOf(s);return HABITAT_NAMES[h];}
 function updateUI(){
+ // Capture the user's current disclosure state before refreshing leaderboard HTML.
+ // Keys include habitat + genotype so identical strains can be expanded independently per habitat.
+ for(const h of HABITATS){
+  const existingPanel=$(`strainHabitat-${h}`);
+  if(!existingPanel)continue;
+  for(const detail of existingPanel.querySelectorAll('details.genotype-more')){
+   const genotypeId=detail.dataset.genotypeId;
+   if(genotypeId)genotypeDetailOpenState.set(`${h}::${genotypeId}`,detail.open);
+  }
+ }
  const total=totalPop();
  setText('simGen',fmt(world.gen,0));setText('simTotal',fmt(total,0));setText('simBirths',fmt(world.totals.births,0));setText('simDeaths',fmt(world.totals.deaths,0));setText('simBirthFailures',fmt(world.totals.birthFailures||0,0));setText('simMutations',fmt(world.totals.mutations,0));setText('simHgt',fmt(world.totals.hgt,0));setText('simSymbioses',fmt(world.symbioses.filter(p=>p.stable).length,0));setText('simDiversity',fmt(world.strains.length,0));
  const meanModules=world.strains.length?world.strains.reduce((a,s)=>a+s.modules.length,0)/world.strains.length:0;setText('simModules',fmt(meanModules,2));
@@ -2930,10 +2942,12 @@ function updateUI(){
    const traits=`H₂ ${fmt(s.traits.hydrogenase,2)} · fiksasi C ${fmt(s.traits.carbonFixation,2)} · Topt ${fmt(s.traits.thermalOptimum,0)}°C · pHopt ${fmt(s.traits.phOptimum,1)} · stabilitas membran ${fmt(s.traits.membraneStability,2)}`;
    const mods=names.length?names.join(' · '):'belum ada modul tambahan';
    const parent=`Parent vertikal: ${s.parentId||'LUCA-POP'}${s.geneDonorId?' · donor HGT: '+s.geneDonorId:''}`;
+   const detailKey=`${h}::${s.id}`;
+   const detailOpen=genotypeDetailOpenState.get(detailKey)===true;
    return `<article class="genotype-entry">
     <div class="genotype-entry-top"><span class="genotype-rank">${i+1}</span><div class="genotype-id-wrap"><strong>${esc(s.id)}</strong><span>${esc(labelLineage(s))}</span></div><div class="genotype-pop"><strong>${fmt(n,0)}</strong><span>sel · ${fmt(share,1)}%</span></div></div>
     <div class="genotype-stats"><span>Fitness: ${fmt(fit,3)}</span><span>Mutasi: ${fmt(s.mutations,0)}</span></div>
-    <details class="genotype-more"><summary>Detail sifat, modul &amp; asal</summary>
+    <details class="genotype-more" data-genotype-id="${esc(s.id)}" ${detailOpen?'open':''}><summary>Detail sifat, modul &amp; asal</summary>
      <div class="genotype-traits">${esc(traits)}</div>
      <div class="genotype-modules">${esc(mods)}</div>
      <div class="genotype-parent">${esc(parent)}</div>
