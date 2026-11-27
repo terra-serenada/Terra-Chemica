@@ -303,7 +303,7 @@ table{border-collapse:collapse;width:100%;min-width:720px;font-size:13px}th,td{p
 <thead><tr><th>Mikrohabitat</th><th class="num">Sel hidup</th><th class="num">Fitness rata-rata</th><th class="num">T (°C)</th><th class="num">pH</th><th>Kondisi</th></tr></thead>
 <tbody id="populationDistributionRows"><tr><td colspan="6">Menunggu populasi simulasi…</td></tr></tbody>
 </table></div>
-<p class="small">Fitness adalah skor internal model yang menggabungkan energi bersih (25%), peluang hidup (25%), keluaran reproduksi (20%), efisiensi sumber daya (15%), dan toleransi stres (15%), lalu dikurangi penalti biaya. Ini bukan pengukuran biologis. Fitness tinggi meningkatkan peluang reproduksi dan menurunkan risiko kematian; tekanan habitat yang berbeda dapat membalik keunggulan suatu sifat.</p>
+<p class="small">Fitness adalah skor internal model yang menggabungkan energi bersih (25%), peluang hidup (25%), keluaran reproduksi (20%), efisiensi sumber daya (15%), dan toleransi stres (15%), lalu dikurangi penalti biaya. Ini bukan pengukuran biologis. Fitness tinggi meningkatkan peluang reproduksi; probabilitas survival fisiologis yang sama dipakai dalam perhitungan mortalitas, sedangkan kepadatan dan overload ditambahkan sebagai bahaya ekologis. Tekanan habitat dapat membalik keunggulan suatu sifat.</p>
 </article>
 <article class="card">
 <h3>Daya dukung dinamis per mikrohabitat</h3>
@@ -311,8 +311,12 @@ table{border-collapse:collapse;width:100%;min-width:720px;font-size:13px}th,td{p
 <thead><tr><th>Mikrohabitat</th><th class="num">Sel saat ini</th><th class="num">K* dinamis (sel)</th><th>Sumber pembatas</th><th class="num">Volume relatif</th><th class="num">Faktor limbah</th></tr></thead>
 <tbody id="dynamicCapacityRows"><tr><td colspan="6">Menghitung suplai dan inventori…</td></tr></tbody>
 </table></div>
-<div class="mathline"><code>K*ₕ = F<sub>limbah</sub> × minⱼ [(stokⱼ × fraksi-aksesⱼ + suplaiⱼ) × volumeₕ / kebutuhan-per-selⱼ]</code></div>
-<p class="small">K* bukan angka populasi yang ditetapkan. Suplai H₂, DIC, DOC, NH₄⁺, dan PO₄³⁻ dapat diatur per reservoir. Kolom samudera adalah nilai agregat; suplai dan stoknya dipartisi ke pelagik dalam, zona fotik, dan sedimen. Mesin menghitungnya ulang dari stok dan suplai H₂/DIC, DOC, N/P yang dapat diasimilasi, permintaan guild metabolik yang sedang aktif, volume efektif relatif, dan penalti produk limbah. K* adalah estimasi dukungan untuk pertumbuhan sekitar 10% populasi per generasi; angka ini berubah ketika sumber daya dikonsumsi, diregenerasi, ditranspor, atau dilepaskan dari bangkai. Setiap kelahiran yang diterima juga mengambil N dan P dari NH₄⁺/DON serta PO₄³⁻/DOP; reproduksi yang melampaui stok asimilabel ditahan dan dicatat. Fluks karbon/donor elektron dibatasi oleh reaksi metabolisme aktif. Volume relatif awal 1× / 3× / 10× untuk vent / mixing / samudera adalah pilihan skenario, bukan ukuran geologis. Volume samudera dibagi 6,5× pelagik dalam, 1,5× zona fotik, dan 2× sedimen.</p>
+<div class="mathline"><code>K*ₕ = F<sub>limbah</sub> × minⱼ [anggaran aktualⱼ / kebutuhan-per-selⱼ]</code></div>
+<p class="small">Transaksi generasi: pasokan geokimia dan transfer reservoir diproses satu kali di awal generasi; setelah itu kapasitas, mortalitas, dan reproduksi membaca kolam habitat yang sudah menerima pasokan tersebut. Ketersediaan N/P membatasi laju kelahiran secara kontinu melalui dua faktor Monod lokal, fN = N/(K_N+N) dengan K_N = 0,025 dan fP = P/(K_P+P) dengan K_P = 0,004 (konsentrasi UIM); faktor reproduksi adalah nilai yang lebih kecil dari keduanya (hukum minimum Liebig). Karena itu kelangkaan nutrien memperlambat reproduksi secara bertahap, bukan memicu gerbang biologis bertingkat. Inventori asimilabel yang dipakai bersama tetap (NH₄ × volume + 0,25 × DON × volume) dan (PO₄ × volume + 0,25 × DOP × volume). K* menghitung kebutuhan target pertumbuhan 10% per sel yang dikalikan faktor Monod lokal, ditambah kebutuhan metabolik aktif. Satu batas stoikiometrik akhir tetap dipertahankan semata-mata untuk mencegah pembentukan sel lengkap tanpa atom N/P yang cukup; ini adalah batas konservasi materi, bukan mekanisme utama seleksi atau pengaturan laju reproduksi. Estimasi kebutuhan katalitik populasi yang bertahan disisihkan sebelum kelahiran; konsumsi katalitik aktual kemudian dibandingkan dengan cadangan estimasi. DOC, H₂, DIC, donor elektron, volume efektif relatif, dan penalti limbah tetap ikut membatasi kapasitas. Nilai volume relatif adalah parameter skenario, bukan ukuran geologis.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Mikrohabitat</th><th class="num">N/P asimilabel sebelum kelahiran (UIM)</th><th class="num">fN / fP → faktor pembatas</th><th class="num">Cadangan katalitik N/P (UIM)</th><th class="num">Kelahiran diajukan → diterima</th><th class="num">Batas stoikiometri N/P (sel)</th><th class="num">Konsumsi katalitik aktual N/P (UIM)</th><th class="num">Kolam akhir N/P (UIM)</th></tr></thead>
+<tbody id="resourceBudgetRows"><tr><td colspan="8">Menunggu transaksi reproduksi pertama…</td></tr></tbody>
+</table></div>
 </article>
 <article class="card">
 <h3>Metabolisme per mikrohabitat / generasi</h3>
@@ -337,7 +341,7 @@ table{border-collapse:collapse;width:100%;min-width:720px;font-size:13px}th,td{p
 <thead><tr><th>Reservoir</th><th class="num">C bangkai</th><th class="num">C terhidrolisis</th><th class="num">DOC dipakai</th><th class="num">C biomassa* </th><th class="num">Tekanan kimia</th><th class="num">Kecukupan N/P</th><th class="num">pH</th></tr></thead>
 <tbody id="feedbackRows"><tr><td colspan="8">Menunggu satu generasi…</td></tr></tbody>
 </table></div>
-<p class="small">*C biomassa adalah alokasi karbon pada skema saprotrofi agregat, bukan pengukuran produksi sel. Tekanan kimia berasal dari H₂S dan produk organik/asam; nutrien rendah membatasi reproduksi. Produk terlarut berpindah antarreservoir, sedangkan partikel cenderung mengendap ke samudera.</p>
+<p class="small">*C biomassa adalah alokasi karbon pada skema saprotrofi agregat, bukan pengukuran produksi sel. Tekanan kimia berasal dari H₂S dan produk organik/asam; nutrien rendah membatasi reproduksi secara kontinu. Pool lokal tidak dipotong oleh batas numerik generik; produk terlarut berpindah antarreservoir, sedangkan partikel cenderung mengendap ke samudera.</p>
 </article>
 </div><article class="card" style="margin-top:12px">
 <h3>Evolusi scavenging dan saprotrofi bertingkat</h3>
@@ -408,11 +412,11 @@ table{border-collapse:collapse;width:100%;min-width:720px;font-size:13px}th,td{p
 <article class="card">
 <h3>Neraca energi per sel per generasi</h3>
 <div class="table-wrap"><table>
-<thead><tr><th>Reservoir</th><th class="num">Energi bruto</th><th class="num">Pemeliharaan + inti</th><th class="num">Investasi inovasi</th><th class="num">Regulasi metabolik</th><th class="num">Energi bersih</th></tr></thead>
-<tbody id="economyRows"><tr><td>Vent hidrotermal</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr></tbody>
+<thead><tr><th>Reservoir</th><th class="num">Energi bruto</th><th class="num">Pemeliharaan + inti</th><th class="num">Investasi inovasi</th><th class="num">Respons ketahanan</th><th class="num">Regulasi metabolik</th><th class="num">Energi bersih</th></tr></thead>
+<tbody id="economyRows"><tr><td>Vent hidrotermal</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr></tbody>
 </table></div>
-<p class="small">EC = energy-credit relatif per sel per generasi, bukan ATP molar. Neraca ini mengurangi biaya pemeliharaan, mesin inti, modul/trait, kofaktor, investasi awal, serta biaya regulasi dan salah-ekspresi sebelum surplus dapat dipakai untuk reproduksi.</p>
-<div class="mathline"><code>E bersih = E bruto − E pemeliharaan − E mesin inti − E modul − E trait − E kofaktor/substrat − E investasi awal − E interaksi</code></div>
+<p class="small">EC = energy-credit relatif per sel per generasi, bukan ATP molar. Neraca mengurangi pemeliharaan dasar, mesin inti, modul/trait, respons ketahanan kondisional, kofaktor, investasi awal, serta regulasi sebelum surplus dapat dipakai untuk reproduksi.</p>
+<div class="mathline"><code>E bersih = E bruto − E pemeliharaan − E mesin inti − E modul/trait − E respons ketahanan − E kofaktor/substrat − E investasi awal − E interaksi</code></div>
 <div class="mathline"><code>Fitness = 0,25 E bersih + 0,25 survival + 0,20 reproduksi + 0,15 efisiensi + 0,15 toleransi stres − penalti biaya</code></div>
 </article>
 <article class="card">
@@ -423,7 +427,17 @@ table{border-collapse:collapse;width:100%;min-width:720px;font-size:13px}th,td{p
 </table></div>
 <p class="small">Investasi awal dibayar saat inovasi muncul atau gen ditransfer. Biaya berulang dibayar selama modul diekspresikan. Δ fitness membandingkan strain aktual dengan strain virtual identik tanpa modul tersebut di habitat tempat ia hidup; nilai negatif berarti biaya melebihi manfaat saat ini.</p>
 </article>
-</div><details class="details">
+</div>
+<details class="details" id="resilienceEconomicsAuditDetails" style="margin-top:12px">
+ <summary>Audit ketahanan dan ekonomi energi seluruh garis keturunan</summary>
+ <p class="small" id="resilienceEconomicsSummary">Audit mencakup genotipe hidup dan arsip genotipe yang telah punah.</p>
+ <div class="table-wrap"><table>
+  <thead><tr><th>Genotipe / induk</th><th>Domain</th><th>Status</th><th>Habitat terakhir tercatat</th><th class="num">Sel saat snapshot</th><th class="num">Resistensi</th><th class="num">Survival / generasi</th><th class="num">Potensi pemulihan*</th><th class="num">Energi bruto</th><th class="num">Biaya total</th><th class="num">Respons ketahanan</th><th class="num">Energi bersih</th><th class="num">Fitness</th><th>Generasi</th></tr></thead>
+  <tbody id="resilienceEconomicsRows"><tr><td colspan="14">Buka panel untuk menghitung seluruh garis keturunan.</td></tr></tbody>
+ </table></div>
+ <p class="small">Resistensi adalah 1 − stres residual pada habitat saat snapshot. Survival adalah probabilitas fisiologis per generasi yang dipakai oleh laju kematian; kepadatan dan overload habitat ditambahkan terpisah. Potensi pemulihan* adalah proksi kapasitas perbaikan yang dibatasi energi bersih, bukan laju pemulihan empiris atau simulasi kerusakan yang pulih dari waktu ke waktu. Persistensi/dormansi reversibel belum dimodelkan sebagai keadaan sel tersendiri dan tidak diberi bonus survival otomatis. Semua EC adalah unit energi relatif model, bukan ATP molar.</p>
+</details>
+<details class="details">
 <summary>Dasar pengali manfaat bruto dan biaya cabang dari Atlas</summary>
 <div class="table-wrap"><table>
 <thead><tr><th>Inovasi cabang</th><th class="num">Manfaat bruto</th><th class="num">Biaya pemeliharaan</th><th>Kondisi aktivasi</th></tr></thead>
@@ -465,7 +479,7 @@ table{border-collapse:collapse;width:100%;min-width:720px;font-size:13px}th,td{p
 <tr><td>Sedimen dasar</td><td class="num"><input class="env-input" id="pressure_ocean_sediment" type="number" min="0" max="100" step="0.5" value="32"></td><td class="num"><input class="env-input" id="uv_ocean_sediment" type="number" min="0" max="1" step="0.01" value="0"></td></tr>
 </tbody></table></div>
 <details class="details" id="geochemicalReservoirDetails"><summary>Jaringan enam reservoir geokimia → lima mikrohabitat</summary>
-<p>Pengali sumber 0–2 mengatur laju pelepasan tiap reservoir menuju habitat. Setiap reservoir memiliki inventori awal finite dalam <b>unit indeks-massa model (UIM)</b>; stok pool geokimia dasar menggunakan horizon 600 generasi suplai skenario, sedangkan olivin Fo₉₀ (60 UIM) dan air reaktif hidrotermal (12.000 UIM) adalah kondisi awal mineral/air yang ditetapkan eksplisit. Pertukaran internal magma→atmosfer/hidrotermal, kerak→hidrotermal, hidrotermal→laut, atmosfer→laut, dan daratan→laut memindahkan pool geokimia yang sama. Serpentinisasi mengubah pool olivin dan air menjadi mineral sekunder serta H₂ dengan stoikiometri yang diaudit. Pelepasan ke lima mikrohabitat mengurangi stok sumber. Masukan H₂ dari mantel dan kehilangan H₂ atmosfer tersedia sebagai batas eksternal opsional, keduanya default nol. Semua angka UIM dan laju adalah parameter skenario, bukan mol, konsentrasi, atau laju geologi terukur.</p>
+<p>Pengali sumber 0–2 mengatur laju transfer tiap reservoir menuju habitat. Inventori awal enam reservoir ditetapkan eksplisit per pool kimia/mineral dalam <b>unit indeks-massa model (UIM)</b>; tidak dihitung dari jumlah organisme ataupun horizon generasi. Saat Reset, stok kimia awal lima mikrohabitat dipindahkan dari inventori reservoir dan dibukukan satu kali. Laut menyimpan inventori air/DIC/ion; hidrotermal menonjolkan H₂, Fe²⁺ dan sulfida; kerak menyimpan Fe-mineral, olivin dan apatit; atmosfer didominasi N₂/gas; magma volatil; daratan material runoff/organik. Apatit larut perlahan menjadi PO₄³⁻ dan Ca²⁺, lalu dapat ditransfer dari kerak ke fluida hidrotermal. Batas konsentrasi generik 5/10 UIM di kolam lokal dihapus; kenaikan/penurunan hanya berasal dari transfer, reaksi, konsumsi, daur ulang, atau penguburan yang dimodelkan. Semua angka UIM dan laju tetap merupakan kondisi skenario konseptual, bukan inventori paleogeokimia terukur.</p>
 <div class="table-wrap"><table><thead><tr><th>Reservoir / proses</th><th>Jembatan ke kimia kehidupan</th><th class="num">Intensitas relatif</th><th class="num">Pelepasan aktual terakhir</th></tr></thead><tbody id="geochemicalReservoirRows"></tbody></table></div>
 <h3 style="margin-top:14px">Masukan geokimia aktual per mikrohabitat</h3>
 <div class="table-wrap"><table><thead><tr><th>Mikrohabitat</th><th class="num">Total masukan (indeks · volume / generasi)</th><th>Asal kontribusi reservoir</th></tr></thead><tbody id="geoHabitatFluxRows"><tr><td colspan="3">Menunggu generasi simulasi.</td></tr></tbody></table></div>
@@ -476,11 +490,13 @@ table{border-collapse:collapse;width:100%;min-width:720px;font-size:13px}th,td{p
 <p class="small">Serpentinisasi Fo₉₀ direpresentasikan dengan satu reaksi netto yang seimbang. Olivin dan air dikonsumsi; serpentin, brusit, dan magnetit dicatat sebagai mineral sekunder, sedangkan H₂ ditambahkan ke stok fluida hidrotermal. Parameter laju adalah kontrol skenario, bukan hukum kinetika terkalibrasi.</p>
 <div class="grid two" style="margin-top:8px">
  <label class="small"><input id="geoSerpEnabled" type="checkbox" checked> Aktifkan reaksi serpentinisasi</label>
+ <label class="small"><input id="geoPhosphateDissolutionEnabled" type="checkbox" checked> Aktifkan pelarutan apatit (sumber PO₄³⁻)</label>
+ <label class="small">Fraksi pelarutan apatit / generasi<br><input class="env-input" id="geoPhosphateDissolutionRate" type="number" min="0" max="0.000001" step="0.000000001" value="0.00000001"></label>
  <label class="small">Suhu zona reaksi (°C)<br><input class="env-input" id="geoSerpTemp" type="number" min="20" max="400" step="5" value="120"></label>
  <label class="small">Skala laju relatif (0–3)<br><input class="env-input" id="geoSerpRateScale" type="number" min="0" max="3" step="0.05" value="1"></label>
  <label class="small">Aktivitas air relatif (0–1)<br><input class="env-input" id="geoSerpWaterActivity" type="number" min="0" max="1" step="0.01" value="1"></label>
 </div>
-<div class="table-wrap"><table><thead><tr><th>Reaksi</th><th>Persamaan netto</th><th class="num">Ekstensi terakhir</th><th class="num">H₂ terbentuk</th><th>Audit atom</th></tr></thead><tbody id="geoGeochemicalReactionRows"><tr><td colspan="5">Menunggu generasi pertama.</td></tr></tbody></table></div>
+<div class="table-wrap"><table><thead><tr><th>Reaksi</th><th>Persamaan netto</th><th class="num">Ekstensi terakhir</th><th>Produk utama</th><th>Audit atom</th></tr></thead><tbody id="geoGeochemicalReactionRows"><tr><td colspan="5">Menunggu generasi pertama.</td></tr></tbody></table></div>
 <p class="small">Reaksi aktif: 3 Mg₁.₈Fe₀.₂SiO₄ + 4,1 H₂O → 1,5 Mg₃Si₂O₅(OH)₄ + 0,9 Mg(OH)₂ + 0,2 Fe₃O₄ + 0,2 H₂. Reaksi ini menggambarkan satu komposisi olivin Fo₉₀; keluaran H₂ sangat sensitif pada komposisi mineral dan kondisi reaksi.</p>
 <h3 style="margin-top:14px">Batas sistem eksternal (opsional)</h3>
 <p class="small">Masukan H₂ dari mantel dan kehilangan H₂ atmosfer ke ruang angkasa bukan transfer internal enam reservoir. Keduanya default nol dan hanya diaktifkan sebagai parameter skenario yang dibukukan eksplisit.</p>
@@ -493,7 +509,7 @@ table{border-collapse:collapse;width:100%;min-width:720px;font-size:13px}th,td{p
 <p class="small">Pool H₂ ditampilkan terpisah. Ekuivalen H, O, Mg, dan Si ditambahkan untuk mengaudit reaksi mineral eksplisit. DIC diproksikan sebagai CO₂, DOC sebagai C-ekuivalen, dan spesies terlarut tetap disederhanakan; karena itu tabel ini bukan neraca spesiasi atau massa penuh planet.</p>
 <div class="table-wrap"><table><thead><tr><th>Reservoir</th><th class="num">H₂ pool</th><th class="num">C</th><th class="num">N</th><th class="num">P</th><th class="num">S</th><th class="num">Fe</th><th class="num">Ca</th><th class="num">Mg</th><th class="num">Si</th><th class="num">H</th><th class="num">O</th></tr></thead><tbody id="geoReservoirStockRows"><tr><td colspan="12">Menyiapkan inventori…</td></tr></tbody></table></div>
 <h3 style="margin-top:14px">Stok air dan mineral batuan</h3>
-<div class="table-wrap"><table><thead><tr><th>Reservoir</th><th class="num">H₂O</th><th class="num">Olivin Fo₉₀</th><th class="num">Serpentin</th><th class="num">Brusit</th><th class="num">Magnetit</th></tr></thead><tbody id="geoMineralStockRows"><tr><td colspan="6">Menyiapkan inventori mineral…</td></tr></tbody></table></div>
+<div class="table-wrap"><table><thead><tr><th>Reservoir</th><th class="num">H₂O</th><th class="num">Olivin Fo₉₀</th><th class="num">Apatit</th><th class="num">Serpentin</th><th class="num">Brusit</th><th class="num">Magnetit</th><th class="num">OH⁻</th></tr></thead><tbody id="geoMineralStockRows"><tr><td colspan="8">Menyiapkan inventori mineral…</td></tr></tbody></table></div>
 <h3 style="margin-top:14px">Audit neraca reservoir per unsur</h3>
 <p class="small">Identitas audit per pool: stok awal + transfer masuk + reaksi masuk + masukan eksternal − transfer keluar − reaksi keluar − keluaran eksternal − pelepasan ke habitat = stok akhir. Audit unsur menguji perubahan seluruh inventori yang dilacak, termasuk produk/reaktan mineral; neraca ini tetap terbatas pada pool model.</p>
 <div class="table-wrap"><table><thead><tr><th>Unsur / pool gas</th><th class="num">Stok awal</th><th class="num">Input eksternal</th><th class="num">Output eksternal</th><th class="num">Net reaksi internal</th><th class="num">Ke habitat</th><th class="num">Stok akhir</th><th class="num">Residual</th><th>Status</th></tr></thead><tbody id="geoReservoirElementBalanceRows"><tr><td colspan="9">Menunggu audit generasi pertama.</td></tr></tbody></table></div>
@@ -522,7 +538,7 @@ table{border-collapse:collapse;width:100%;min-width:720px;font-size:13px}th,td{p
 <div class="field"><label for="selectionPersistence">Persistensi manfaat</label><input id="selectionPersistence" max="30" min="1" step="1" type="number" value="3"/><span class="unit">generasi berurutan</span></div>
 <div class="field"><label for="dominantFrequency">Ambang varian dominan</label><input id="dominantFrequency" max="1" min="0.1" step="0.05" type="number" value="0.60"/><span class="unit">frekuensi dalam habitat</span></div>
 </div>
-<p class="small">Reproduksi dan kematian dihitung secara acak untuk tiap populasi genotipe. Daya dukung dihitung ulang setiap generasi dari suplai dan inventori sumber daya, volume efektif, nutrien, serta beban limbah; tidak ada angka K populasi tetap. Drift genetik, biaya ekspresi protein, biaya kofaktor, investasi awal inovasi, biaya pemeliharaan, dan trade-off tetap dihitung. Keuntungan dihitung bersih dan hanya aktif saat kondisi habitat mendukung. Genom tidak dibuat membesar otomatis hanya karena generasi bertambah.</p>
+<p class="small">Reproduksi dan kematian dihitung secara acak untuk tiap populasi genotipe. Daya dukung dihitung ulang setiap generasi dari suplai dan inventori sumber daya, volume efektif, nutrien, serta beban limbah; tidak ada angka K populasi tetap. Drift genetik, biaya ekspresi protein, biaya kofaktor, investasi awal inovasi, biaya respons ketahanan yang kondisional terhadap stres, biaya pemeliharaan, dan trade-off tetap dihitung; semua biaya energi mengurangi netEnergy satu kali. Keuntungan dihitung bersih dan hanya aktif saat kondisi habitat mendukung. Genom tidak dibuat membesar otomatis hanya karena generasi bertambah.</p>
 </details><div class="grid two" style="margin-top:12px">
 <article class="card">
 <h3>Status percabangan keturunan</h3>
@@ -547,8 +563,9 @@ table{border-collapse:collapse;width:100%;min-width:720px;font-size:13px}th,td{p
 <p class="small" id="catalogLineageNote">Kelompok fungsional dihitung dari modul dan fluks reaksi; satu genotipe dapat mewakili lebih dari satu guild. Penanda kandidat bukan spesiasi formal.</p>
 </article><article class="card lineage-engine-card" id="evolutionaryLineagePanel" style="margin-top:12px">
 <h3>Evolutionary Lineage Engine · identitas ganda</h3>
-<p class="small">Topologi acuan memiliki tujuh node: LUCA, dua stem, LACA/LBCA, dan dua crown group. Kandidat LACA/LBCA pada simulasi tetap berstatus proksi operasional sampai ancestry bersama mendukung simpul domain; bukan penanggalan atau identifikasi spesies historis. Identitas garis keturunan dipisahkan dari guild metabolik. Setiap organism_id di sini mewakili satu unit genotipe-populasi agregat, bukan satu sel individual. Hubungan induk–keturunan selalu vertikal; HGT disimpan sebagai peristiwa lateral tersendiri.</p>
+<p class="small">Topologi acuan memiliki tujuh node: LUCA, dua stem, LACA/LBCA, dan dua crown group. Subdivisi vent–samudera hanya membentuk ecotype, bukan domain. Setiap domain memerlukan satu akar founder dengan penanda membran + perangkat pendukung yang diwariskan vertikal; semua keturunannya mewarisi identitas domain. HGT dan rekombinasi tetap lateral, tidak mengubah parentage atau identitas penerima. LACA/LBCA hanya diinferensikan dari MRCA genotipe hidup pada cabang masing-masing; seluruh ambang adalah parameter operasional model, bukan konstanta empiris.</p>
 <p class="lineage-engine-summary" id="lineageEngineSummary">Menyiapkan registri silsilah…</p>
+<p class="small" id="domainDivergenceSummary">Subdivisi populasi, bukti marker vertikal hidup/arsip, akar domain, dan MRCA lintas-domain ditampilkan di sini. Ecotype tidak menentukan domain; akar domain dapat berupa leluhur arsip yang telah punah apabila keturunannya masih hidup dan persisten.</p>
 <details class="details"><summary>Node filogenetik dan posisi leluhur</summary><div class="table-wrap"><table><thead><tr><th>Node</th><th>Parent node</th><th>Jenis</th><th class="num">Sel aktif</th><th class="num">Genotipe</th><th>Gen dibuat</th><th>Status</th><th>Catatan</th></tr></thead><tbody id="lineagePhyloRows"><tr><td colspan="8">Menunggu data…</td></tr></tbody></table></div></details>
 <details class="details"><summary>Registri unit populasi-genotipe dan hubungan induk</summary><div class="table-wrap"><table><thead><tr><th>Organism ID</th><th>Parent node / organism</th><th>Domain</th><th>Branch root / ecotype</th><th class="num">Sel hidup</th><th class="num">Fitness</th><th>Status</th></tr></thead><tbody id="lineagePopulationRows"><tr><td colspan="7">Menunggu data…</td></tr></tbody></table></div><p class="small">Menampilkan 18 unit populasi-genotipe terbesar; arsip internal tetap menyimpan leluhur dan garis yang sudah tidak hidup sampai batas arsip model.</p></details>
 <details class="details"><summary>Clade kandidat berdasarkan ciri vertikal</summary><div class="table-wrap"><table><thead><tr><th>Clade / kandidat katalog</th><th>Founder</th><th>Modul diagnostik</th><th class="num">Sel aktif</th><th class="num">Genotipe</th><th>Status</th></tr></thead><tbody id="lineageCladeRows"><tr><td colspan="6">Belum ada clade kandidat persisten.</td></tr></tbody></table></div><p class="small">Guild fungsional tidak otomatis menjadi clade. Candidate clade hanya dibuat ketika kombinasi diagnostik katalog memiliki asal vertikal dan terdeteksi persisten. HGT dapat memberikan fungsi, tetapi tidak dengan sendirinya menciptakan hubungan leluhur atau clade.</p></details>
@@ -2220,6 +2237,8 @@ const CANONICAL_PHYLOGENETIC_NODES = [
  {nodeId:'BACTERIA_CROWN',parentNodeId:'LBCA',label:'Bacteria crown · radiasi keturunan',nodeType:'descendant_radiation_root',domainId:'BACTERIA',status:'reference_topology',description:'Kelompok keturunan setelah LBCA; topologi acuan, belum dipetakan ke takson formal.'}
 ];
 const FITNESS_WEIGHTS = Object.freeze({net_energy_acquisition:0.25,survival_probability:0.25,reproductive_output:0.20,resource_efficiency:0.15,stress_tolerance:0.15});
+// Domain divergence parameters are operational simulation settings, not empirical constants.
+const DOMAIN_DIVERGENCE_PARAMETERS = Object.freeze({minimumCellsPerHabitat:20,minimumTotalCells:100,minimumEffectiveIsolation:0.06,persistenceGenerations:10});
 // Remember open genotype detail panels across automatic per-generation leaderboard re-renders.
 const genotypeDetailOpenState = new Map();
 const MODULE_LABELS = {
@@ -2249,15 +2268,16 @@ const MODULE_LABELS = {
 const CORE_MODULES = ['hydrogenase','wlp','atp_synthase','translation','membrane','dna_maintenance'];
 // Biaya berikut memakai EC (energy-credit) relatif per sel per generasi; bukan satuan ATP historis.
 const CORE_ECONOMICS = {hydrogenase:0.010,wlp:0.012,atp_synthase:0.013,translation:0.020,membrane:0.014,dna_maintenance:0.014};
+// Recurring expression/setup costs below are operational calibration parameters, not measured ancient-cell energetics.
 const MODULE_ECONOMICS = {
  protein_repair:{cost:0.018,setup:0.035,label:'Perbaikan protein'},ion_homeostasis:{cost:0.017,setup:0.030,label:'Homeostasis ion'},
  membrane_stability:{cost:0.022,setup:0.045,label:'Stabilitas membran'},solute_transport:{cost:0.020,setup:0.035,label:'Transpor solut'},
  acetate_use:{cost:0.026,setup:0.050,label:'Pemakaian asetat'},adhesion:{cost:0.012,setup:0.025,label:'Adhesi komunitas'},
  gene_regulation:{cost:0.025,setup:0.045,label:'Regulasi gen'},
- redox_protection:{cost:0.024,setup:0.045,label:'Proteksi redoks'},ether_lipid:{cost:0.042,setup:0.090,label:'Lipid eter Archaea'},
- mcr_methanogenesis:{cost:0.070,setup:0.150,label:'MCR / metanogenesis'},archaea_quality_control:{cost:0.036,setup:0.075,label:'Kontrol mutu Archaea'},
- archaellum_like:{cost:0.055,setup:0.100,label:'Archaellum-like'},cell_envelope:{cost:0.038,setup:0.075,label:'Prekursor selubung Bacteria'},
- multifunctional_enzymes:{cost:0.024,setup:0.050,label:'Enzim multifungsi Bacteria'},rna_modification:{cost:0.026,setup:0.055,label:'Modifikasi RNA'},
+ redox_protection:{cost:0.024,setup:0.045,label:'Proteksi redoks'},ether_lipid:{cost:0.020,setup:0.050,label:'Lipid eter Archaea'},
+ mcr_methanogenesis:{cost:0.070,setup:0.150,label:'MCR / metanogenesis'},archaea_quality_control:{cost:0.018,setup:0.040,label:'Kontrol mutu Archaea'},
+ archaellum_like:{cost:0.055,setup:0.100,label:'Archaellum-like'},cell_envelope:{cost:0.022,setup:0.045,label:'Prekursor selubung Bacteria'},
+ multifunctional_enzymes:{cost:0.014,setup:0.030,label:'Enzim multifungsi Bacteria'},rna_modification:{cost:0.014,setup:0.030,label:'Modifikasi RNA'},
  intracellular_integration:{cost:0.095,setup:0.190,label:'Integrasi intraseluler'},
  intracellular_recycling:{cost:0.014,setup:0.025,label:'Daur ulang protein intraseluler'},organic_scavenging:{cost:0.027,setup:0.052,label:'Pengambilan organik terlarut'},
  archaea_protease:{cost:0.043,setup:0.088,label:'Protease ekstraseluler Archaea'},bacteria_protease:{cost:0.041,setup:0.084,label:'Protease ekstraseluler Bacteria'},
@@ -2599,8 +2619,12 @@ function moduleOpportunityWeight(module,s,h){
  if(module==='carbon_3hp4hb')return 0.05+sat(e.DIC)*sat(e.NH4)*oxAvail(e)*2;
  if(module==='carbon_dicarboxylate4hb')return 0.05+sat(e.DIC)*sat(e.H2)*anoxAvail(e)*2;
  if(module==='archaea_rhodopsin')return 0.05+sat(e.light)*2;
- if(module==='ether_lipid')return 0.08+sat((e.T-42)/28)*1.25+sat(Math.abs(e.pH-7.0)/2.5)*0.35;
- if(module==='bacteria_ester_lipid')return 0.08+sat((78-e.T)/38)*0.65+sat((e.pH-6.5)/2.5)*0.30;
+ if(module==='ether_lipid'){const t=s.traits||{},temp=clamp(Math.abs(e.T-(t.thermalOptimum||70))/36),ph=clamp(Math.abs(e.pH-(t.phOptimum||7.4))/2.8),pressure=0.58*temp+0.42*ph;return (e.T>=55||pressure>=0.35)?0.18+sat((e.T-48)/28)*1.25+pressure*0.40:0.06;}
+ if(module==='bacteria_ester_lipid')return 0.10+sat((78-e.T)/38)*0.55+sat((e.pH-6.5)/2.5)*0.25;
+ if(module==='archaea_quality_control'){const t=s.traits||{},thermal=Math.exp(-0.5*Math.pow((e.T-(t.thermalOptimum||70))/Math.max(8,t.thermalBreadth||24),2));const ph=Math.exp(-0.5*Math.pow((e.pH-(t.phOptimum||7.4))/Math.max(0.55,t.phBreadth||1.4),2));return 0.25+1.65*clamp(1-(0.70*thermal+0.30*ph));}
+ if(module==='cell_envelope')return 0.25+1.45*clamp(0.55*sat(Math.abs(e.pH-7),1.4)+0.45*sat(Math.abs(e.T-(s.traits?.thermalOptimum||70)),30));
+ if(module==='multifunctional_enzymes'){const scarcity=1-(sat(e.H2,0.25)+sat(e.DIC,0.25))/2;return 0.08+2.10*clamp((scarcity-0.22)/0.78);}
+ if(module==='rna_modification'){const t=s.traits||{},thermal=Math.exp(-0.5*Math.pow((e.T-(t.thermalOptimum||70))/Math.max(8,t.thermalBreadth||24),2));const ph=Math.exp(-0.5*Math.pow((e.pH-(t.phOptimum||7.4))/Math.max(0.55,t.phBreadth||1.4),2));return 0.25+1.55*clamp(1-(0.65*thermal+0.35*ph));}
  if(module==='archaea_fermentation')return 0.05+sat(e.organicC,0.03)*sat(1-e.O2/0.02)*3;
  if(module==='archaea_sulfur_oxidation')return 0.05+sat(e.S0,0.03)*sat(e.O2,0.01)*3;
  if(module==='archaea_halo_adaptation')return 0.05+sat(e.salinity||0,0.10)*3;
@@ -2646,6 +2670,10 @@ function resourceFitForModule(module,s,h){
  const canBact=canExploreDomainModules(s,'BACTERIA');
  if(module==='organic_scavenging')return (e.organicC||0)>0.004 || (e.acetatePool||0)>0.02;
  if(module==='intracellular_recycling')return true;
+ if(module==='archaea_quality_control')return e.T>=52||Math.abs(e.pH-(s.traits?.phOptimum||7.4))>0.55;
+ if(module==='cell_envelope')return (e.DIC||0)>0.04&&s.traits.carbonFixation>0.35&&(e.organicC||0)+(e.acetatePool||0)>0.004;
+ if(module==='multifunctional_enzymes')return ((e.H2||0)<0.12||(e.organicC||0)+(e.acetatePool||0)<0.04);
+ if(module==='rna_modification')return e.T>55||Math.abs(e.pH-(s.traits?.phOptimum||7.4))>0.45;
  if(module.endsWith('_protease'))return world.splitGen!==null&&s.modules.includes('organic_scavenging')&&(e.POM_PROTEIN_C||0)>0.001;
  if(module.endsWith('_glycosidase'))return world.splitGen!==null&&s.modules.includes('organic_scavenging')&&(e.POM_POLYSACCHARIDE_C||0)>0.001;
  if(module.endsWith('_lipase'))return world.splitGen!==null&&s.modules.includes('organic_scavenging')&&(e.POM_LIPID_C||0)>0.001;
@@ -2686,22 +2714,21 @@ function depositDeadBiomass(h,deadCells){
  const carbon=Math.max(0,deadCells)*CELL_C;
  const nitrogen=carbon*0.18,phosphorus=carbon*0.012,sulfur=carbon*0.004;
  const lysis=0.18,particulate=1-lysis;
- e.organicC=Math.min(10,(e.organicC||0)+carbon*lysis/volume);
- e.DON=Math.min(10,(e.DON||0)+nitrogen*lysis/volume);
- e.DOP=Math.min(10,(e.DOP||0)+phosphorus*lysis/volume);
+ e.organicC=Math.max(0,(e.organicC||0)+carbon*lysis/volume);
+ e.DON=Math.max(0,(e.DON||0)+nitrogen*lysis/volume);
+ e.DOP=Math.max(0,(e.DOP||0)+phosphorus*lysis/volume);
  // Particulate carbon is partitioned into model substrate classes. Fractions are scenario bookkeeping, not LUCA measurements.
  const partC=carbon*particulate/volume;
  // Keep the aggregate particulate-carbon pool and its typed subpools consistent at the model capacity limit.
- const aggregateCapacity=Math.max(0,10-(e.POM_C||0));
- const retainedPartC=Math.min(partC,aggregateCapacity),retainedRatio=partC>0?retainedPartC/partC:0;
+ const retainedPartC=partC,retainedRatio=1;
  const proteinC=partC*0.45*retainedRatio,polyC=partC*0.32*retainedRatio,lipidC=partC*0.23*retainedRatio;
  e.POM_PROTEIN_C=Math.max(0,(e.POM_PROTEIN_C||0)+proteinC);
  e.POM_POLYSACCHARIDE_C=Math.max(0,(e.POM_POLYSACCHARIDE_C||0)+polyC);
  e.POM_LIPID_C=Math.max(0,(e.POM_LIPID_C||0)+lipidC);
  e.POM_C=Math.max(0,(e.POM_C||0)+retainedPartC);
- e.POM_N=Math.min(10,(e.POM_N||0)+nitrogen*particulate/volume);
- e.POM_P=Math.min(10,(e.POM_P||0)+phosphorus*particulate/volume);
- e.POM_S=Math.min(10,(e.POM_S||0)+sulfur*particulate/volume);
+ e.POM_N=Math.max(0,(e.POM_N||0)+nitrogen*particulate/volume);
+ e.POM_P=Math.max(0,(e.POM_P||0)+phosphorus*particulate/volume);
+ e.POM_S=Math.max(0,(e.POM_S||0)+sulfur*particulate/volume);
  return {deadCells,carbon,particulateC:retainedPartC*volume,lysisC:carbon*lysis,nitrogen,phosphorus,sulfur,proteinC:proteinC*volume,polysaccharideC:polyC*volume,lipidC:lipidC*volume};
 }
 function hydrolyzeNecromass(h){
@@ -2725,7 +2752,7 @@ function hydrolyzeNecromass(h){
  e.POM_PROTEIN_C=Math.max(0,pC-hP);e.POM_POLYSACCHARIDE_C=Math.max(0,gC-hG);e.POM_LIPID_C=Math.max(0,lC-hL);
  e.POM_C=Math.max(0,e.POM_PROTEIN_C+e.POM_POLYSACCHARIDE_C+e.POM_LIPID_C+untyped-hU);
  const hydrolyzedC=hP+hG+hL+hU;
- e.organicC=Math.min(10,(e.organicC||0)+hydrolyzedC);
+ e.organicC=Math.max(0,(e.organicC||0)+hydrolyzedC);
  // Protein-associated N is released in proportion to protein-C hydrolysis; P and reduced S turn over more slowly across all detrital fractions.
  const proteinFraction=pC>0?hP/pC:0;
  const hN=(e.POM_N||0)*clamp(proteinFraction+0.10*unknownRate,0,0.10);
@@ -2733,14 +2760,14 @@ function hydrolyzeNecromass(h){
  const hPnut=(e.POM_P||0)*clamp(avgTurnover+0.08*unknownRate,0,0.085);
  const hS=(e.POM_S||0)*clamp(avgTurnover+0.08*unknownRate,0,0.085);
  e.POM_N=Math.max(0,(e.POM_N||0)-hN);e.POM_P=Math.max(0,(e.POM_P||0)-hPnut);e.POM_S=Math.max(0,(e.POM_S||0)-hS);
- e.DON=Math.min(10,(e.DON||0)+hN*0.72);e.NH4=Math.min(10,(e.NH4||0)+hN*0.28);
- e.DOP=Math.min(10,(e.DOP||0)+hPnut*0.72);e.PO4=Math.min(10,(e.PO4||0)+hPnut*0.28);
- e.H2S=Math.min(10,(e.H2S||0)+hS*0.82);e.S0=Math.min(10,(e.S0||0)+hS*0.18);
+ e.DON=Math.max(0,(e.DON||0)+hN*0.72);e.NH4=Math.max(0,(e.NH4||0)+hN*0.28);
+ e.DOP=Math.max(0,(e.DOP||0)+hPnut*0.72);e.PO4=Math.max(0,(e.PO4||0)+hPnut*0.28);
+ e.H2S=Math.max(0,(e.H2S||0)+hS*0.82);e.S0=Math.max(0,(e.S0||0)+hS*0.18);
  const decomposerCoverage=clamp(sumCoverage('archaea_protease','bacteria_protease')+sumCoverage('archaea_glycosidase','bacteria_glycosidase')+sumCoverage('archaea_lipase','bacteria_lipase'),0,1);
  const mineralN=(e.DON||0)*clamp((0.0012+0.035*decomposerCoverage)*thermalFactor,0,0.10);
  const mineralP=(e.DOP||0)*clamp((0.0010+0.027*decomposerCoverage)*thermalFactor,0,0.085);
- e.DON=Math.max(0,e.DON-mineralN);e.NH4=Math.min(10,e.NH4+mineralN);
- e.DOP=Math.max(0,e.DOP-mineralP);e.PO4=Math.min(10,e.PO4+mineralP);
+ e.DON=Math.max(0,e.DON-mineralN);e.NH4=Math.max(0,e.NH4+mineralN);
+ e.DOP=Math.max(0,e.DOP-mineralP);e.PO4=Math.max(0,e.PO4+mineralP);
  return {moduleCells,coverage,proteinRate,polysaccharideRate:polyRate,lipidRate,hydrolyzedProteinC:hP*clamp(e.volumeFactor||1,0.1,100),hydrolyzedPolysaccharideC:hG*clamp(e.volumeFactor||1,0.1,100),hydrolyzedLipidC:hL*clamp(e.volumeFactor||1,0.1,100),hydrolyzedUnclassifiedC:hU*clamp(e.volumeFactor||1,0.1,100),hydrolyzedC:hydrolyzedC*clamp(e.volumeFactor||1,0.1,100),hydrolyzedN:hN*clamp(e.volumeFactor||1,0.1,100),hydrolyzedP:hPnut*clamp(e.volumeFactor||1,0.1,100),hydrolyzedS:hS*clamp(e.volumeFactor||1,0.1,100),mineralizedN:mineralN*clamp(e.volumeFactor||1,0.1,100),mineralizedP:mineralP*clamp(e.volumeFactor||1,0.1,100),decomposerCoverage};
 }
 function sumObjects(rows){
@@ -2809,7 +2836,7 @@ function updatePlanetaryBiogeochemicalCycles(){
    if(extent>0){e.DIC=Math.max(0,e.DIC-extent/vol);e.Ca2=Math.max(0,e.Ca2-extent/vol);e.carbonateC=(e.carbonateC||0)+extent/vol;f.carbon.carbonatePrecip=extent;}
   }else if(e.pH<6.75&&(e.carbonateC||0)>0){
    const extent=Math.min(e.carbonateC*vol,e.carbonateC*vol*0.0025*clamp((6.85-e.pH)/1.25,0,1));
-   if(extent>0){e.carbonateC=Math.max(0,e.carbonateC-extent/vol);e.DIC=Math.min(10,e.DIC+extent/vol);e.Ca2=Math.min(10,(e.Ca2||0)+extent/vol);f.carbon.carbonateDissolution=extent;}
+   if(extent>0){e.carbonateC=Math.max(0,e.carbonateC-extent/vol);e.DIC=Math.max(0,e.DIC+extent/vol);e.Ca2=Math.max(0,(e.Ca2||0)+extent/vol);f.carbon.carbonateDissolution=extent;}
   }
 
   // 2. Ferric iron precipitation to reactive Fe(III) oxide pool.
@@ -2829,10 +2856,10 @@ function updatePlanetaryBiogeochemicalCycles(){
   const rawFeReduction=ironReducerCells*0.00000075*anoxic*organicAvailability;
   const feReductionC=Math.min(rawFeReduction,Math.max(0,e.organicC||0)*vol,Math.max(0,e.FeOxide||0)*vol/4);
   if(feReductionC>0){
-   e.organicC=Math.max(0,e.organicC-feReductionC/vol);e.DIC=Math.min(10,e.DIC+feReductionC/vol);
-   e.FeOxide=Math.max(0,e.FeOxide-4*feReductionC/vol);e.Fe2=Math.min(10,(e.Fe2||0)+4*feReductionC/vol);
+   e.organicC=Math.max(0,e.organicC-feReductionC/vol);e.DIC=Math.max(0,e.DIC+feReductionC/vol);
+   e.FeOxide=Math.max(0,e.FeOxide-4*feReductionC/vol);e.Fe2=Math.max(0,(e.Fe2||0)+4*feReductionC/vol);
    const pRelease=Math.min(Math.max(0,e.Fe_bound_P||0)*vol,4*feReductionC*0.16);
-   if(pRelease>0){e.Fe_bound_P=Math.max(0,e.Fe_bound_P-pRelease/vol);e.PO4=Math.min(10,(e.PO4||0)+pRelease/vol);f.phosphorus.released+=pRelease;}
+   if(pRelease>0){e.Fe_bound_P=Math.max(0,e.Fe_bound_P-pRelease/vol);e.PO4=Math.max(0,(e.PO4||0)+pRelease/vol);f.phosphorus.released+=pRelease;}
    f.iron.Fe3Reduced= (f.iron.Fe3Reduced||0)+4*feReductionC;f.carbon.fixed-=0; // reductive dissolution returns organic C to DIC; it is not carbon fixation.
   }
 
@@ -2937,10 +2964,10 @@ function consumeOxygenWithReducedChemistry(){
   let available=Math.max(0,e.O2||0)*vol,feOx=0,sulfideOx=0;
   // Fe2+ oxidation: 4 Fe2+ + O2 + 4 H+ -> 4 Fe3+ + 2 H2O.
   const feExtent=Math.min(Math.max(0,e.Fe2||0)*vol/4,available);
-  if(feExtent>0){e.Fe2=Math.max(0,e.Fe2-4*feExtent/vol);e.Fe3=Math.min(10,(e.Fe3||0)+4*feExtent/vol);available-=feExtent;feOx=feExtent;}
+  if(feExtent>0){e.Fe2=Math.max(0,e.Fe2-4*feExtent/vol);e.Fe3=Math.max(0,(e.Fe3||0)+4*feExtent/vol);available-=feExtent;feOx=feExtent;}
   // Reduced sulfur is another local oxygen sink; this simplified pool represents oxidation toward S0.
   const sExtent=Math.min(Math.max(0,e.H2S||0)*vol/2,available);
-  if(sExtent>0){e.H2S=Math.max(0,e.H2S-2*sExtent/vol);e.S0=Math.min(10,(e.S0||0)+2*sExtent/vol);available-=sExtent;sulfideOx=sExtent;}
+  if(sExtent>0){e.H2S=Math.max(0,e.H2S-2*sExtent/vol);e.S0=Math.max(0,(e.S0||0)+2*sExtent/vol);available-=sExtent;sulfideOx=sExtent;}
   e.O2=Math.max(0,available/vol);
   sinkStats[h]={O2consumed:(feOx+sulfideOx)/vol,Fe2oxidized:4*feOx/vol,H2Soxidized:2*sulfideOx/vol};
  }
@@ -3016,7 +3043,7 @@ function updateCatalogReactions(){
     if(coupling){coupling.catalogConsumed[key]=(coupling.catalogConsumed[key]||0)+amount;coupling.totalConsumed[key]=(coupling.totalConsumed[key]||0)+amount;}
    }
    for(const [key,coef] of Object.entries(req.produce)){
-    const amount=extent*coef;e[key]=Math.min(10,Math.max(0,e[key]||0)+amount);
+    const amount=extent*coef;e[key]=Math.max(0,Math.max(0,e[key]||0)+amount);
     const coupling=world.metrics.lastHabitatResourceCoupling?.[h];if(coupling)coupling.catalogProduced[key]=(coupling.catalogProduced[key]||0)+amount;
     productRelease[key]=(productRelease[key]||0)+amount;bio.productRelease[key]=(bio.productRelease[key]||0)+amount;
    }
@@ -3225,7 +3252,7 @@ const RECHARGE_FIELDS=[
 ];
 const DEFAULT_GEO_SOURCE_SCALES=Object.freeze({atmosphere:1,ocean:1,hydrothermal:1,crust:1,magma:1,land:1});
 // Six planetary reservoirs from the Terra Chemica geochemical framework.
-// These are source-flux controls, not measured concentrations or finite mass inventories.
+// Source identity/roles are conceptual; finite starting inventories are explicitly parameterized below in scenario UIM.
 const GEOCHEMICAL_RESERVOIRS=[
  {id:'atmosphere',label:'Atmosfer anoksik',process:'Degassing, petir, fotokimia, pertukaran gas-air',bridge:'Gas terlarut, karbon anorganik, nitrogen dan spesies minor'},
  {id:'ocean',label:'Laut reduktif',process:'Pelarutan, pencampuran, buffer karbonat dan difusi',bridge:'DIC, air, ion terlarut, nutrien dan medium transport'},
@@ -3259,34 +3286,48 @@ function geochemicalSourceAllocation(h,key){
  const weights={};for(const id of GEO_SOURCE_IDS)weights[id]=total>0?raw[id]/total:1/GEO_SOURCE_IDS.length;
  return weights;
 }
-// The geological source network is finite and closed during a run. Default stocks are
-// scenario initial conditions (600 baseline-supply generations), not paleogeochemical measurements.
-const GEO_STOCK_HORIZON_GENERATIONS=600;
+// Explicit finite scenario inventories, independent of population size and simulation duration.
+// UIM values are relative model inventories, not measured Hadean planetary masses.
+// Reservoir profiles follow their represented roles: atmosphere (N₂/gases), ocean (water/DIC/ions),
+// hydrothermal fluids (H₂/Fe²⁺/sulfide), crust (Fe minerals/apatite/olivine), magma (volatiles), land (runoff).
+const GEO_INITIAL_RESERVOIR_INVENTORY_UIM={
+ atmosphere:{H2:2500,DIC:30000,DOC:5000,NH4:500,PO4:50,SO4:2000,S0:500,H2S:500,NO3:500,NO2:200,CH4:25000,CH3OH:1500,glucose:500,Fe2:300,Fe3:1000,N2:2500000,Ca2:3000},
+ ocean:{H2:4000,DIC:1500000,DOC:80000,NH4:80000,PO4:30000,SO4:250000,S0:18000,H2S:14000,NO3:10000,NO2:2500,CH4:20000,CH3OH:5000,glucose:2500,Fe2:15000,Fe3:22000,N2:1000000,Ca2:150000},
+ hydrothermal:{H2:250000,DIC:40000,DOC:5000,NH4:30000,PO4:12000,SO4:30000,S0:45000,H2S:160000,NO3:500,NO2:200,CH4:45000,CH3OH:6000,glucose:500,Fe2:180000,Fe3:12000,N2:80000,Ca2:60000},
+ crust:{H2:8000,DIC:16000,DOC:1000,NH4:4000,PO4:4000,SO4:140000,S0:180000,H2S:20000,NO3:800,NO2:250,CH4:7000,CH3OH:500,glucose:250,Fe2:650000,Fe3:750000,N2:12000,Ca2:550000},
+ magma:{H2:180000,DIC:280000,DOC:2000,NH4:8000,PO4:1000,SO4:25000,S0:70000,H2S:85000,NO3:0,NO2:0,CH4:180000,CH3OH:7000,glucose:0,Fe2:100000,Fe3:60000,N2:160000,Ca2:80000},
+ land:{H2:5000,DIC:40000,DOC:220000,NH4:45000,PO4:18000,SO4:30000,S0:12000,H2S:1000,NO3:10000,NO2:3500,CH4:4000,CH3OH:16000,glucose:25000,Fe2:90000,Fe3:180000,N2:20000,Ca2:180000}
+};
 const GEO_MINERAL_POOL_FIELDS=[
  {key:'water',label:'Air reaktif H₂O'},
  {key:'olivineFo90',label:'Olivin Fo₉₀'},
+ {key:'apatite',label:'Apatit fosfat'},
  {key:'serpentine',label:'Serpentin'},
  {key:'brucite',label:'Brusit'},
- {key:'magnetite',label:'Magnetit'}
+ {key:'magnetite',label:'Magnetit'},
+ {key:'OH',label:'OH⁻ hasil pelarutan'}
 ];
 const GEO_STOCK_FIELDS=[...RECHARGE_FIELDS,...GEO_MINERAL_POOL_FIELDS];
 const GEO_POOL_ATOMS={
  H2:{H:2},DIC:{C:1,O:2},DOC:{C:1},NH4:{N:1,H:4},PO4:{P:1,O:4},SO4:{S:1,O:4},S0:{S:1},H2S:{H:2,S:1},NO3:{N:1,O:3},NO2:{N:1,O:2},CH4:{C:1,H:4},CH3OH:{C:1,H:4,O:1},glucose:{C:6,H:12,O:6},Fe2:{Fe:1},Fe3:{Fe:1},N2:{N:2},Ca2:{Ca:1},
- water:{H:2,O:1},olivineFo90:{Mg:1.8,Fe:0.2,Si:1,O:4},serpentine:{Mg:3,Si:2,O:9,H:4},brucite:{Mg:1,O:2,H:2},magnetite:{Fe:3,O:4}
+ water:{H:2,O:1},olivineFo90:{Mg:1.8,Fe:0.2,Si:1,O:4},apatite:{Ca:5,P:3,O:13,H:1},serpentine:{Mg:3,Si:2,O:9,H:4},brucite:{Mg:1,O:2,H:2},magnetite:{Fe:3,O:4},OH:{O:1,H:1}
 };
 const GEO_ELEMENT_EQUIVALENTS={
  'H₂ pool':{H2:1},C:{DIC:1,DOC:1,CH4:1,CH3OH:1,glucose:6},N:{NH4:1,NO3:1,NO2:1,N2:2},
- P:{PO4:1},S:{SO4:1,S0:1,H2S:1},Fe:{Fe2:1,Fe3:1,olivineFo90:0.2,magnetite:3},Ca:{Ca2:1},
+ P:{PO4:1,apatite:3},S:{SO4:1,S0:1,H2S:1},Fe:{Fe2:1,Fe3:1,olivineFo90:0.2,magnetite:3},Ca:{Ca2:1,apatite:5},
  Mg:{olivineFo90:1.8,serpentine:3,brucite:1},Si:{olivineFo90:1,serpentine:2},
- H:{H2:2,NH4:4,H2S:2,CH4:4,CH3OH:4,glucose:12,water:2,serpentine:4,brucite:2},
- O:{DIC:2,PO4:4,SO4:4,NO3:3,NO2:2,CH3OH:1,glucose:6,water:1,olivineFo90:4,serpentine:9,brucite:2,magnetite:4}
+ H:{H2:2,NH4:4,H2S:2,CH4:4,CH3OH:4,glucose:12,water:2,apatite:1,serpentine:4,brucite:2,OH:1},
+ O:{DIC:2,PO4:4,SO4:4,NO3:3,NO2:2,CH3OH:1,glucose:6,water:1,olivineFo90:4,apatite:13,serpentine:9,brucite:2,magnetite:4,OH:1}
 };
-const DEFAULT_GEO_REACTION_PARAMETERS=Object.freeze({serpentinizationEnabled:true,temperatureC:120,rateScale:1,waterActivity:1});
+const DEFAULT_GEO_REACTION_PARAMETERS=Object.freeze({serpentinizationEnabled:true,phosphateDissolutionEnabled:true,phosphateDissolutionRate:1e-8,temperatureC:120,rateScale:1,waterActivity:1});
 const DEFAULT_GEO_BOUNDARY_PARAMETERS=Object.freeze({mantleH2InputUIM:0,atmosphericH2EscapeFraction:0});
 const GEO_MINERAL_REACTIONS=[
  {id:'SERP-FO90',label:'Serpentinisasi olivin Fo₉₀',equation:'3 Mg₁.₈Fe₀.₂SiO₄ + 4.1 H₂O → 1.5 Mg₃Si₂O₅(OH)₄ + 0.9 Mg(OH)₂ + 0.2 Fe₃O₄ + 0.2 H₂',fractionPerGeneration:0.0008,
   reactants:[{reservoir:'crust',field:'olivineFo90',coefficient:3},{reservoir:'hydrothermal',field:'water',coefficient:4.1}],
-  products:[{reservoir:'crust',field:'serpentine',coefficient:1.5},{reservoir:'crust',field:'brucite',coefficient:0.9},{reservoir:'crust',field:'magnetite',coefficient:0.2},{reservoir:'hydrothermal',field:'H2',coefficient:0.2}]}
+  products:[{reservoir:'crust',field:'serpentine',coefficient:1.5},{reservoir:'crust',field:'brucite',coefficient:0.9},{reservoir:'crust',field:'magnetite',coefficient:0.2},{reservoir:'hydrothermal',field:'H2',coefficient:0.2}]},
+ {id:'APATITE-DISSOLUTION',label:'Pelarutan mineral apatit',equation:'Ca₅(PO₄)₃OH → 5 Ca²⁺ + 3 PO₄³⁻ + OH⁻',fractionPerGeneration:1e-8,
+  reactants:[{reservoir:'crust',field:'apatite',coefficient:1}],
+  products:[{reservoir:'crust',field:'Ca2',coefficient:5},{reservoir:'crust',field:'PO4',coefficient:3},{reservoir:'crust',field:'OH',coefficient:1}]}
 ];
 function auditGeochemicalReactionStoichiometry(){
  return GEO_MINERAL_REACTIONS.map(r=>{
@@ -3307,18 +3348,46 @@ const GEO_RESERVOIR_EXCHANGES=[
 ];
 function cloneGeochemicalStocks(stocks){return Object.fromEntries(GEO_SOURCE_IDS.map(id=>[id,Object.fromEntries(GEO_STOCK_FIELDS.map(f=>[f.key,Math.max(0,Number(stocks?.[id]?.[f.key]||0))]))]));}
 function createGeochemicalReservoirState(){
- const stocks=Object.fromEntries(GEO_SOURCE_IDS.map(id=>[id,Object.fromEntries(GEO_STOCK_FIELDS.map(f=>[f.key,0]))]));
- for(const field of RECHARGE_FIELDS.map(x=>x.key)){
-  for(const h of COMPARTMENTS){
-   const base=Math.max(0,Number(DEFAULT_COMPARTMENT_RECHARGE[h]?.[field]||0));
-   const weights=geochemicalSourceAllocation(h,field);
-   for(const id of GEO_SOURCE_IDS)stocks[id][field]+=base*clamp(Number(defaultEnv[h]?.volumeFactor||1),0.1,100)*(weights[id]||0)*GEO_STOCK_HORIZON_GENERATIONS;
+ const stocks=Object.fromEntries(GEO_SOURCE_IDS.map(id=>[id,Object.fromEntries(GEO_STOCK_FIELDS.map(f=>[f.key,Math.max(0,Number(GEO_INITIAL_RESERVOIR_INVENTORY_UIM[id]?.[f.key]||0))]))]));
+ // Separate, explicit mineral/water starting inventories. They are scenario assumptions in UIM.
+ stocks.ocean.water=1000000000;
+ stocks.hydrothermal.water=12000;
+ stocks.crust.olivineFo90=60000;
+ stocks.crust.apatite=500000;
+ return {unit:'UIM (unit indeks-massa model)',inventoryBasis:'explicit reservoir scenario inventories; independent of population/generation count',stocks,
+  cumulative:{transfers:0,toHabitats:0,reactionExtent:0,externalIn:0,externalOut:0},initialHabitatSeed:null,last:null};
+}
+function seedInitialHabitatPoolsFromReservoirs(env,geoState){
+ if(geoState.initialHabitatSeed)return geoState.initialHabitatSeed;
+ const bySource=Object.fromEntries(GEO_SOURCE_IDS.map(id=>[id,{}])),byHabitat={},byField={};
+ const volumeAt=h=>clamp(Number(env[h]?.volumeFactor||defaultEnv[h]?.volumeFactor||1),0.1,100);
+ const localKeysFor=field=>field==='DOC'?['organicC','acetatePool']:[field];
+ let totalSeed=0;
+ for(const h of COMPARTMENTS){
+  byHabitat[h]={};const volume=volumeAt(h);
+  for(const f of RECHARGE_FIELDS){
+   const localKeys=localKeysFor(f.key);
+   const concentration=localKeys.reduce((sum,key)=>sum+Math.max(0,Number(env[h]?.[key]||0)),0);
+   const target=concentration*volume;if(target<=0)continue;
+   const weights=geochemicalSourceAllocation(h,f.key);
+   let remaining=target,seeded=0;
+   const preferred=GEO_SOURCE_IDS.slice().sort((a,b)=>(weights[b]||0)-(weights[a]||0));
+   for(const id of preferred){
+    const planned=target*(weights[id]||0),available=Math.max(0,Number(geoState.stocks[id]?.[f.key]||0));
+    const take=Math.min(available,planned,remaining);
+    if(take>0){geoState.stocks[id][f.key]-=take;bySource[id][f.key]=(bySource[id][f.key]||0)+take;seeded+=take;remaining-=take;}
+   }
+   // Any rounding/weight residual is drawn from other reservoirs with remaining stock, never created.
+   if(remaining>1e-12){
+    for(const id of preferred){const available=Math.max(0,Number(geoState.stocks[id]?.[f.key]||0)),take=Math.min(available,remaining);if(take>0){geoState.stocks[id][f.key]-=take;bySource[id][f.key]=(bySource[id][f.key]||0)+take;seeded+=take;remaining-=take;}if(remaining<=1e-12)break;}
+   }
+   if(remaining>1e-9)throw new Error(`Inventori reservoir ${f.key} tidak cukup untuk menginisialisasi ${h}: kurang ${remaining} UIM.`);
+   byHabitat[h][f.key]=seeded;byField[f.key]=(byField[f.key]||0)+seeded;totalSeed+=seeded;
   }
  }
- // Mineral and water inventories are explicit scenario starting conditions in UIM, not geological measurements.
- stocks.crust.olivineFo90=60;
- stocks.hydrothermal.water=12000;
- return {unit:'UIM (unit indeks-massa model)',horizonGenerations:GEO_STOCK_HORIZON_GENERATIONS,stocks,cumulative:{transfers:0,toHabitats:0,reactionExtent:0,externalIn:0,externalOut:0},last:null};
+ geoState.initialHabitatSeed={totalUIM:totalSeed,bySource,byHabitat,byField,generation:0};
+ geoState.cumulative.toHabitats=(geoState.cumulative.toHabitats||0)+totalSeed;
+ return geoState.initialHabitatSeed;
 }
 function ensureGeochemicalReservoirState(){
  if(!world.geochemicalReservoirState)world.geochemicalReservoirState=createGeochemicalReservoirState();
@@ -3364,25 +3433,33 @@ function applyGeochemicalReactionEngine(){
  const state=ensureGeochemicalReservoirState(),last=state.last;if(!last)return [];
  const p={...DEFAULT_GEO_REACTION_PARAMETERS,...(world.geochemicalReactionParameters||{})};
  const results=[];
- if(p.serpentinizationEnabled){
-  const temp=clamp(Number(p.temperatureC)||120,20,400);
-  // A bounded scenario response factor; this is not an Arrhenius law or a measured rate constant.
-  const temperatureFactor=clamp(0.25+0.75*(temp/200),0.25,1.75);
-  const rateScale=clamp(Number(p.rateScale)||0,0,3),waterActivity=clamp(Number(p.waterActivity)||0,0,1);
-  for(const reaction of GEO_MINERAL_REACTIONS){
-   let extentPotential=Infinity;
-   for(const x of reaction.reactants){const available=Math.max(0,state.stocks[x.reservoir]?.[x.field]||0);extentPotential=Math.min(extentPotential,available/x.coefficient);}
+ const temp=clamp(Number(p.temperatureC)||120,20,400);
+ // Bounded scenario response factors; these are not calibrated Arrhenius kinetics.
+ const temperatureFactor=clamp(0.25+0.75*(temp/200),0.25,1.75);
+ const rateScale=clamp(Number(p.rateScale)||0,0,3),waterActivity=clamp(Number(p.waterActivity)||0,0,1);
+ for(const reaction of GEO_MINERAL_REACTIONS){
+  if(reaction.id==='SERP-FO90'&&!p.serpentinizationEnabled)continue;
+  if(reaction.id==='APATITE-DISSOLUTION'&&!p.phosphateDissolutionEnabled)continue;
+  let extentPotential=Infinity;
+  for(const x of reaction.reactants){const available=Math.max(0,state.stocks[x.reservoir]?.[x.field]||0);extentPotential=Math.min(extentPotential,available/x.coefficient);}
+  let desired=0;
+  if(reaction.id==='SERP-FO90'){
    const olivine=state.stocks.crust.olivineFo90||0;
-   const desired=(olivine/3)*reaction.fractionPerGeneration*rateScale*temperatureFactor*waterActivity;
-   const extent=Math.max(0,Math.min(extentPotential,desired));
-   if(extent>0){
-    for(const x of reaction.reactants){const amount=x.coefficient*extent;state.stocks[x.reservoir][x.field]=Math.max(0,state.stocks[x.reservoir][x.field]-amount);last.reactionOut[x.reservoir][x.field]+=amount;}
-    for(const x of reaction.products){const amount=x.coefficient*extent;state.stocks[x.reservoir][x.field]=(state.stocks[x.reservoir][x.field]||0)+amount;last.reactionIn[x.reservoir][x.field]+=amount;}
-   }
-   const audit=auditGeochemicalReactionStoichiometry().find(x=>x.id===reaction.id);
-   results.push({id:reaction.id,extent,olivineConsumed:3*extent,waterConsumed:4.1*extent,h2Produced:0.2*extent,temperatureC:temp,temperatureFactor,rateScale,waterActivity,balanced:!!audit?.balanced,maxAtomResidual:audit?.maxAbsResidual??null});
-   state.cumulative.reactionExtent=(state.cumulative.reactionExtent||0)+extent;state.cumulative.h2Produced=(state.cumulative.h2Produced||0)+0.2*extent;
+   desired=(olivine/3)*reaction.fractionPerGeneration*rateScale*temperatureFactor*waterActivity;
+  }else if(reaction.id==='APATITE-DISSOLUTION'){
+   desired=(state.stocks.crust.apatite||0)*Math.max(0,Number(p.phosphateDissolutionRate??reaction.fractionPerGeneration))*rateScale*temperatureFactor*waterActivity;
   }
+  const extent=Math.max(0,Math.min(extentPotential,desired));
+  if(extent>0){
+   for(const x of reaction.reactants){const amount=x.coefficient*extent;state.stocks[x.reservoir][x.field]=Math.max(0,state.stocks[x.reservoir][x.field]-amount);last.reactionOut[x.reservoir][x.field]+=amount;}
+   for(const x of reaction.products){const amount=x.coefficient*extent;state.stocks[x.reservoir][x.field]=(state.stocks[x.reservoir][x.field]||0)+amount;last.reactionIn[x.reservoir][x.field]+=amount;}
+  }
+  const audit=auditGeochemicalReactionStoichiometry().find(x=>x.id===reaction.id);
+  const h2Produced=reaction.id==='SERP-FO90'?0.2*extent:0;
+  const productSummary=reaction.id==='SERP-FO90'?`H₂ +${fmt(h2Produced,9)}`:`PO₄ +${fmt(3*extent,9)} · Ca²⁺ +${fmt(5*extent,9)}`;
+  results.push({id:reaction.id,extent,olivineConsumed:reaction.id==='SERP-FO90'?3*extent:0,waterConsumed:reaction.id==='SERP-FO90'?4.1*extent:0,h2Produced,productSummary,temperatureC:temp,temperatureFactor,rateScale,waterActivity,balanced:!!audit?.balanced,maxAtomResidual:audit?.maxAbsResidual??null});
+  state.cumulative.reactionExtent=(state.cumulative.reactionExtent||0)+extent;
+  state.cumulative.h2Produced=(state.cumulative.h2Produced||0)+h2Produced;
  }
  last.geochemicalReactions=results;
  last.reactionExtentTotal=results.reduce((a,x)=>a+x.extent,0);
@@ -3434,6 +3511,7 @@ function prepareGeochemicalHabitatInputs(){
  world.metrics.lastGeochemicalSourceFluxByHabitat={};
  world.metrics.lastGeochemicalSourceFlux={...sourceTotals};
  world.metrics.lastGeochemicalInputs={};
+ world.metrics.geochemicalInputGeneration=world.gen;
  const coupling=Object.fromEntries(COMPARTMENTS.map(h=>[h,{supplied:{},sourceByPool:{},wlpConsumed:{},wlpProduced:{},catalogConsumed:{},totalConsumed:{},catalogProduced:{},poolOpening:{}}]));
  world.metrics.lastHabitatResourceCoupling=coupling;
  for(const h of COMPARTMENTS){
@@ -3441,22 +3519,24 @@ function prepareGeochemicalHabitatInputs(){
   const e=world.env[h],volume=clamp(e.volumeFactor||1,0.1,100);
   const inputAmounts={},sourceAmounts=Object.fromEntries(GEO_SOURCE_IDS.map(id=>[id,0]));
   coupling[h].poolOpening={H2:Math.max(0,e.H2||0)*volume,DIC:Math.max(0,e.DIC||0)*volume};
-  const addBoundary=(key,amount,max=10)=>{
-   const before=Math.max(0,e[key]||0),after=Math.min(max,before+Math.max(0,amount||0)),actual=Math.max(0,after-before)*volume;
-   e[key]=after;inputAmounts[key]=actual;
-   if(actual>0){
-    const withdrawal=withdrawGeochemicalSourceForHabitat(h,key,actual,allocation.byField);
-    coupling[h].supplied[key]=(coupling[h].supplied[key]||0)+withdrawal.withdrawn;
-    coupling[h].sourceByPool[key]=withdrawal.bySource;
-    for(const id of GEO_SOURCE_IDS)sourceAmounts[id]+=(withdrawal.bySource[id]||0);
-   }
+  const addBoundary=(key,amount)=>{
+   const target=Math.max(0,Number(amount)||0)*volume;
+   if(target<=0){inputAmounts[key]=0;return;}
+   // Debit the finite source inventory first; only the actually withdrawn amount enters the habitat.
+   const withdrawal=withdrawGeochemicalSourceForHabitat(h,key,target,allocation.byField);
+   const actual=withdrawal.withdrawn;
+   e[key]=Math.max(0,Number(e[key])||0)+actual/volume;
+   inputAmounts[key]=actual;
+   coupling[h].supplied[key]=(coupling[h].supplied[key]||0)+actual;
+   coupling[h].sourceByPool[key]=withdrawal.bySource;
+   for(const id of GEO_SOURCE_IDS)sourceAmounts[id]+=(withdrawal.bySource[id]||0);
   };
-  addBoundary('H2',geoSupply.H2||0,5);
-  addBoundary('DIC',geoSupply.DIC||0,5);
+  addBoundary('H2',geoSupply.H2||0);
+  addBoundary('DIC',geoSupply.DIC||0);
   const refillScale=h==='ocean_deep'?0.65:h==='ocean_photic'?0.15:h==='ocean_sediment'?0.20:1;
   const refill={};for(const [k,v] of Object.entries(BASE_REFILL))refill[k]=Math.max(0,geoSupply[k]??(v*refillScale));
   Object.assign(refill,{NH4:geoSupply.NH4||0,PO4:geoSupply.PO4||0,organicC:geoSupply.DOC||0});
-  for(const [k,v] of Object.entries(refill))addBoundary(k,v,10);
+  for(const [k,v] of Object.entries(refill))addBoundary(k,v);
   world.metrics.lastGeochemicalInputs[h]=inputAmounts;
   world.metrics.lastGeochemicalSourceFluxByHabitat[h]=sourceAmounts;
   for(const id of GEO_SOURCE_IDS)sourceTotals[id]+=(sourceAmounts[id]||0);
@@ -3465,14 +3545,15 @@ function prepareGeochemicalHabitatInputs(){
 }
 function finalizeGeochemicalReservoirTick(){
  const state=ensureGeochemicalReservoirState(),last=state.last;if(!last)return null;
- const fields=GEO_STOCK_FIELDS.map(f=>f.key),residualByField={},residualByReservoir={};let maxAbsResidual=0;
+ const fields=GEO_STOCK_FIELDS.map(f=>f.key),residualByField={},residualByReservoir={};let maxAbsResidual=0,maxRelativeResidual=0;
  for(const id of GEO_SOURCE_IDS){
   residualByReservoir[id]={};
   for(const field of fields){
    const opening=last.openingStocks[id][field]||0,incoming=last.transferIn[id][field]||0,outgoing=last.transferOut[id][field]||0,toHabitat=last.habitatOut[id][field]||0;
    const extIn=last.externalIn[id][field]||0,extOut=last.externalOut[id][field]||0,rxnIn=last.reactionIn[id][field]||0,rxnOut=last.reactionOut[id][field]||0,closing=state.stocks[id][field]||0;
    const residual=opening+incoming+extIn+rxnIn-outgoing-extOut-rxnOut-toHabitat-closing;
-   residualByReservoir[id][field]=residual;maxAbsResidual=Math.max(maxAbsResidual,Math.abs(residual));
+   const scale=Math.max(1,Math.abs(opening)+Math.abs(incoming)+Math.abs(extIn)+Math.abs(rxnIn)+Math.abs(outgoing)+Math.abs(extOut)+Math.abs(rxnOut)+Math.abs(toHabitat)+Math.abs(closing));
+   residualByReservoir[id][field]=residual;maxAbsResidual=Math.max(maxAbsResidual,Math.abs(residual));maxRelativeResidual=Math.max(maxRelativeResidual,Math.abs(residual)/scale);
   }
  }
  for(const field of fields){
@@ -3480,7 +3561,8 @@ function finalizeGeochemicalReservoirTick(){
   const opening=sum(last.openingStocks),closing=sum(state.stocks),toHabitat=last.habitatOutByField[field]||0;
   const externalIn=sum(last.externalIn),externalOut=sum(last.externalOut),reactionIn=sum(last.reactionIn),reactionOut=sum(last.reactionOut);
   const residual=opening+externalIn+reactionIn-externalOut-reactionOut-toHabitat-closing;
-  residualByField[field]={opening,externalIn,externalOut,reactionIn,reactionOut,toHabitat,closing,residual};maxAbsResidual=Math.max(maxAbsResidual,Math.abs(residual));
+  const scale=Math.max(1,Math.abs(opening)+Math.abs(externalIn)+Math.abs(externalOut)+Math.abs(reactionIn)+Math.abs(reactionOut)+Math.abs(toHabitat)+Math.abs(closing));
+  residualByField[field]={opening,externalIn,externalOut,reactionIn,reactionOut,toHabitat,closing,residual,relativeResidual:residual/scale};maxAbsResidual=Math.max(maxAbsResidual,Math.abs(residual));maxRelativeResidual=Math.max(maxRelativeResidual,Math.abs(residual)/scale);
  }
  const elementBalance={};
  for(const [element,coeffs] of Object.entries(GEO_ELEMENT_EQUIVALENTS)){
@@ -3493,9 +3575,10 @@ function finalizeGeochemicalReservoirTick(){
   }
   const reactionNet=reactionIn-reactionOut;
   const residual=opening+externalIn+reactionNet-externalOut-toHabitat-closing;
-  elementBalance[element]={opening,externalIn,externalOut,reactionIn,reactionOut,reactionNet,toHabitat,closing,residual};maxAbsResidual=Math.max(maxAbsResidual,Math.abs(residual));
+  const scale=Math.max(1,Math.abs(opening)+Math.abs(externalIn)+Math.abs(externalOut)+Math.abs(reactionIn)+Math.abs(reactionOut)+Math.abs(toHabitat)+Math.abs(closing));
+  elementBalance[element]={opening,externalIn,externalOut,reactionIn,reactionOut,reactionNet,toHabitat,closing,residual,relativeResidual:residual/scale};maxAbsResidual=Math.max(maxAbsResidual,Math.abs(residual));maxRelativeResidual=Math.max(maxRelativeResidual,Math.abs(residual)/scale);
  }
- last.closingStocks=cloneGeochemicalStocks(state.stocks);last.residualByField=residualByField;last.residualByReservoir=residualByReservoir;last.elementBalance=elementBalance;last.maxAbsResidual=maxAbsResidual;
+ last.closingStocks=cloneGeochemicalStocks(state.stocks);last.residualByField=residualByField;last.residualByReservoir=residualByReservoir;last.elementBalance=elementBalance;last.maxAbsResidual=maxAbsResidual;last.maxRelativeResidual=maxRelativeResidual;
  last.transferTotal=last.transfers.reduce((a,x)=>a+x.amount,0);
  last.habitatOutputTotal=Object.values(last.habitatOutByField).reduce((a,v)=>a+v,0);
  last.reactionInTotal=Object.values(last.reactionIn).reduce((a,row)=>a+Object.values(row).reduce((b,v)=>b+v,0),0);
@@ -3540,19 +3623,19 @@ function renderGeochemicalIntelligence(){
  const stockRows=$('geoReservoirStockRows');
  if(stockRows){stockRows.innerHTML=GEOCHEMICAL_RESERVOIRS.map(r=>{const st=state.stocks[r.id]||{};const inv={};for(const [el,coeffs] of Object.entries(GEO_ELEMENT_EQUIVALENTS))inv[el]=Object.entries(coeffs).reduce((a,[k,c])=>a+(Number(st[k]||0)*c),0);return `<tr><td><b>${esc(r.label)}</b></td><td class="num">${fmt(inv['H₂ pool'],5)}</td><td class="num">${fmt(inv.C,5)}</td><td class="num">${fmt(inv.N,5)}</td><td class="num">${fmt(inv.P,5)}</td><td class="num">${fmt(inv.S,5)}</td><td class="num">${fmt(inv.Fe,5)}</td><td class="num">${fmt(inv.Ca,5)}</td><td class="num">${fmt(inv.Mg,5)}</td><td class="num">${fmt(inv.Si,5)}</td><td class="num">${fmt(inv.H,5)}</td><td class="num">${fmt(inv.O,5)}</td></tr>`;}).join('');}
  const mineralRows=$('geoMineralStockRows');
- if(mineralRows){mineralRows.innerHTML=GEOCHEMICAL_RESERVOIRS.map(r=>{const st=state.stocks[r.id]||{};return `<tr><td><b>${esc(r.label)}</b></td><td class="num">${fmt(st.water||0,6)}</td><td class="num">${fmt(st.olivineFo90||0,6)}</td><td class="num">${fmt(st.serpentine||0,6)}</td><td class="num">${fmt(st.brucite||0,6)}</td><td class="num">${fmt(st.magnetite||0,6)}</td></tr>`;}).join('');}
+ if(mineralRows){mineralRows.innerHTML=GEOCHEMICAL_RESERVOIRS.map(r=>{const st=state.stocks[r.id]||{};return `<tr><td><b>${esc(r.label)}</b></td><td class="num">${fmt(st.water||0,6)}</td><td class="num">${fmt(st.olivineFo90||0,6)}</td><td class="num">${fmt(st.apatite||0,6)}</td><td class="num">${fmt(st.serpentine||0,6)}</td><td class="num">${fmt(st.brucite||0,6)}</td><td class="num">${fmt(st.magnetite||0,6)}</td><td class="num">${fmt(st.OH||0,6)}</td></tr>`;}).join('');}
  const reactionRows=$('geoGeochemicalReactionRows');
- if(reactionRows){const results=last?.geochemicalReactions||[],audits=auditGeochemicalReactionStoichiometry();reactionRows.innerHTML=GEO_MINERAL_REACTIONS.map(r=>{const x=results.find(v=>v.id===r.id),a=audits.find(v=>v.id===r.id),ok=!!a?.balanced;return `<tr><td><b>${esc(r.label)}</b></td><td>${esc(r.equation)}</td><td class="num">${fmt(x?.extent||0,9)}</td><td class="num">${fmt(x?.h2Produced||0,9)}</td><td>${ok?'<span class="status-good">Seimbang</span>':'<span class="status-bad">Tidak seimbang</span>'}<br><span class="small">residual ${fmt(a?.maxAbsResidual||0,12)}</span></td></tr>`;}).join('');}
+ if(reactionRows){const results=last?.geochemicalReactions||[],audits=auditGeochemicalReactionStoichiometry();reactionRows.innerHTML=GEO_MINERAL_REACTIONS.map(r=>{const x=results.find(v=>v.id===r.id),a=audits.find(v=>v.id===r.id),ok=!!a?.balanced;return `<tr><td><b>${esc(r.label)}</b></td><td>${esc(r.equation)}</td><td class="num">${fmt(x?.extent||0,9)}</td><td>${esc(x?.productSummary||'—')}</td><td>${ok?'<span class="status-good">Seimbang</span>':'<span class="status-bad">Tidak seimbang</span>'}<br><span class="small">residual ${fmt(a?.maxAbsResidual||0,12)}</span></td></tr>`;}).join('');}
  const boundaryRows=$('geoBoundarySummary');
  if(boundaryRows){const q={...DEFAULT_GEO_BOUNDARY_PARAMETERS,...(world.geochemicalBoundaryParameters||{})};boundaryRows.textContent=`Masukan mantel terakhir: ${fmt(last?.externalInputTotal||0,9)} UIM H₂; kehilangan atmosfer terakhir: ${fmt(last?.externalOutputTotal||0,9)} UIM H₂. Parameter aktif: input ${fmt(q.mantleH2InputUIM,6)} UIM/generasi; escape ${fmt(q.atmosphericH2EscapeFraction*100,4)}% stok atmosfer/generasi.`;}
  const balanceRows=$('geoReservoirElementBalanceRows');
- if(balanceRows){const b=last?.elementBalance||{},labels={'H₂ pool':'H₂ (pool gas)',C:'Karbon',N:'Nitrogen',P:'Fosfor',S:'Sulfur',Fe:'Besi',Ca:'Kalsium',Mg:'Magnesium',Si:'Silikon',H:'Hidrogen (atom-ekuivalen)',O:'Oksigen (atom-ekuivalen)'};balanceRows.innerHTML=Object.entries(labels).map(([key,label])=>{const x=b[key];if(!x)return `<tr><td>${label}</td><td colspan="7">Menunggu audit generasi pertama.</td></tr>`;const ok=Math.abs(x.residual)<1e-9;return `<tr><td><b>${label}</b></td><td class="num">${fmt(x.opening,7)}</td><td class="num">${fmt(x.externalIn,7)}</td><td class="num">${fmt(x.externalOut,7)}</td><td class="num">${fmt(x.reactionNet,7)}</td><td class="num">${fmt(x.toHabitat,7)}</td><td class="num">${fmt(x.closing,7)}</td><td class="num">${fmt(x.residual,3)}</td><td>${ok?'<span class="status-good">Seimbang untuk pool dilacak</span>':'<span class="status-bad">Perlu audit</span>'}</td></tr>`;}).join('');}
+ if(balanceRows){const b=last?.elementBalance||{},labels={'H₂ pool':'H₂ (pool gas)',C:'Karbon',N:'Nitrogen',P:'Fosfor',S:'Sulfur',Fe:'Besi',Ca:'Kalsium',Mg:'Magnesium',Si:'Silikon',H:'Hidrogen (atom-ekuivalen)',O:'Oksigen (atom-ekuivalen)'};balanceRows.innerHTML=Object.entries(labels).map(([key,label])=>{const x=b[key];if(!x)return `<tr><td>${label}</td><td colspan="7">Menunggu audit generasi pertama.</td></tr>`;const ok=Math.abs(x.relativeResidual??x.residual)<1e-12;return `<tr><td><b>${label}</b></td><td class="num">${fmt(x.opening,7)}</td><td class="num">${fmt(x.externalIn,7)}</td><td class="num">${fmt(x.externalOut,7)}</td><td class="num">${fmt(x.reactionNet,7)}</td><td class="num">${fmt(x.toHabitat,7)}</td><td class="num">${fmt(x.closing,7)}</td><td class="num">${fmt(x.residual,3)}</td><td>${ok?'<span class="status-good">Seimbang untuk pool dilacak</span>':'<span class="status-bad">Perlu audit</span>'}</td></tr>`;}).join('');}
  const transferRows=$('geoReservoirTransferRows');
  if(transferRows){const list=last?.transfers||[];transferRows.innerHTML=list.map(x=>{const a=GEOCHEMICAL_RESERVOIRS.find(r=>r.id===x.from),b=GEOCHEMICAL_RESERVOIRS.find(r=>r.id===x.to);return `<tr><td>${esc(a?.label||x.from)} → ${esc(b?.label||x.to)}</td><td>${esc(x.field)}</td><td class="num">${fmt(x.amount,8)}</td><td>${esc(x.process)}</td></tr>`;}).join('')||'<tr><td colspan="4">Tidak ada transfer internal pada generasi ini.</td></tr>';}
  const coupling=world.metrics.lastHabitatResourceCoupling||{};
  const h2Supplied=COMPARTMENTS.reduce((a,h)=>a+Number(coupling[h]?.supplied?.H2||0),0),dicSupplied=COMPARTMENTS.reduce((a,h)=>a+Number(coupling[h]?.supplied?.DIC||0),0);
  const h2Wlp=COMPARTMENTS.reduce((a,h)=>a+Number(coupling[h]?.wlpConsumed?.H2||0),0),dicWlp=COMPARTMENTS.reduce((a,h)=>a+Number(coupling[h]?.wlpConsumed?.DIC||0),0);
- setText('geoReservoirCumulativeSummary',`Kumulatif sejak Reset: ${fmt(state.cumulative.transfers||0,6)} UIM transfer internal; ${fmt(state.cumulative.reactionExtent||0,6)} UIM ekstensi reaksi geokimia (H₂ kumulatif ${fmt(state.cumulative.h2Produced||0,6)} UIM); ${fmt(state.cumulative.toHabitats||0,6)} UIM dilepas ke habitat; input eksternal ${fmt(state.cumulative.externalIn||0,6)} UIM; output eksternal ${fmt(state.cumulative.externalOut||0,6)} UIM. Generasi terakhir: masukan habitat H₂ ${fmt(h2Supplied,9)} / DIC ${fmt(dicSupplied,9)} UIM; konsumsi WLP H₂ ${fmt(h2Wlp,9)} / DIC ${fmt(dicWlp,9)} UIM. Residual maksimum audit reservoir: ${fmt(last?.maxAbsResidual||0,12)} UIM. Pool habitat bersifat tercampur; konsumsi bukan pelacakan molekul menurut reservoir. Σ UIM lintas-pool adalah pembukuan model, bukan satuan massa fisik.`);
+ setText('geoReservoirCumulativeSummary',`Kumulatif sejak Reset: ${fmt(state.cumulative.transfers||0,6)} UIM transfer internal; ${fmt(state.cumulative.reactionExtent||0,6)} UIM ekstensi reaksi geokimia (H₂ kumulatif ${fmt(state.cumulative.h2Produced||0,6)} UIM); ${fmt(state.cumulative.toHabitats||0,6)} UIM dilepas ke habitat (termasuk seed kimia awal ${fmt(state.initialHabitatSeed?.totalUIM||0,6)} UIM saat Reset); input eksternal ${fmt(state.cumulative.externalIn||0,6)} UIM; output eksternal ${fmt(state.cumulative.externalOut||0,6)} UIM. Generasi terakhir: masukan habitat H₂ ${fmt(h2Supplied,9)} / DIC ${fmt(dicSupplied,9)} UIM; konsumsi WLP H₂ ${fmt(h2Wlp,9)} / DIC ${fmt(dicWlp,9)} UIM. Residual absolut maksimum audit: ${fmt(last?.maxAbsResidual||0,12)} UIM (relatif ${fmt(last?.maxRelativeResidual||0,3)}). Pool habitat bersifat tercampur; konsumsi bukan pelacakan molekul menurut reservoir. Σ UIM lintas-pool adalah pembukuan model, bukan satuan massa fisik.`);
 }
 function renderLocalEnvironmentalState(){
  if(!world)return;const rows=$('localEnvironmentalStateRows');if(!rows)return;
@@ -3563,8 +3646,35 @@ function renderLocalEnvironmentalState(){
  renderGeochemicalIntelligence();
 }
 
+function assimilableGrowthNutrientInventory(h){
+ const e=world.env[h],volume=clamp(e.volumeFactor||1,0.1,100);
+ return {
+  N:(Math.max(0,Number(e.NH4)||0)+0.25*Math.max(0,Number(e.DON)||0))*volume,
+  P:(Math.max(0,Number(e.PO4)||0)+0.25*Math.max(0,Number(e.DOP)||0))*volume
+ };
+}
+// Continuous Monod response for cell division. Concentration controls the rate;
+// the absolute inventory is reserved for the separate elemental mass-balance check.
+function continuousNutrientAvailability(h){
+ const e=world.env[h],volume=clamp(e.volumeFactor||1,0.1,100);
+ const inventory=assimilableGrowthNutrientInventory(h);
+ const concentrationN=inventory.N/volume,concentrationP=inventory.P/volume;
+ const nitrogen=sat(concentrationN,0.025),phosphorus=sat(concentrationP,0.004);
+ return {nitrogen,phosphorus,factor:Math.min(nitrogen,phosphorus),concentrationN,concentrationP,inventory};
+}
 function dynamicCapacityAt(h){
- const e=world.env[h],volume=clamp(e.volumeFactor||1,0.1,100),supply=effectiveGeochemicalRecharge(h).recharge;
+ const e=world.env[h],volume=clamp(e.volumeFactor||1,0.1,100);
+ // Inputs are absolute delivered inventories, not requested recharge. They are already in e[key].
+ // Subtracting them from the post-delivery pool recovers the opening stock, then credits the
+ // actual delivery once. Outside the current transaction, the live pool is used as-is.
+ const inputIsCurrent=world.metrics?.geochemicalInputGeneration===world.gen;
+ const delivered=inputIsCurrent?(world.metrics.lastGeochemicalInputs?.[h]||{}):{};
+ const stock=(key)=>Math.max(0,Number(e[key])||0)*volume;
+ const actualInput=(key)=>Math.max(0,Number(delivered[key])||0);
+ const rollingBudget=(key,fraction)=>{
+  const total=stock(key),inflow=Math.min(total,actualInput(key));
+  return fraction*Math.max(0,total-inflow)+inflow;
+ };
  const n=popAt(h);let autoWeighted=0,organicWeighted=0,meanAuto=0,meanStressFit=0,weight=0;
  const demand={H2:0,DIC:0,O2:0,organicC:0,NH4:0,PO4:0,SO4:0,S0:0,H2S:0,NO3:0,NO2:0,CH4:0,CH3OH:0,glucose:0,Fe2:0,Fe3:0,N2:0};
  for(const s of world.strains){
@@ -3582,8 +3692,7 @@ function dynamicCapacityAt(h){
  const autoActivity=n?meanAuto/n:clamp(1.35*sat(e.H2,0.25)*sat(e.DIC,0.25)*0.72*0.72,0.03,1.0);
  const quality=weight?clamp(meanStressFit/weight,0.25,1):1;
  // Basal autotrophic flux per cell mirrors updateMetabolism; added guild demands are computed from carried pathways.
- if(n){demand.H2+=4*0.00008*autoActivity;demand.DIC+=2*0.00008*autoActivity;}
- else {demand.H2+=4*0.00008*autoActivity;demand.DIC+=2*0.00008*autoActivity;}
+ demand.H2+=4*0.00008*autoActivity;demand.DIC+=2*0.00008*autoActivity;
  // Active catalog reactions share the same substrates. Their resource demand is weighted by the fraction of cells carrying each module.
  if(n){
   for(const r of CATALOG_REACTIONS){
@@ -3591,42 +3700,62 @@ function dynamicCapacityAt(h){
    let weightedFlux=0;
    const potential=reactionPotential(r.id,e);
    if(potential<=0.015)continue;
-   for(const strain of world.strains){const count=strain.counts[h]||0;if(!count||!strain.modules.includes(r.module))continue;const compat=strain.domain===r.domain?1:0.55;weightedFlux+=count*r.rate*potential*compat*moduleCatalyticFactor(strain,r.module);}
+   for(const strain of world.strains){
+    const count=strain.counts[h]||0;if(!count||!strain.modules.includes(r.module))continue;
+    const activity=regulationActivityFor(strain,h,'rxn:'+r.id);
+    if(moduleFunctionalForStrain(strain,r.module)&&activity>0.025)weightedFlux+=count*r.rate*potential*activity*moduleCatalyticFactor(strain,r.module);
+   }
    const perCellFlux=weightedFlux/n;
    for(const [key,coef] of Object.entries(r.consume||{}))if(demand[key]!==undefined)demand[key]+=perCellFlux*coef;
   }
   for(const path of CARBON_PATH_MODULES){
-   let carriers=0;for(const strain of world.strains)if((strain.counts[h]||0)&&strain.modules.includes(path.module))carriers+=strain.counts[h];
-   if(!carriers)continue;
-   const potential=pathwayPotentialFor(path.module,world.strains.find(strain=>(strain.counts[h]||0)&&strain.modules.includes(path.module)),e);
-   const perCellFlux=(carriers/n)*0.0000008*potential;
+   let weightedFlux=0;
+   for(const strain of world.strains){
+    const count=strain.counts[h]||0;if(!count||!strain.modules.includes(path.module))continue;
+    const potential=pathwayPotentialFor(path.module,strain,e),activity=regulationActivityFor(strain,h,'carbon:'+path.module);
+    if(potential>0.015&&activity>0.025)weightedFlux+=count*0.0000008*potential*activity*moduleCatalyticFactor(strain,path.module);
+   }
+   const perCellFlux=weightedFlux/n;
    const consume=path.module==='carbon_rtca'?{DIC:1,H2:0.35}:path.module==='carbon_3hp4hb'?{DIC:1,NH4:0.18,O2:0.08}:path.module==='carbon_dicarboxylate4hb'?{DIC:1,H2:0.25}:{DIC:1};
    for(const [key,coef] of Object.entries(consume))if(demand[key]!==undefined)demand[key]+=perCellFlux*coef;
   }
-  let scavengers=0;for(const strain of world.strains)if((strain.counts[h]||0)&&strain.modules.includes('organic_scavenging'))scavengers+=strain.counts[h];
+  let enzymeLinkedFluxCells=0,generalScavengingFluxCells=0;
+  for(const strain of world.strains){
+   const count=strain.counts[h]||0;if(!count||!strain.modules.includes('organic_scavenging'))continue;
+   const activity=regulationActivityFor(strain,h,'organic_scavenging');
+   const enzymeModules=strain.domain==='ARCHAEA'?['archaea_protease','archaea_glycosidase','archaea_lipase']:strain.domain==='BACTERIA'?['bacteria_protease','bacteria_glycosidase','bacteria_lipase']:[];
+   const enzymeGain=Math.max(0,...enzymeModules.filter(module=>strain.modules.includes(module)).map(module=>moduleCatalyticFactor(strain,module)));
+   if(enzymeGain>0)enzymeLinkedFluxCells+=count*activity*enzymeGain;else generalScavengingFluxCells+=count*activity;
+  }
   const scavengingPotential=sat(e.organicC,0.055)*sat(e.NH4,0.025)*sat(e.PO4,0.004);
-  const scavengerFlux=(scavengers/n)*0.000018*scavengingPotential;
+  const scavengerFlux=((enzymeLinkedFluxCells*0.000027)+(generalScavengingFluxCells*0.000018))/n*scavengingPotential;
   demand.organicC+=scavengerFlux;demand.NH4+=scavengerFlux*0.18;demand.PO4+=scavengerFlux*0.012;
  }
- // New-cell elemental demand. Births without assimilable N and P are rejected later in the same generation.
- demand.NH4+=CELL_N*TARGET_GROWTH_FRACTION;
- demand.PO4+=CELL_P*TARGET_GROWTH_FRACTION;
+ // New-cell elemental demand: K* uses the same local Monod factor as the birth-rate response.
+ // TARGET_GROWTH_FRACTION remains an explicit scenario parameter (10% target growth per generation).
+ const localNutrientAvailability=continuousNutrientAvailability(h);
+ const effectiveTargetGrowthFraction=TARGET_GROWTH_FRACTION*localNutrientAvailability.factor;
+ const growthNPerCell=CELL_N*effectiveTargetGrowthFraction,growthPPerCell=CELL_P*effectiveTargetGrowthFraction;
+ demand.NH4+=growthNPerCell;
+ demand.PO4+=growthPPerCell;
  // Carbon demand for new biomass is partitioned between autotrophic DIC fixation and organic-carbon use.
- demand.DIC+=CELL_C*TARGET_GROWTH_FRACTION*autoShare;
- demand.organicC+=CELL_C*TARGET_GROWTH_FRACTION*organicShare;
+ demand.DIC+=CELL_C*effectiveTargetGrowthFraction*autoShare;
+ demand.organicC+=CELL_C*effectiveTargetGrowthFraction*organicShare;
+ const nutrientInventory=assimilableGrowthNutrientInventory(h);
  const budgets={
-  H2:(0.025*Math.max(0,e.H2)+(supply.H2||0))*volume,
-  DIC:(0.015*Math.max(0,e.DIC)+(supply.DIC||0))*volume,
-  organicC:(0.035*Math.max(0,e.organicC)+0.0008*Math.max(0,e.POM_C)+(supply.DOC||0))*volume,
-  NH4:(0.030*Math.max(0,e.NH4)+0.020*Math.max(0,e.DON)+(supply.NH4||0))*volume,
-  PO4:(0.030*Math.max(0,e.PO4)+0.020*Math.max(0,e.DOP)+(supply.PO4||0))*volume,
-  O2:(0.030*Math.max(0,e.O2)+0.000002)*volume,
-  SO4:(0.020*Math.max(0,e.SO4)+(supply.SO4??BASE_REFILL.SO4))*volume,S0:(0.020*Math.max(0,e.S0)+(supply.S0??BASE_REFILL.S0))*volume,
-  H2S:(0.020*Math.max(0,e.H2S)+(supply.H2S??BASE_REFILL.H2S))*volume,NO3:(0.020*Math.max(0,e.NO3)+(supply.NO3??BASE_REFILL.NO3))*volume,
-  NO2:(0.020*Math.max(0,e.NO2)+(supply.NO2??BASE_REFILL.NO2))*volume,CH4:(0.020*Math.max(0,e.CH4)+(supply.CH4??BASE_REFILL.CH4))*volume,
-  CH3OH:(0.020*Math.max(0,e.CH3OH)+(supply.CH3OH??BASE_REFILL.CH3OH))*volume,glucose:(0.020*Math.max(0,e.glucose)+(supply.glucose??BASE_REFILL.glucose))*volume,
-  Fe2:(0.020*Math.max(0,e.Fe2)+(supply.Fe2??BASE_REFILL.Fe2))*volume,Fe3:(0.020*Math.max(0,e.Fe3)+(supply.Fe3??BASE_REFILL.Fe3))*volume,
-  N2:(0.020*Math.max(0,e.N2)+(supply.N2??BASE_REFILL.N2))*volume
+  H2:rollingBudget('H2',0.025),
+  DIC:rollingBudget('DIC',0.015),
+  organicC:rollingBudget('organicC',0.035)+0.0008*stock('POM_C'),
+  // N/P use the exact same assimilable inventories used by the reproduction gate.
+  NH4:nutrientInventory.N,
+  PO4:nutrientInventory.P,
+  O2:0.030*stock('O2')+0.000002*volume,
+  SO4:rollingBudget('SO4',0.020),S0:rollingBudget('S0',0.020),
+  H2S:rollingBudget('H2S',0.020),NO3:rollingBudget('NO3',0.020),
+  NO2:rollingBudget('NO2',0.020),CH4:rollingBudget('CH4',0.020),
+  CH3OH:rollingBudget('CH3OH',0.020),glucose:rollingBudget('glucose',0.020),
+  Fe2:rollingBudget('Fe2',0.020),Fe3:rollingBudget('Fe3',0.020),
+  N2:rollingBudget('N2',0.020)
  };
  const names={H2:'H₂',DIC:'DIC / karbon autotrof',O2:'O₂',organicC:'DOC / karbon organik',NH4:'Nitrogen',PO4:'Fosfor',SO4:'Sulfat',S0:'Sulfur elemental',H2S:'Sulfida',NO3:'Nitrat',NO2:'Nitrit',CH4:'Metana',CH3OH:'Metanol',glucose:'Glukosa',Fe2:'Fe²⁺',Fe3:'Fe³⁺',N2:'N₂'};
  const candidates=Object.keys(demand).filter(k=>demand[k]>1e-12).map(k=>({key:names[k]||k,capacity:budgets[k]/demand[k],budget:budgets[k],need:demand[k]})).sort((a,b)=>a.capacity-b.capacity);
@@ -3635,7 +3764,11 @@ function dynamicCapacityAt(h){
  const chemLoad=clamp(0.13*sat(e.H2S||0,0.10)+0.09*sat(acidLoad,0.18),0,0.20);
  const wasteMultiplier=clamp(1-1.35*chemLoad-0.22*(1-quality),0.35,1);
  const capacity=Math.max(0,limiting.capacity*wasteMultiplier);
- return {capacity,limiting:limiting.key,rawCapacity:limiting.capacity,autoShare,organicShare,autoActivity,quality,wasteMultiplier,chemicalLoad:chemLoad,volumeFactor:volume,budgets,demands:demand};
+ return {capacity,limiting:limiting.key,rawCapacity:limiting.capacity,autoShare,organicShare,autoActivity,quality,wasteMultiplier,chemicalLoad:chemLoad,volumeFactor:volume,budgets,demands:demand,
+  assimilableN:nutrientInventory.N,assimilableP:nutrientInventory.P,growthNPerCell,growthPPerCell,
+  nitrogenAvailability:localNutrientAvailability.nitrogen,phosphorusAvailability:localNutrientAvailability.phosphorus,
+  nutrientAvailabilityFactor:localNutrientAvailability.factor,effectiveTargetGrowthFraction,
+  metabolicDemandNPerCell:Math.max(0,demand.NH4-growthNPerCell),metabolicDemandPPerCell:Math.max(0,demand.PO4-growthPPerCell)};
 }
 function withdrawGrowthNutrients(h,born){
  if(!born)return {N:0,P:0};
@@ -3643,11 +3776,32 @@ function withdrawGrowthNutrients(h,born){
  const needN=born*CELL_N,needP=born*CELL_P;
  const take=(primary,organic,need,organicAvailability)=>{
   let remaining=need;
-  const pAvail=Math.max(0,e[primary]||0)*vol,pTake=Math.min(remaining,pAvail);e[primary]=Math.max(0,(e[primary]||0)-pTake/vol);remaining-=pTake;
-  if(remaining>0&&organicAvailability>0){const oAvail=Math.max(0,e[organic]||0)*vol*organicAvailability;const effectiveTake=Math.min(remaining,oAvail);e[organic]=Math.max(0,(e[organic]||0)-(effectiveTake/organicAvailability)/vol);remaining-=effectiveTake;}
+  const pAvail=Math.max(0,Number(e[primary])||0)*vol,pTake=Math.min(remaining,pAvail);
+  e[primary]=Math.max(0,(Number(e[primary])||0)-pTake/vol);remaining-=pTake;
+  if(remaining>0&&organicAvailability>0){
+   const oAvail=Math.max(0,Number(e[organic])||0)*vol*organicAvailability;
+   const effectiveTake=Math.min(remaining,oAvail);
+   e[organic]=Math.max(0,(Number(e[organic])||0)-(effectiveTake/organicAvailability)/vol);
+   remaining-=effectiveTake;
+  }
   return need-remaining;
  };
- return {N:take('NH4','DON',needN,0.25),P:take('PO4','DOP',needP,0.25)};
+ const spent={N:take('NH4','DON',needN,0.25),P:take('PO4','DOP',needP,0.25)};
+ const closing=assimilableGrowthNutrientInventory(h);
+ return {...spent,remainingN:closing.N,remainingP:closing.P};
+}
+function reproductiveNutrientBudget(h,support,survivors){
+ // This is a stoichiometric mass-balance ceiling only. Ecological limitation is continuous
+ // and already acts on birth probability through continuousNutrientAvailability() in getRates().
+ // The ceiling prevents creation of complete cells when the absolute atom inventory is insufficient.
+ const inventory=assimilableGrowthNutrientInventory(h);
+ const metabolicReserveN=Math.max(0,survivors)*Math.max(0,support.metabolicDemandNPerCell||0);
+ const metabolicReserveP=Math.max(0,survivors)*Math.max(0,support.metabolicDemandPPerCell||0);
+ const reproductiveN=Math.max(0,inventory.N-metabolicReserveN);
+ const reproductiveP=Math.max(0,inventory.P-metabolicReserveP);
+ return {inventory,metabolicReserveN,metabolicReserveP,reproductiveN,reproductiveP,
+  stoichiometricLimitN:Math.floor(reproductiveN/CELL_N),stoichiometricLimitP:Math.floor(reproductiveP/CELL_P),
+  maxBirthsN:Math.floor(reproductiveN/CELL_N),maxBirthsP:Math.floor(reproductiveP/CELL_P)};
 }
 function makeRechargeState(){
  const q={vent:{...DEFAULT_COMPARTMENT_RECHARGE.vent},mix:{...DEFAULT_COMPARTMENT_RECHARGE.mix},ocean:{...DEFAULT_RECHARGE.ocean}};
@@ -3706,30 +3860,45 @@ function makeStrain({id,parentId=null,counts=null,traits=null,modules=null,mutat
  const parentDomain=parent&&['ARCHAEA','BACTERIA'].includes(parent.domain)?parent.domain:null;
  const lockedDomain=parentDomain||domain;
  const lockedBranchRoot=parentDomain?parentDomain+'_STEM':(['ARCHAEA','BACTERIA'].includes(lockedDomain)?lockedDomain+'_STEM':branchRoot);
- return {id,lineageId:id,organismId:id,parentId,counts:cloneCounts(counts),traits:traits||freshTraits(),modules:modules||CORE_MODULES.slice(),mutations,domain:lockedDomain,branchRoot:lockedBranchRoot,geneDonorId,candidateBranch,
+ return {id,lineageId:id,organismId:id,parentId,counts:cloneCounts(counts),traits:traits||freshTraits(),modules:modules||CORE_MODULES.slice(),mutations,domain:lockedDomain,branchRoot:lockedBranchRoot,geneDonorId,candidateBranch:candidateBranch||parent?.candidateBranch||null,
   membraneState:parent?JSON.parse(JSON.stringify(parent.membraneState||{})):{},
   geneCopies:parent?{...(parent.geneCopies||{})}:{},regulatoryBias:parent?{...(parent.regulatoryBias||{})}:{},paralogActivity:parent?{...(parent.paralogActivity||{})}:{},moduleProvenance:parent?JSON.parse(JSON.stringify(parent.moduleProvenance||{})):null,
   traitProvenance:parent?JSON.parse(JSON.stringify(parent.traitProvenance||{})):null,cladeIds:parent?(parent.cladeIds||[]).slice():[],guildIds:[],candidateGroupIds:[],transferEventId:null,
   lineageEventKind:parentId?'VERTICAL_DESCENT':'INITIAL_ANCESTOR',lineageChange:null,
-  domainEvidenceStreak:{ARCHAEA:0,BACTERIA:0},domainAssignedGen:null,regulationByHabitat:{},createdGen:world?world.gen:0,startupDebt:0,innovationAge:0,lastEconomics:{},advantageStreak:{},significantTagged:{},dominantTagged:{}};
+  domainEvidenceStreak:parent?{...(parent.domainEvidenceStreak||{ARCHAEA:0,BACTERIA:0})}:{ARCHAEA:0,BACTERIA:0},domainAssignedGen:null,regulationByHabitat:{},createdGen:world?world.gen:0,startupDebt:0,innovationAge:0,lastEconomics:{},advantageStreak:{},significantTagged:{},dominantTagged:{}};
 }
 function isUnresolvedStem(s){return s.domain==='UNRESOLVED_STEM'&&world.splitGen!==null;}
 function canExploreDomainModules(s,domain){return s.domain===domain||isUnresolvedStem(s);}
 function lineageModuleIsVerticallyTraceable(s,module){
  if(!s?.modules?.includes(module))return false;
  const p=s.moduleProvenance?.[module];
- // A transferred module may change metabolism, but it cannot by itself reassign the recipient's domain.
- return !!p&&p.active!==false&&p.origin!=='HGT'&&p.origin!=='horizontal_transfer';
+ // HGT and homologous recombination are lateral; neither is evidence for vertical domain ancestry.
+ return !!p&&p.active!==false&&!['HGT','horizontal_transfer','recombination'].includes(p.origin);
 }
 function hasArchaealSignature(s){
  const membrane=lineageModuleIsVerticallyTraceable(s,'ether_lipid');
- const support=['archaea_quality_control','archaellum_like','archaea_rhodopsin'].some(m=>lineageModuleIsVerticallyTraceable(s,m));
+ const support=['archaea_quality_control','mcr_methanogenesis'].some(m=>lineageModuleIsVerticallyTraceable(s,m));
  return membrane&&support;
 }
 function hasBacterialSignature(s){
- const membrane=lineageModuleIsVerticallyTraceable(s,'bacteria_ester_lipid');
- const support=['cell_envelope','rna_modification','multifunctional_enzymes'].some(m=>lineageModuleIsVerticallyTraceable(s,m));
- return membrane&&support;
+ // Atlas: cell-envelope precursor synthesis, RNA modification and multifunctional enzymes
+ // are reconstructed for the bacterial stem/LBCA. Ester-lipid details remain less certain,
+ // so ester lipid is corroborative rather than a mandatory gate for bacterial identity.
+ const envelope=lineageModuleIsVerticallyTraceable(s,'cell_envelope');
+ const support=['rna_modification','multifunctional_enzymes'].some(m=>lineageModuleIsVerticallyTraceable(s,m));
+ return envelope&&support;
+}
+function lineageRecordModuleIsVerticallyTraceable(rec,module){
+ const p=rec?.trait_provenance?.modules?.[module],mods=rec?.trait_state?.modules||[];
+ return mods.includes(module)&&!!p&&p.active!==false&&!['HGT','horizontal_transfer','recombination'].includes(p.origin);
+}
+function recordHasArchaealSignature(rec){
+ return lineageRecordModuleIsVerticallyTraceable(rec,'ether_lipid')&&
+  ['archaea_quality_control','mcr_methanogenesis'].some(m=>lineageRecordModuleIsVerticallyTraceable(rec,m));
+}
+function recordHasBacterialSignature(rec){
+ return lineageRecordModuleIsVerticallyTraceable(rec,'cell_envelope')&&
+  ['rna_modification','multifunctional_enzymes'].some(m=>lineageRecordModuleIsVerticallyTraceable(rec,m));
 }
 function diagnosticDomainFor(s){
  const a=hasArchaealSignature(s),b=hasBacterialSignature(s);
@@ -3839,6 +4008,31 @@ function collectInnovationOpportunities(){
  return Object.values(aggregated).map(x=>({...x,avgWeight:x.population?x.weight/x.population:0,pressure:Object.entries(x.pressures).sort((a,b)=>b[1]-a[1])[0]?.[0]||'—'}))
   .sort((a,b)=>b.functionalCells-a.functionalCells||b.avgWeight-a.avgWeight||b.population-a.population).slice(0,15);
 }
+function renderResilienceEconomicsAudit(force=false){
+ const details=$('resilienceEconomicsAuditDetails');if(!details||!details.open||!world?.lineage)return;
+ const records=(world.lineage.organisms||[]).filter(r=>r.last_resilience_economics_by_habitat&&Object.keys(r.last_resilience_economics_by_habitat).length);
+ const rows=[];
+ for(const rec of records){
+  for(const [hab,x] of Object.entries(rec.last_resilience_economics_by_habitat||{})){
+   rows.push({rec,hab,x});
+  }
+ }
+ rows.sort((a,b)=>{
+  const activeA=a.rec.status==='extant'?1:0,activeB=b.rec.status==='extant'?1:0;
+  return activeB-activeA || (b.x.cells||0)-(a.x.cells||0) || String(a.rec.organism_id).localeCompare(String(b.rec.organism_id)) || String(a.hab).localeCompare(String(b.hab));
+ });
+ const extant=new Set(records.filter(r=>r.status==='extant').map(r=>r.organism_id)).size;
+ const archived=records.filter(r=>r.status!=='extant').length;
+ setText('resilienceEconomicsSummary',`G${fmt(world.gen,0)} · ${records.length} genotipe memiliki snapshot ketahanan/ekonomi · ${extant} masih hidup · ${archived} garis diarsipkan setelah kepunahan · ${rows.length} kombinasi genotipe–mikrohabitat tercatat. Snapshot aktif diperbarui setiap generasi; snapshot arsip mempertahankan kondisi terakhir saat garis masih hidup.`);
+ const body=$('resilienceEconomicsRows');if(!body)return;
+ body.innerHTML=rows.map(({rec,hab,x})=>{
+  const domain=rec.domain_id==='ARCHAEA'?'Archaea':rec.domain_id==='BACTERIA'?'Bacteria':rec.domain_id==='UNRESOLVED_STEM'?'Batang belum terklasifikasi':'LUCA / pra-domain';
+  const status=rec.status==='extant'?'hidup':'arsip · punah';
+  const netClass=(x.netEnergy||0)>=0?'budget-positive':'budget-negative';
+  const habitat=HABITAT_NAMES[hab]||MICROHABITAT_NAMES[hab]||hab;
+  return `<tr><td><b>${esc(rec.organism_id)}</b><br><span class="small">induk: ${esc(rec.parent_organism_id||'LUCA-POP')}</span></td><td>${esc(domain)}</td><td>${status}</td><td>${esc(habitat)}</td><td class="num">${fmt(x.cells||0,0)}</td><td class="num">${fmt(x.resistance,3)}</td><td class="num">${fmt(x.survival,3)}</td><td class="num">${fmt(x.recoveryPotential,3)}</td><td class="num">${fmt(x.grossEnergy,4)}</td><td class="num">${fmt(x.totalCost,4)}</td><td class="num">${fmt(x.responseCost,5)}</td><td class="num ${netClass}">${fmt(x.netEnergy,4)}</td><td class="num">${fmt(x.fitness,3)}</td><td>G${fmt(x.generation,0)}</td></tr>`;
+ }).join('')||'<tr><td colspan="14">Belum ada snapshot garis keturunan. Jalankan setidaknya satu generasi.</td></tr>';
+}
 function renderInnovationEngine(force=false){
  const details=$('innovationEngineDetails');if(!details||!details.open||!world)return;
  if(!force&&world.gen%5!==0)return;
@@ -3940,8 +4134,8 @@ function registerLineagePopulation(s,eventKind=null){
  const added=hasVerticalParent?(s.modules||[]).filter(m=>!parentModules.includes(m)):[];
  const removed=hasVerticalParent?parentModules.filter(m=>!(s.modules||[]).includes(m)):[];
  for(const m of added){
-  let origin=kind==='HGT'?'HGT':'mutation';
-  if(kind!=='HGT'){
+  let origin=kind==='HGT'?'HGT':kind==='RECOMBINATION'?'recombination':'mutation';
+  if(kind!=='HGT'&&kind!=='RECOMBINATION'){
    const elsewhere=world.strains.some(x=>x.id!==s.id&&x.id!==s.parentId&&x.modules.includes(m)&&((x.domain==='ARCHAEA'&&s.domain==='BACTERIA')||(x.domain==='BACTERIA'&&s.domain==='ARCHAEA')));
    if(elsewhere)origin='convergent_evolution';
   }
@@ -3978,7 +4172,8 @@ function registerLineagePopulation(s,eventKind=null){
  }
  const recordDomain=(s.domain==='ARCHAEA'||s.domain==='BACTERIA')?s.domain:null;
  const recordNodeId=recordDomain?recordDomain+'_STEM':(s.domain==='PRE_SPLIT_SHARED'?'LUCA':null);
- const rec={organism_id:s.id,population_genotype_unit:true,node_id:recordNodeId,parent_node_id:s.parentId?null:'LUCA',parent_organism_id:s.parentId||null,domain_id:recordDomain,branch_root_id:recordDomain?recordDomain+'_STEM':(s.domain==='PRE_SPLIT_SHARED'?'LUCA':null),generation:s.createdGen??world.gen,ecotype:s.candidateBranch||null,trait_state:{modules:(s.modules||[]).slice(),traits:{...(s.traits||{})},gene_copies:{...(s.geneCopies||{})},regulatory_bias:{...(s.regulatoryBias||{})},paralog_activity:{...(s.paralogActivity||{})}},trait_provenance:{modules:JSON.parse(JSON.stringify(s.moduleProvenance||{})),traits:JSON.parse(JSON.stringify(s.traitProvenance||{}))},transfer_event_id:s.transferEventId||null,recombination_event_id:s.recombinationEventId||null,fitness_score:null,created_generation:s.createdGen??world.gen,last_seen_generation:world.gen,active_cells:totalOf(s.counts),habitat_counts:{...s.counts},status:'extant',clade_ids:(s.cladeIds||[]).slice(),guild_ids:[],candidate_group_ids:[],mutations:s.mutations||0};
+ const stemRootId=recordDomain?(world.domainStemRoots?.[recordDomain]||null):null;
+ const rec={organism_id:s.id,population_genotype_unit:true,node_id:recordNodeId,parent_node_id:s.parentId?null:'LUCA',parent_organism_id:s.parentId||null,domain_id:recordDomain,branch_root_id:recordDomain?recordDomain+'_STEM':(s.domain==='PRE_SPLIT_SHARED'?'LUCA':null),stem_root_organism_id:stemRootId,generation:s.createdGen??world.gen,ecotype:s.candidateBranch||null,trait_state:{modules:(s.modules||[]).slice(),traits:{...(s.traits||{})},gene_copies:{...(s.geneCopies||{})},regulatory_bias:{...(s.regulatoryBias||{})},paralog_activity:{...(s.paralogActivity||{})}},trait_provenance:{modules:JSON.parse(JSON.stringify(s.moduleProvenance||{})),traits:JSON.parse(JSON.stringify(s.traitProvenance||{}))},transfer_event_id:s.transferEventId||null,recombination_event_id:s.recombinationEventId||null,fitness_score:null,created_generation:s.createdGen??world.gen,last_seen_generation:world.gen,active_cells:totalOf(s.counts),habitat_counts:{...s.counts},status:'extant',clade_ids:(s.cladeIds||[]).slice(),guild_ids:[],candidate_group_ids:[],mutations:s.mutations||0};
  world.lineage.organisms.push(rec);world.lineage.organismIndex[s.id]=rec;
  if(kind==='HGT')pushEvolutionaryEvent('HGT',s.id,{parentOrganismId:s.parentId,donorOrganismId:change.donorId||s.geneDonorId,transferred:change.transferred,transferEventId:s.transferEventId,crossDomain:!!change.crossDomain});
  else if(kind==='ECOLOGICAL_ISOLATION')pushEvolutionaryEvent('PEMISAHAN_ECOTYPE',s.id,{parentOrganismId:s.parentId,ecotype:s.candidateBranch,habitat:change.habitat||null,detail:'Subpopulasi dipisahkan secara ekologis; domain belum ditetapkan.'});
@@ -3992,12 +4187,6 @@ function registerLineagePopulation(s,eventKind=null){
  }
  else pushEvolutionaryEvent('GARIS_POPULASI_DICATAT',s.id,{parentOrganismId:s.parentId,parentNodeId:rec.parent_node_id,domainId:rec.domain_id});
  return rec;
-}
-function recordComputationalCensoring(s){
- ensureEvolutionaryLineageRegistry();
- const rec=lineageRecordFor(s.id)||registerLineagePopulation(s,'COMPUTATIONAL_CENSORING');
- rec.status='censored_by_model_limit';rec.censored_generation=world.gen;rec.active_cells=0;
- pushEvolutionaryEvent('PENYENSORAN_KOMPUTASI',s.id,{previous_cells:totalOf(s.counts),detail:'Genotipe dikeluarkan karena batas jumlah strain yang dilacak; ini bukan kepunahan biologis.'});
 }
 function recordMatchingModules(rec,g){
  const mods=rec?.trait_state?.modules||[];
@@ -4017,6 +4206,17 @@ function ancestorCandidateRoot(s,g){
   root=p.organism_id;cur=p;
  }
  return root;
+}
+function resilienceEconomicsSnapshot(s,h,cells=null,metrics=null){
+ const x=metrics||fitnessFor(s,h);
+ return {generation:world.gen,habitat:h,cells:cells===null?(s.counts?.[h]||0):cells,domain:s.domain,
+  resistance:x.resistance,survival:x.survival,recoveryPotential:x.recoveryPotential,
+  grossEnergy:x.grossEnergy,netEnergy:x.netEnergy,totalCost:x.totalCost,
+  baseMaintenance:x.baseMaintenance,coreCost:x.coreCost,moduleCost:x.moduleCost,traitCost:x.traitCost,
+  responseCost:x.resilienceResponseCost||0,regulationCost:x.regulationCost||0,
+  startupCost:x.startupCost||0,fitness:x.fitness,stress:x.unprotectedStress,
+  stressAfterProtection:1-x.resistance,physiologicalMortality:x.physiologicalMortality,
+  persistenceModelled:false};
 }
 function updateEvolutionaryLineageEngine(){
  ensureEvolutionaryLineageRegistry();
@@ -4049,6 +4249,7 @@ function updateEvolutionaryLineageEngine(){
    if(s.domain==='ARCHAEA'||s.domain==='BACTERIA'){
     if(!rec.domain_id)rec.domain_id=s.domain;
     if(!rec.branch_root_id)rec.branch_root_id=s.domain+'_STEM';
+    rec.stem_root_organism_id=world.domainStemRoots?.[s.domain]||rec.stem_root_organism_id||null;
    } else if(s.domain==='PRE_SPLIT_SHARED'&&!rec.domain_id){rec.branch_root_id='LUCA';}
    rec.node_id=rec.domain_id?rec.domain_id+'_STEM':(s.domain==='PRE_SPLIT_SHARED'?'LUCA':null);
    rec.generation=rec.created_generation;
@@ -4056,7 +4257,10 @@ function updateEvolutionaryLineageEngine(){
    rec.trait_provenance={modules:JSON.parse(JSON.stringify(s.moduleProvenance||{})),traits:JSON.parse(JSON.stringify(s.traitProvenance||{}))};
    rec.transfer_event_id=s.transferEventId||null;rec.clade_ids=(s.cladeIds||[]).slice();rec.guild_ids=s.guildIds.slice();rec.candidate_group_ids=s.candidateGroupIds.slice();
    rec.active_cells=totalOf(s.counts);rec.habitat_counts={...s.counts};rec.last_seen_generation=world.gen;rec.status='extant';
-   let fs=0,fw=0;for(const h of COMPARTMENTS){const n=s.counts[h]||0;if(n){fs+=n*fitnessFor(s,h).fitness;fw+=n;}}rec.fitness_score=fw?fs/fw:null;rec.mutations=s.mutations||0;
+   rec.last_resilience_economics_by_habitat ||= {};
+   s.lastEconomicsByHabitat ||= {};
+   let fs=0,fw=0;for(const h of COMPARTMENTS){const n=s.counts[h]||0;if(n){const econ=fitnessFor(s,h);fs+=n*econ.fitness;fw+=n;const snapshot=resilienceEconomicsSnapshot(s,h,n,econ);rec.last_resilience_economics_by_habitat[h]=snapshot;s.lastEconomicsByHabitat[h]=snapshot;}}
+   rec.fitness_score=fw?fs/fw:null;rec.mutations=s.mutations||0;
   }
  }
  // Candidate taxonomic clades are operational clade hypotheses only when diagnostic modules are vertically traceable and persist.
@@ -4177,6 +4381,20 @@ function auditEvolutionaryIntegrity(){
   if(recipient&&donor&&recipient.parent_organism_id===donor.organism_id)issues.push(`${ev.transfer_event_id}: donor tercatat sebagai parent organisme.`);
  }
  const domainMrca={ARCHAEA:mostRecentCommonAncestorForDomain('ARCHAEA'),BACTERIA:mostRecentCommonAncestorForDomain('BACTERIA')};
+ const stemRoots=world.domainStemRoots||{ARCHAEA:null,BACTERIA:null};
+ const stemRootIssues=[];
+ for(const d of ['ARCHAEA','BACTERIA']){
+  const rootId=stemRoots[d];
+  if(!rootId){if(records.some(r=>r.domain_id===d))stemRootIssues.push(`${d}: terdapat anggota domain tanpa satu akar batang terdaftar.`);continue;}
+  const root=recordMap.get(rootId);
+  if(!root)stemRootIssues.push(`${d}: organism root ${rootId} tidak ditemukan dalam arsip.`);
+  else if(root.domain_id!==d||root.branch_root_id!==d+'_STEM'||root.stem_root_organism_id!==rootId)stemRootIssues.push(`${d}: record akar batang tidak konsisten.`);
+  for(const r of records)if(r.domain_id===d&&r.stem_root_organism_id!==rootId)stemRootIssues.push(`${r.organism_id}: tidak berada pada akar batang tunggal ${rootId}.`);
+ }
+ const crossDomainStemMrca=stemRoots.ARCHAEA&&stemRoots.BACTERIA?mostRecentCommonAncestorBetweenDomainStems():{valid:false,reason:'Akar kedua domain belum tersedia.'};
+ if(stemRoots.ARCHAEA&&stemRoots.BACTERIA&&!crossDomainStemMrca.valid)stemRootIssues.push(`Pemisahan akar domain belum terbukti independen: ${crossDomainStemMrca.reason}`);
+ if(world.splitCompleteGen!==null&&(!stemRoots.ARCHAEA||!stemRoots.BACTERIA||!crossDomainStemMrca.valid))stemRootIssues.push('splitCompleteGen tercatat tanpa dua akar domain independen yang valid.');
+ if(stemRootIssues.length)issues.push(...stemRootIssues);
  const topologicalLinks=nodes.filter(n=>n.nodeId==='LACA'||n.nodeId==='LBCA'||n.nodeId==='ARCHAEA_CROWN'||n.nodeId==='BACTERIA_CROWN');
  const topologyOk=CANONICAL_PHYLOGENETIC_NODES.every(n=>{const a=nodeMap.get(n.nodeId);return !!a&&((a.parentNodeId||null)===(n.parentNodeId||null))&&a.domainId===n.domainId&&a.nodeType===n.nodeType;});
  const candidateMappingIssues=[];
@@ -4201,7 +4419,8 @@ function auditEvolutionaryIntegrity(){
  checks.push({name:'Provenance sifat',ok:warnings.length===0,detail:warnings.length?warnings.slice(0,3).join(' '):'Tidak ditemukan provenance HGT yang kehilangan event ID.'});
  checks.push({name:'Topologi crown group',ok:topologicalLinks.length===4,detail:'ARCHAEA_CROWN → LACA dan BACTERIA_CROWN → LBCA tersedia sebagai node referensi; statusnya tidak menyatakan crown group telah muncul.'});
  checks.push({name:'Pemetaan LACA/LBCA berbasis MRCA',ok:candidateMappingIssues.length===0,detail:candidateMappingIssues.length?candidateMappingIssues.join(' '):'Label kandidat hanya diberikan setelah MRCA genealogis pada cabang domain yang tepat teridentifikasi; tidak dipicu oleh paket metabolik.'});
- return {ok:issues.length===0,warnings,issues,checks,domainMrca,recordCount:records.length,hgtCount:hgt.length,generatedAtGeneration:world.gen};
+ checks.push({name:'Akar batang domain tunggal dan independen',ok:stemRootIssues.length===0,detail:stemRootIssues.length?stemRootIssues.join(' '):`Archaea root ${stemRoots.ARCHAEA||'belum ada'}; Bacteria root ${stemRoots.BACTERIA||'belum ada'}; MRCA lintas-domain ${crossDomainStemMrca.organism_id||'belum tersedia'}.`});
+ return {ok:issues.length===0,warnings,issues,checks,domainMrca,domainStemRoots:stemRoots,crossDomainStemMrca,recordCount:records.length,hgtCount:hgt.length,generatedAtGeneration:world.gen};
 }
 function auditScientificIntegrity(){
  const lineage=auditEvolutionaryIntegrity();
@@ -4240,6 +4459,12 @@ function renderEvolutionaryLineagePanel(force=false){
  const extant=world.strains.length,arch=world.strains.filter(s=>s.domain==='ARCHAEA').length,bact=world.strains.filter(s=>s.domain==='BACTERIA').length,shared=world.strains.filter(s=>s.domain==='PRE_SPLIT_SHARED').length,unresolved=world.strains.filter(s=>s.domain==='UNRESOLVED_STEM').length;
  const liveCells=totalPop(),hgtN=lineage.hgtEvents.length,cladeN=lineage.clades.length;
  setText('lineageEngineSummary',`G${fmt(world.gen,0)} · ${fmt(liveCells,0)} sel hidup · ${extant} unit genotipe-populasi terlacak · leluhur bersama ${shared} · ecotype belum terklasifikasi ${unresolved} · Archaea ${arch} · Bacteria ${bact} · kandidat clade ${cladeN} · arsip HGT ${hgtN}. Satu ID mewakili satu unit genotipe-populasi agregat, bukan satu sel individual.`);
+ const rootA=world.domainStemRoots?.ARCHAEA||'belum terbentuk',rootB=world.domainStemRoots?.BACTERIA||'belum terbentuk',crossMrca=mostRecentCommonAncestorBetweenDomainStems();
+ const archArchive=world.lineage.organisms.filter(r=>(r.created_generation??r.generation??0)>(world.splitGen??Infinity)&&recordHasArchaealSignature(r)).length;
+ const bactArchive=world.lineage.organisms.filter(r=>(r.created_generation??r.generation??0)>(world.splitGen??Infinity)&&recordHasBacterialSignature(r)).length;
+ const archLive=world.strains.filter(s=>s.domain==='UNRESOLVED_STEM'&&hasArchaealSignature(s)).length;
+ const bactLive=world.strains.filter(s=>s.domain==='UNRESOLVED_STEM'&&hasBacterialSignature(s)).length;
+ setText('domainDivergenceSummary',`Subdivisi ekologis: ${world.splitGen===null?'belum terdeteksi':'G'+world.splitGen+' ('+(world.ecologicalDemePair?.a||'?')+' ↔ '+(world.ecologicalDemePair?.b||'?')+', ecotype bukan domain)'} · indeks isolasi kini ${fmt(world.metrics.ecologicalIsolation?.effectiveIsolation??0,3)} · Bukti vertikal Archaea: ${archLive} genotipe hidup / ${archArchive} rekam arsip · Bacteria: ${bactLive} / ${bactArchive} · Akar Archaea: ${rootA} · Akar Bacteria: ${rootB} · MRCA lintas-domain: ${crossMrca.organism_id||'belum terverifikasi'} · Persistensi domain: Archaea ${world.domainFoundGen.ARCHAEA===null?'belum':`G${world.domainFoundGen.ARCHAEA}`} / Bacteria ${world.domainFoundGen.BACTERIA===null?'belum':`G${world.domainFoundGen.BACTERIA}`}.`);
  const phy=$('lineagePhyloRows');if(phy){const nodeLabels={LUCA:'LUCA',ARCHAEA_STEM:'Archaea stem',BACTERIA_STEM:'Bacteria stem',LACA:'LACA',LBCA:'LBCA',ARCHAEA_CROWN:'Archaea crown',BACTERIA_CROWN:'Bacteria crown'};phy.innerHTML=lineage.phyloNodes.map(n=>`<tr><td><b>${esc(nodeLabels[n.nodeId]||n.label)}</b></td><td>${esc(n.parentNodeId||'—')}</td><td>${esc(n.nodeType)}</td><td class="num">${fmt(n.activePopulation||0,0)}</td><td class="num">${fmt(n.genotypeLineages||0,0)}</td><td>${n.status==='candidate_proxy'?`proksi teridentifikasi G${fmt(n.candidateDetectedGeneration??n.createdGen,0)}`:(n.createdGen===0?'topologi acuan':`G${fmt(n.createdGen,0)}`)}</td><td>${n.status==='candidate_proxy'?`proksi operasional${n.mrcaOrganismId?' · '+n.mrcaOrganismId:''}`:'referensi topologi'}</td><td>${esc(n.description||'')}${n.mrcaOrganismId?`<br><span class="small">MRCA: ${esc(n.mrcaOrganismId)} · generasi ${fmt(n.mrcaGeneration??0,0)}</span>`:''}</td></tr>`).join('');}
  const popRows=$('lineagePopulationRows');if(popRows){const rows=lineage.organisms.slice().sort((a,b)=>(b.active_cells||0)-(a.active_cells||0)||b.created_generation-a.created_generation).slice(0,18);popRows.innerHTML=rows.map(r=>`<tr><td><b>${esc(r.organism_id)}</b></td><td>${esc(r.parent_node_id||r.parent_organism_id||'—')}</td><td>${esc(r.domain_id||'belum ditetapkan')}</td><td>${esc(r.branch_root_id||r.ecotype||'—')}</td><td class="num">${fmt(r.active_cells||0,0)}</td><td class="num">${r.fitness_score===null?'—':fmt(r.fitness_score,3)}</td><td>${esc(r.status)}</td></tr>`).join('')||'<tr><td colspan="7">Belum ada garis populasi tercatat.</td></tr>';}
  const cladeRows=$('lineageCladeRows');if(cladeRows){cladeRows.innerHTML=lineage.clades.slice().sort((a,b)=>(b.active_cells||0)-(a.active_cells||0)).map(c=>`<tr><td><b>${esc(c.label)}</b><br><span class="small">${esc(c.clade_id)} · ${esc(c.domain_id)}</span></td><td>${esc(c.root_organism_id)}</td><td>${esc(c.diagnostic_modules.join(' · '))}</td><td class="num">${fmt(c.active_cells||0,0)}</td><td class="num">${fmt(c.active_genotypes||0,0)}</td><td>${esc(c.status)}</td></tr>`).join('')||'<tr><td colspan="6">Belum ada kandidat clade dengan bukti vertikal dan persistensi.</td></tr>';}
@@ -4725,8 +4950,8 @@ function renderEmergentBiosphereDynamics(force=false){
 function createInitialWorld(){
   const seed=Math.max(1,Math.floor(num('seedValue',4200420)));rngState=seed>>>0;if(rngState===0)rngState=1;
   world={gen:0,nextId:2,strains:[],events:[],totals:{births:0,deaths:0,birthFailures:0,mutations:0,hgt:0,recombination:0,migration:0},
-    env:JSON.parse(JSON.stringify(defaultEnv)),recharge:makeRechargeState(),geochemicalSourceScales:{...DEFAULT_GEO_SOURCE_SCALES},geochemicalReactionParameters:{...DEFAULT_GEO_REACTION_PARAMETERS},geochemicalBoundaryParameters:{...DEFAULT_GEO_BOUNDARY_PARAMETERS},geochemicalReservoirState:createGeochemicalReservoirState(),symbioses:[],interactionNetwork:{events:[],antagonisms:[],nextEdge:1,lastObserved:{},reciprocalPairs:{}},biosphereDynamics:createBiosphereDynamicsState(),interactionIndex:{},symbiosisIndex:{},competitionIndex:{},innovationEngine:{events:[],nextEvent:1,counts:{pointMutation:0,moduleAcquisition:0,geneDuplication:0,geneLoss:0,hgt:0,recombination:0,convergence:0,regulatoryChange:0,regulatoryRewiring:0,paralogDivergence:0},moduleFirstSeen:{},lastOutcomeUpdate:0},splitGen:null,splitCompleteGen:null,splitStreak:0,splitSeeds:null,domainFoundGen:{ARCHAEA:null,BACTERIA:null},
-    oceanPersistence:0,branchPersistence:{ARCHAEA:0,BACTERIA:0},metrics:{lastMigration:0,lastMetabolism:{},lastFitness:{},lastBiogeochemistry:{},lastProductRelease:{},lastReactions:{},lastCarbonPathways:{},lastReactionFlows:{},lastGeochemicalInputs:{},lastGeochemicalSourceFlux:{},lastGeochemicalSourceFluxByHabitat:{},lastHabitatResourceCoupling:{},lastGeochemicalReservoirBalance:null,lastEnvironmentalTransport:{},lastPlanetaryCycles:{},planetaryClosure:{},interactionSummary:{},competitionSummary:[],pendingDeath:{},dynamicCapacity:{},membraneBioenergetics:{}},symbiosisIndex:{},lastLedgerGen:-5,
+    env:JSON.parse(JSON.stringify(defaultEnv)),recharge:makeRechargeState(),geochemicalSourceScales:{...DEFAULT_GEO_SOURCE_SCALES},geochemicalReactionParameters:{...DEFAULT_GEO_REACTION_PARAMETERS},geochemicalBoundaryParameters:{...DEFAULT_GEO_BOUNDARY_PARAMETERS},geochemicalReservoirState:createGeochemicalReservoirState(),symbioses:[],interactionNetwork:{events:[],antagonisms:[],nextEdge:1,lastObserved:{},reciprocalPairs:{}},biosphereDynamics:createBiosphereDynamicsState(),interactionIndex:{},symbiosisIndex:{},competitionIndex:{},innovationEngine:{events:[],nextEvent:1,counts:{pointMutation:0,moduleAcquisition:0,geneDuplication:0,geneLoss:0,hgt:0,recombination:0,convergence:0,regulatoryChange:0,regulatoryRewiring:0,paralogDivergence:0},moduleFirstSeen:{},lastOutcomeUpdate:0},splitGen:null,splitCompleteGen:null,splitStreak:0,splitSeeds:null,domainFoundGen:{ARCHAEA:null,BACTERIA:null},domainStemRoots:{ARCHAEA:null,BACTERIA:null},domainStemRootAssignedGen:{ARCHAEA:null,BACTERIA:null},domainRootCandidatePersistence:{ARCHAEA:{},BACTERIA:{}},domainDivergence:{status:'shared_ancestry',populationIsolationGen:null,populationIsolationPair:null,commonAncestorOrganismId:null,commonAncestorGeneration:null},
+    oceanPersistence:0,branchPersistence:{ARCHAEA:0,BACTERIA:0},metrics:{lastMigration:0,lastMetabolism:{},lastFitness:{},lastBiogeochemistry:{},lastProductRelease:{},lastReactions:{},lastCarbonPathways:{},lastReactionFlows:{},lastGeochemicalInputs:{},geochemicalInputGeneration:null,lastGeochemicalSourceFlux:{},lastGeochemicalSourceFluxByHabitat:{},lastHabitatResourceCoupling:{},lastGeochemicalReservoirBalance:null,lastEnvironmentalTransport:{},lastPlanetaryCycles:{},planetaryClosure:{},interactionSummary:{},competitionSummary:[],pendingDeath:{},dynamicCapacity:{},resourceBudgetByHabitat:{},membraneBioenergetics:{}},symbiosisIndex:{},lastLedgerGen:-5,
     stageUnlocked:{},saproEvents:{},catalogLineageStatus:{},candidateLACA:false,candidateLBCA:false,lacaMrcaOrganismId:null,lbcaMrcaOrganismId:null,lacaMrcaGeneration:null,lbcaMrcaGeneration:null,endosymbiosisCandidate:false,complexityUnlocks:[],lineage:null};
   ensureEvolutionaryLineageRegistry();
   const first=makeStrain({id:'G0001',counts:{vent:100,mix:0,ocean:0}});world.strains.push(first);registerLineagePopulation(first,'INITIAL_ANCESTOR');syncOceanAggregate();
@@ -4740,9 +4965,11 @@ function createInitialWorld(){
 }
 function newId(){return 'G'+String(world.nextId++).padStart(4,'0');}
 function traitExpressionCost(t){
- // Traits that exceed the ancestral baseline consume extra enzyme/protein capacity.
+ // Biaya konstitutif tambahan di atas fenotipe leluhur; EC relatif/sel/generasi, bukan ATP historis.
+ // Stabilitas membran disertakan agar peningkatan sifat protektif tidak gratis.
  return Math.max(0,t.hydrogenase-0.72)*0.025 + Math.max(0,t.carbonFixation-0.72)*0.025 +
   Math.max(0,t.proteinRepair-0.35)*0.030 + Math.max(0,t.ionHomeostasis-0.52)*0.024 +
+  Math.max(0,t.membraneStability-0.55)*0.028 +
   Math.max(0,t.soluteTransport-0.28)*0.022 + Math.max(0,t.organicUse-0.08)*0.024 +
   Math.max(0,t.regulation-0.12)*0.026 + Math.max(0,t.redoxProtection-0.18)*0.026 +
   Math.max(0,t.thermalBreadth-14)*0.0012 + Math.max(0,t.phBreadth-0.95)*0.004;
@@ -5094,10 +5321,10 @@ function fitnessFor(s,h,includeSymbiosis=true){
  const activate=(module,matched,gross,cost)=>{if(m.includes(module)&&matched){grossMultiplier*=gross;matchedCosts[module]=cost;}};
  activate('ether_lipid',(s.domain==='ARCHAEA'||isUnresolvedStem(s)&&m.includes('ether_lipid'))&&thermal>=0.20&&(e.T>=55||membranePressure>=0.35),1.12,1.02);
  activate('mcr_methanogenesis',mcrEligible,1.18,1.04);
- activate('archaea_quality_control',(s.domain==='ARCHAEA'||isUnresolvedStem(s)&&m.includes('ether_lipid'))&&thermal>=0.20&&(e.T>=52||tempPressure>=0.38),1.08,1.02);
- activate('cell_envelope',(s.domain==='BACTERIA'||isUnresolvedStem(s)&&m.includes('bacteria_ester_lipid'))&&cAvail>0.25&&t.carbonFixation>0.35&&(phPressure>=0.20||tempPressure>=0.20),1.14,1.03);
- activate('multifunctional_enzymes',(s.domain==='BACTERIA'||isUnresolvedStem(s)&&m.includes('bacteria_ester_lipid'))&&resourceScarcity>=0.30,1.10,1.02);
- activate('rna_modification',(s.domain==='BACTERIA'||isUnresolvedStem(s)&&m.includes('bacteria_ester_lipid'))&&(thermal>=0.20)&&(e.T>55||tempPressure>0.45||phPressure>0.45),1.08,1.02);
+ activate('archaea_quality_control',(s.domain==='ARCHAEA'||isUnresolvedStem(s))&&thermal>=0.20&&(e.T>=52||tempPressure>=0.38),1.08,1.02);
+ activate('cell_envelope',(s.domain==='BACTERIA'||isUnresolvedStem(s))&&cAvail>0.25&&t.carbonFixation>0.35&&(phPressure>=0.20||tempPressure>=0.20),1.14,1.03);
+ activate('multifunctional_enzymes',(s.domain==='BACTERIA'||isUnresolvedStem(s))&&resourceScarcity>=0.30,1.10,1.02);
+ activate('rna_modification',(s.domain==='BACTERIA'||isUnresolvedStem(s))&&(thermal>=0.20)&&(e.T>55||tempPressure>0.45||phPressure>0.45),1.08,1.02);
  activate('archaea_halo_adaptation',(s.domain==='ARCHAEA'||isUnresolvedStem(s))&&m.includes('archaea_rhodopsin')&&(e.salinity||0)>=0.14,1.10,1.03);
  activate('archaea_sulfur_oxidation',(s.domain==='ARCHAEA'||isUnresolvedStem(s))&&reactionPotential('AX-SOX',e)>0.015,1.08,1.02);
  activate('bacteria_hydrogen_oxidation',(s.domain==='BACTERIA'||isUnresolvedStem(s))&&reactionPotential('BX-H2OX',e)>0.015,1.06,1.02);
@@ -5114,15 +5341,15 @@ function fitnessFor(s,h,includeSymbiosis=true){
  const membraneProtection=clamp((t.membraneStability-0.45)*0.8 + (m.includes('membrane_stability')?0.16:0) + ((s.domain==='ARCHAEA'||isUnresolvedStem(s)&&m.includes('ether_lipid'))&&m.includes('ether_lipid')?0.22*membranePressure:0));
  const repair=clamp(t.proteinRepair+(m.includes('archaea_quality_control')?0.13:0)+(m.includes('protein_repair')?0.10:0));
  const ionProtection=clamp(t.ionHomeostasis+(m.includes('ion_homeostasis')?0.12:0));
- const envelopeProtection=((s.domain==='BACTERIA'||isUnresolvedStem(s)&&m.includes('bacteria_ester_lipid'))&&m.includes('cell_envelope')&&cAvail>0.25)?0.10:0;
- const rnaBenefit=((s.domain==='BACTERIA'||isUnresolvedStem(s)&&m.includes('bacteria_ester_lipid'))&&m.includes('rna_modification')&&(e.T>55||tempPressure>0.45||phPressure>0.45))?0.07:0;
- const archaeaRepairBenefit=((s.domain==='ARCHAEA'||isUnresolvedStem(s)&&m.includes('ether_lipid'))&&m.includes('archaea_quality_control')&&(e.T>52||tempPressure>0.38))?0.08:0;
+ const envelopeProtection=((s.domain==='BACTERIA'||isUnresolvedStem(s))&&m.includes('cell_envelope')&&cAvail>0.25)?0.10:0;
+ const rnaBenefit=((s.domain==='BACTERIA'||isUnresolvedStem(s))&&m.includes('rna_modification')&&(e.T>55||tempPressure>0.45||phPressure>0.45))?0.07:0;
+ const archaeaRepairBenefit=((s.domain==='ARCHAEA'||isUnresolvedStem(s))&&m.includes('archaea_quality_control')&&(e.T>52||tempPressure>0.38))?0.08:0;
  const repairBenefit=clamp((repair-0.35)*0.18*tempPressure+archaeaRepairBenefit);
  const membraneBenefit=clamp(membraneProtection*0.16*membranePressure);
  const ionBenefit=clamp((ionProtection-0.52)*0.12*(phPressure+tempPressure)/2);
  const redoxBenefit=m.includes('redox_protection')?0.08*redoxPressure*t.redoxProtection:0;
  const envelopeBenefit=envelopeProtection*(0.5+0.5*phPressure);
- const multiSavings=((s.domain==='BACTERIA'||isUnresolvedStem(s)&&m.includes('bacteria_ester_lipid'))&&m.includes('multifunctional_enzymes')&&resourceScarcity>=0.30)?0.020*resourceScarcity:0;
+ const multiSavings=((s.domain==='BACTERIA'||isUnresolvedStem(s))&&m.includes('multifunctional_enzymes')&&resourceScarcity>=0.30)?0.020*resourceScarcity:0;
  const regulationBenefit=m.includes('gene_regulation')?0.025*clamp((tempPressure+phPressure)/1.2):0;
  const interaction=includeSymbiosis?(world.interactionIndex?.[h+'|'+s.id]||{pairs:0,benefit:0,cost:0}):{pairs:0,benefit:0,cost:0};
  const symPairs=interaction.pairs||0;
@@ -5147,20 +5374,51 @@ function fitnessFor(s,h,includeSymbiosis=true){
  const moduleBenefits=membraneBenefit+ionBenefit+repairBenefit+redoxBenefit+envelopeBenefit+rnaBenefit+regulationBenefit+multiSavings+adhesionSynergy+symGross+bacterialLipidBenefit+membraneBio.homeostasisBenefit;
  const nutrientCost=0.025*(1-nutrientFit);
  const regulationCost=regulation.expressionCost*costScale;
- const totalCost=baseMaintenance+coreCost+moduleCost+traitCost+startupCost+cofactorCost+substrateCost+symCost+competitionCost+nutrientCost+dependencyPenalty+regulationCost+membraneBio.pumpCost+membraneBio.antiporterCost+membraneBio.reverseATPaseCost;
+ // Respons ketahanan mengonsumsi energi saat tekanan benar-benar hadir.
+ // Kapasitas dasar tetap dibayar melalui biaya trait/modul; biaya berikut adalah aktivitas kondisional.
+ const proteinDamageLoad=clamp(0.48*(1-thermal)+0.18*(1-phFit)+0.20*(uvStress/0.08)+0.14*(chemicalStress/0.20));
+ const membraneDamageLoad=clamp(0.40*tempPressure+0.35*phPressure+0.25*(physicalStress/0.14));
+ const ionRegulationLoad=clamp(0.48*phPressure+0.24*sat(e.salinity||0,0.08)+0.16*(chemicalStress/0.20)+0.12*(physicalStress/0.14));
+ const redoxDefenseLoad=clamp(0.48*redoxPressure+0.32*(chemicalStress/0.20)+0.20*(uvStress/0.08));
+ const resilienceResponseCosts={
+  proteinRepair:0.014*repair*proteinDamageLoad,
+  membraneMaintenance:0.012*membraneProtection*membraneDamageLoad,
+  ionHomeostasis:0.010*ionProtection*ionRegulationLoad,
+  redoxProtection:0.012*t.redoxProtection*redoxDefenseLoad
+ };
+ const resilienceResponseCost=Object.values(resilienceResponseCosts).reduce((a,v)=>a+v,0)*costScale;
+ const totalCost=baseMaintenance+coreCost+moduleCost+traitCost+resilienceResponseCost+startupCost+cofactorCost+substrateCost+symCost+competitionCost+nutrientCost+dependencyPenalty+regulationCost+membraneBio.pumpCost+membraneBio.antiporterCost+membraneBio.reverseATPaseCost;
  const netEnergy=grossEnergy-totalCost;
  const energyScore=clamp((netEnergy+0.08)/0.52);
- const stress=clamp(1-(0.42*thermal+0.30*phFit+0.18*redox+0.10*clamp(1-membranePressure+membraneProtection))+chemicalStress+0.10*(1-nutrientFit)+physicalStress);
- const survival=clamp(0.985-0.22*stress-0.32*Math.max(0,-netEnergy)+moduleBenefits*0.30,0.03,0.995);
+ // Resistance is the residual stress after paying for and expressing protective systems.
+ const resilienceStressReduction=clamp(
+  0.045*repair*proteinDamageLoad+
+  0.040*membraneProtection*membraneDamageLoad+
+  0.035*ionProtection*ionRegulationLoad+
+  0.025*t.redoxProtection*redoxDefenseLoad,0,0.16);
+ const unprotectedStress=clamp(1-(0.42*thermal+0.30*phFit+0.18*redox+0.10*clamp(1-membranePressure+membraneProtection))+chemicalStress+0.10*(1-nutrientFit)+physicalStress);
+ const stress=clamp(unprotectedStress-resilienceStressReduction);
+ const resistance=clamp(1-stress);
+ const targetedMortalityReduction=
+  ((m.includes('protein_repair')||m.includes('archaea_quality_control'))?0.008:0)+
+  (((s.domain==='BACTERIA'||isUnresolvedStem(s))&&m.includes('cell_envelope')&&e.DIC>0.12)?0.015:0)+
+  (((s.domain==='ARCHAEA'||isUnresolvedStem(s))&&m.includes('ether_lipid')&&membranePressure>0.35)?0.010:0);
+ const physiologicalMortalityRaw=0.018+0.16*(1-thermal)+0.10*(1-phFit)+0.07*(1-redox)+
+  0.30*Math.max(0,-netEnergy)+0.20*chemicalStress+0.10*(1-nutrientFit);
+ const physiologicalMortality=clamp(physiologicalMortalityRaw-targetedMortalityReduction-0.12*resilienceStressReduction,0.005,0.90);
+ // survival is per-generation physiological survival; crowding and habitat overload are added once in getRates().
+ const survival=clamp(1-physiologicalMortality,0.10,0.995);
  const reproductive=clamp((Math.max(0,netEnergy)+0.015)/0.40)*(0.35+0.65*nutrientFit);
  const resourceEfficiency=clamp(grossEnergy/(grossEnergy+totalCost+0.025));
- const stressTolerance=clamp(0.42*thermal+0.30*phFit+0.18*redox+0.10*clamp(1-stress+moduleBenefits)-0.20*physicalStress);
- const costPenalty=clamp((moduleCost+traitCost+startupCost+cofactorCost+substrateCost+symCost+competitionCost+regulationCost)*0.14+Math.max(0,-netEnergy)*0.22,0,0.22);
+ const stressTolerance=clamp(0.42*thermal+0.30*phFit+0.18*redox+0.10*clamp(1-stress+moduleBenefits)-0.20*physicalStress+resilienceStressReduction);
+ // A diagnostic potential, not a demonstrated recovery rate: repair capacity must have energy available.
+ const recoveryCapacity=clamp(0.35*repair+0.25*membraneProtection+0.20*ionProtection+0.20*t.redoxProtection);
+ const recoveryPotential=clamp(recoveryCapacity*clamp((Math.max(0,netEnergy)+0.025)/0.20));
+ // All EC costs already reduce netEnergy; do not subtract them a second time from composite fitness.
+ const costPenalty=0;
  const composite=FITNESS_WEIGHTS.net_energy_acquisition*energyScore+FITNESS_WEIGHTS.survival_probability*survival+FITNESS_WEIGHTS.reproductive_output*reproductive+FITNESS_WEIGHTS.resource_efficiency*resourceEfficiency+FITNESS_WEIGHTS.stress_tolerance*stressTolerance;
- // grossMultiplier has already affected metabolicEnergyPotential and therefore energyScore/netEnergy.
- // Applying it again to the composite would double-count the same adaptive gain.
- const fitness=clamp(composite-costPenalty,0.03,1);
- return {fitness,energy:grossEnergy,grossEnergy,metabolicEnergyPotential,membraneBioenergetics:membraneBio,netEnergy,baseMaintenance,coreCost,moduleCost,traitCost,startupCost,cofactorCost,substrateCost,symCost,competitionCost,nutrientCost,regulationCost,totalCost,costPenalty,energyScore,survival,reproductive,resourceEfficiency,stressTolerance,thermal,phFit,redox,pressureMPa,uvIndex,pressureStress,uvStress,physicalStress,repair,homeo:ionProtection,maintenance:totalCost,autotrophic:auto,organic,acetateEnergy,organicScavenging,enzymeCaptureBonus,intracellularRecycling,nutrientFit,chemicalStress,mcr:mcrPotential,mcrEligible,grossMultiplier,moduleBenefits,membranePressure,resourceScarcity,catalogEnergy,carbonPathwayEnergy:carbonPathways.energy,dependencyActive,dependencyPenalty,regulation};
+ const fitness=clamp(composite,0.03,1);
+ return {fitness,energy:grossEnergy,grossEnergy,metabolicEnergyPotential,membraneBioenergetics:membraneBio,netEnergy,baseMaintenance,coreCost,moduleCost,traitCost,resilienceResponseCost,resilienceResponseCosts,resilienceStressReduction,proteinDamageLoad,membraneDamageLoad,ionRegulationLoad,redoxDefenseLoad,physiologicalMortality,recoveryCapacity,recoveryPotential,resistance,unprotectedStress,startupCost,cofactorCost,substrateCost,symCost,competitionCost,nutrientCost,regulationCost,totalCost,costPenalty,energyScore,survival,reproductive,resourceEfficiency,stressTolerance,thermal,phFit,redox,pressureMPa,uvIndex,pressureStress,uvStress,physicalStress,repair,homeo:ionProtection,maintenance:totalCost,autotrophic:auto,organic,acetateEnergy,organicScavenging,enzymeCaptureBonus,intracellularRecycling,nutrientFit,chemicalStress,mcr:mcrPotential,mcrEligible,grossMultiplier,moduleBenefits,membranePressure,resourceScarcity,catalogEnergy,carbonPathwayEnergy:carbonPathways.energy,dependencyActive,dependencyPenalty,regulation};
 }
 function getRates(s,h,totalH,support=dynamicCapacityAt(h)){
  const e=world.env[h],x=fitnessFor(s,h),capacity=support.capacity;
@@ -5168,13 +5426,16 @@ function getRates(s,h,totalH,support=dynamicCapacityAt(h)){
  const crowdBirth=Math.pow(Math.max(0,1-density),1.35);
  const resourceOverload=clamp(Math.max(0,density-1),0,1.5);
  const energySupport=clamp((x.netEnergy+0.02)/0.42);
- let birth=(0.025+0.34*energySupport*(0.55+0.45*x.fitness))*crowdBirth;
- let death=0.018+0.16*(1-x.thermal)+0.10*(1-x.phFit)+0.07*(1-x.redox)+0.025*clamp(density,0,2)+0.30*Math.max(0,-x.netEnergy)+0.20*x.chemicalStress+0.10*(1-x.nutrientFit)+0.13*resourceOverload+0.035*(1-support.wasteMultiplier);
- // Matched protective modules alter survival only after paying their recurring expression costs in fitnessFor().
- if((s.domain==='BACTERIA'||isUnresolvedStem(s)&&s.modules.includes('bacteria_ester_lipid'))&&s.modules.includes('cell_envelope')&&e.DIC>0.12)death-=0.015;
- if(s.modules.includes('protein_repair')||s.modules.includes('archaea_quality_control'))death-=0.008;
- if((s.domain==='ARCHAEA'||isUnresolvedStem(s)&&s.modules.includes('ether_lipid'))&&s.modules.includes('ether_lipid')&&x.membranePressure>0.35)death-=0.010;
- return {birth:clamp(birth,0,0.40),death:clamp(death,0.005,0.90),fitness:x.fitness,energy:x.energy,netEnergy:x.netEnergy,dynamicCapacity:capacity,limitingResource:support.limiting};
+ const nutrientAvailability=continuousNutrientAvailability(h);
+ // Nitrogen and phosphorus reduce division continuously (Liebig minimum of two Monod factors).
+ // No stepwise N/P birth gate is applied here; final elemental accounting remains below as a conservation safeguard.
+ const nutrientBirthFactor=nutrientAvailability.factor;
+ let birth=(0.025+0.34*energySupport*(0.55+0.45*x.fitness))*crowdBirth*nutrientBirthFactor;
+ // The same per-generation physiological survival probability shown in diagnostics is used here.
+ // Density, overload, and waste pressure are ecological hazards added separately and only once.
+ let death=(1-x.survival)+0.025*clamp(density,0,2)+0.13*resourceOverload+0.035*(1-support.wasteMultiplier);
+ return {birth:clamp(birth,0,0.40),death:clamp(death,0.005,0.90),fitness:x.fitness,energy:x.energy,netEnergy:x.netEnergy,dynamicCapacity:capacity,limitingResource:support.limiting,
+  nitrogenAvailability:nutrientAvailability.nitrogen,phosphorusAvailability:nutrientAvailability.phosphorus,nutrientBirthFactor};
 }
 function innovationGeneticPrerequisite(s,module,hab){
  if(module==='bacteria_photosystem_i'||module==='bacteria_photosystem_ii')return canExploreDomainModules(s,'BACTERIA')&&s.modules.includes('bacteria_light_harvesting')&&s.modules.includes('bacteria_anoxygenic_phototrophy');
@@ -5236,7 +5497,14 @@ function applyMutation(parent,child,hab){
  let added='';
  if(rand()<0.34){
    const available=mutationPool(child,hab);
-   if(available.length){added=available[randInt(available.length)];child.modules.push(added);}
+   if(available.length){
+    // The mutation spectrum remains stochastic, but environmental opportunity shapes
+    // relative mutation availability; it never writes domain identity or ancestry.
+    const weighted=available.map(module=>({module,weight:clamp(moduleOpportunityWeight(module,parent,hab),0.05,3.0)}));
+    const totalWeight=weighted.reduce((a,x)=>a+x.weight,0);let draw=rand()*totalWeight;let chosen=weighted[weighted.length-1]?.module;
+    for(const item of weighted){draw-=item.weight;if(draw<=0){chosen=item.module;break;}}
+    added=chosen||available[randInt(available.length)];child.modules.push(added);
+   }
    else if(child.modules.length>CORE_MODULES.length&&rand()<0.18){const essential=['hydrogenase','atp_synthase','translation','membrane','dna_maintenance'];const removable=child.modules.filter(m=>!essential.includes(m));if(removable.length){const lost=removable[randInt(removable.length)];if((child.geneCopies?.[lost]||1)>1){child.geneCopies[lost]--;child._lostGeneCopy=lost;}else{child.modules.splice(child.modules.indexOf(lost),1);child._lostModule=lost;}}}
  }
  // Gene loss is a stochastic structural mutation; it is not triggered because a gene is "unneeded" by intent.
@@ -5260,16 +5528,19 @@ function applyMutation(parent,child,hab){
  if(duplicatedTargets.length&&rand()<0.34){const module=duplicatedTargets[randInt(duplicatedTargets.length)],before=Number(child.paralogActivity?.[module]||0),delta=(rand()<0.5?-1:1)*(0.035+rand()*0.065),after=clamp(before+delta,-0.18,0.18);child.paralogActivity||={};child.paralogActivity[module]=after;paralogDivergence={module,before,after};}
  child.mutations=parent.mutations+1;
  const traitSetup=0.018+Math.max(0,t[pick[0]]-(parent.traits[pick[0]]||0))*0.045;
- child.startupDebt=traitSetup+(added?(MODULE_ECONOMICS[added]?.setup||0.05):0)+(regulatoryRewiring?0.010:0)+(paralogDivergence?0.008:0);child.innovationAge=0;
+ // A compound point-mutation + branch-module innovation is one mutational episode.
+ // Shared integration reduces, but does not erase, the overlapping setup burden.
+ const branchSignatureModules=['ether_lipid','archaea_quality_control','archaellum_like','bacteria_ester_lipid','cell_envelope','multifunctional_enzymes','rna_modification'];
+ const signatureInnovation=!!(added&&branchSignatureModules.includes(added));
+ const integrationFactor=signatureInnovation?0.35:1;
+ const moduleSetup=added?(MODULE_ECONOMICS[added]?.setup||0.05)*(signatureInnovation?0.45:1):0;
+ child.startupDebt=traitSetup*integrationFactor+moduleSetup+(regulatoryRewiring?0.010:0)+(paralogDivergence?0.008:0);child.innovationAge=0;
  return {trait:pick[0],sign,added,removed:child._lostModule||null,lostCopy:child._lostGeneCopy||null,regulatoryRewiring,paralogDivergence,setupCost:child.startupDebt};
 }
 function addMutant(parent,hab,count){
  if(count<=0)return;
- if(world.strains.length>=260){
-  const expendable=world.strains.filter(s=>s!==parent&&totalOf(s.counts)<=3&&world.gen-s.createdGen>=3).sort((a,b)=>totalOf(a.counts)-totalOf(b.counts))[0];
-  if(expendable)world.strains.splice(world.strains.indexOf(expendable),1);
-  else if(world.strains.length>=320)return;
- }
+ // Tidak ada penggusuran genotipe hidup atau batas jumlah strain.
+ // Semua keturunan dengan count > 0 tetap dilacak, termasuk garis langka/singleton.
  const child=makeStrain({id:newId(),parentId:parent.id,counts:cloneCounts(),traits:copyTraits(parent.traits),modules:parent.modules.slice(),mutations:parent.mutations+1,domain:parent.domain,branchRoot:parent.branchRoot,candidateBranch:parent.candidateBranch});
  const m=applyMutation(parent,child,hab);
  // Gene duplication is a structural event. Catalytic copies may begin to diverge immediately;
@@ -5642,104 +5913,232 @@ function profileDistance(a,b){
  const ranges={hydrogenase:0.9,carbonFixation:0.9,thermalOptimum:55,thermalBreadth:32,phOptimum:4,phBreadth:2.2,membraneStability:0.9,ionHomeostasis:0.9,proteinRepair:0.9,soluteTransport:0.9,organicUse:0.9,regulation:0.9,redoxProtection:0.8};
  const keys=Object.keys(ranges);return keys.reduce((sum,k)=>sum+Math.abs(a[k]-b[k])/ranges[k],0)/keys.length;
 }
-function beginGradualLineageDivergence(divergence){
- // This marks the beginning of ecological isolation only. No cells are relabelled or partitioned in one event.
- world.splitGen=world.gen;world.splitSeeds={VENT_ECO:[],OCEAN_ECO:[]};
+function environmentalNicheDistance(a,b){
+ if(!a||!b)return 0;
+ const fields=[['T',80,0.18],['pH',14,0.15],['H2',2,0.18],['DIC',2,0.10],['pressureMPa',100,0.10],['salinity',2,0.06],['O2',1,0.08],['cofactor',1,0.08],['uvIndex',1,0.07]];
+ const totalWeight=fields.reduce((sum,x)=>sum+x[2],0);
+ return clamp(fields.reduce((sum,[key,scale,weight])=>sum+Math.abs((Number(a[key])||0)-(Number(b[key])||0))/scale*weight,0)/totalWeight);
+}
+function ecologicalNicheSeparation(habitatA,habitatB){
+ const traits=profileDistance(meanHabitatProfile(habitatA),meanHabitatProfile(habitatB));
+ const environment=environmentalNicheDistance(world.env?.[habitatA],world.env?.[habitatB]);
+ // Environmental contrast enables divergent selection, while phenotype divergence contributes independent evidence.
+ return {a:habitatA,b:habitatB,environment,traits,score:clamp(0.60*environment+0.40*traits)};
+}
+function findMostDivergentEcologicalDemePair(){
+ const occupied=COMPARTMENTS.filter(h=>popAt(h)>=DOMAIN_DIVERGENCE_PARAMETERS.minimumCellsPerHabitat);
+ if(occupied.length<2)return null;
+ let best=null;
+ for(let i=0;i<occupied.length;i++)for(let j=i+1;j<occupied.length;j++){
+  const row=ecologicalNicheSeparation(occupied[i],occupied[j]);
+  if(!best||row.score>best.score)best=row;
+ }
+ return best;
+}
+function beginGradualLineageDivergence(isolation){
+ // This marks ecological deme subdivision only. The selected habitats are not domain labels.
+ const pair={a:isolation.a,b:isolation.b,environment:isolation.environment,traits:isolation.traits,score:isolation.score,effectiveIsolation:isolation.effectiveIsolation,migrationPressure:isolation.migrationPressure};
+ world.splitGen=world.gen;world.splitSeeds={ECO_A:[],ECO_B:[]};world.ecologicalDemePair=pair;
+ world.domainDivergence=world.domainDivergence||{status:'shared_ancestry',populationIsolationGen:null,populationIsolationPair:null,commonAncestorOrganismId:null,commonAncestorGeneration:null};
+ world.domainDivergence.status='population_subdivision';world.domainDivergence.populationIsolationGen=world.gen;world.domainDivergence.populationIsolationPair={a:pair.a,b:pair.b};
  for(const s of world.strains)if(s.domain==='PRE_SPLIT_SHARED')s.candidateBranch='SHARED_ANCESTRAL_POOL';
- logEvent('ISOLASI EKOLOGIS BERTAHAP DIMULAI',`Divergensi rata-rata vent–samudera ${fmt(divergence,3)} bertahan selama 10 generasi. Aliran gen ekologis kini mulai melemah; populasi masih berstatus leluhur bersama sampai keturunan ecotype terbentuk bertahap. Penanda lipid eter-Archaea dan lipid ester-Bacteria beserta modul pendukung adalah proksi operasional untuk membedakan paket garis, bukan satu gen tunggal yang mendefinisikan seluruh anggota domain modern.`);
- logEvent('PEMISAHAN POPULASI DIMULAI',`Setiap generasi sebagian kecil sel dari populasi leluhur dapat membentuk keturunan ecotype lokal. Identitas Archaea/Bacteria belum diberikan; penetapannya menunggu ciri genetik yang berkembang dan diwariskan.`);
+ const aName=HABITAT_NAMES[pair.a]||MICROHABITAT_NAMES[pair.a]||pair.a,bName=HABITAT_NAMES[pair.b]||MICROHABITAT_NAMES[pair.b]||pair.b;
+ logEvent('ISOLASI POPULASI EKOLOGIS DIMULAI',`Indeks isolasi ekologis ${fmt(pair.effectiveIsolation,3)} bertahan selama ${DOMAIN_DIVERGENCE_PARAMETERS.persistenceGenerations} generasi. Deme terpilih: ${aName} dan ${bName}; indeks menggabungkan kontras lingkungan dan fenotipe serta dikurangi tekanan migrasi. Ini hanya menandai subdivisi populasi/ecotype; belum menetapkan Archaea atau Bacteria.`);
+ logEvent('SUBDIVISI POPULASI DIMULAI',`Keturunan ecotype A dan B berkembang bertahap dari populasi leluhur. Habitat fokus adalah petunjuk isolasi ekologis, bukan identitas domain. Archaea/Bacteria hanya ditetapkan dari dua akar vertikal dengan bukti yang independen.`);
 }
 function findOrCreateStemFounder(parent,branch){
  const moduleKey=parent.modules.join('|');
  const sameTraits=(a,b)=>Object.keys(a).every(k=>Math.abs((a[k]||0)-(b[k]||0))<1e-9);
  let child=world.strains.find(s=>s.domain==='UNRESOLVED_STEM'&&s.parentId===parent.id&&s.candidateBranch===branch&&s.modules.join('|')===moduleKey&&sameTraits(s.traits,parent.traits));
  if(child)return child;
- if(world.strains.length>=320)return null;
- const id=newId();
- child=makeStrain({id,parentId:parent.id,counts:cloneCounts(),traits:copyTraits(parent.traits),modules:parent.modules.slice(),mutations:parent.mutations,domain:'UNRESOLVED_STEM',branchRoot:branch==='VENT_ECO'?'UNRESOLVED_STEM_VENT_ECO':'UNRESOLVED_STEM_OCEAN_ECO',candidateBranch:branch});
- child.lineageEventKind='ECOLOGICAL_ISOLATION';child.lineageChange={branch,habitat:branch==='VENT_ECO'?'vent':'ocean'};
+ // Pembentukan founder tidak dibatasi oleh jumlah genotipe yang sedang dilacak.
+ const id=newId(),pair=world.ecologicalDemePair||{};
+ const focalHabitat=branch==='ECO_A'?pair.a:pair.b;
+ child=makeStrain({id,parentId:parent.id,counts:cloneCounts(),traits:copyTraits(parent.traits),modules:parent.modules.slice(),mutations:parent.mutations,domain:'UNRESOLVED_STEM',branchRoot:'UNRESOLVED_STEM_'+branch,candidateBranch:branch});
+ child.lineageEventKind='ECOLOGICAL_ISOLATION';child.lineageChange={branch,habitat:focalHabitat||null};
  world.strains.push(child);
  if(!world.splitSeeds[branch].includes(id))world.splitSeeds[branch].push(id);
  return child;
 }
 function advanceEcologicalDivergence(){
  if(world.splitGen===null)return;
- const age=Math.max(0,world.gen-world.splitGen);
+ const age=Math.max(0,world.gen-world.splitGen),pair=world.ecologicalDemePair;if(!pair?.a||!pair?.b)return;
  if(age<0)return;
- const divergence=profileDistance(meanHabitatProfile('vent'),meanHabitatProfile('ocean'));
- // The transfer rate grows only gradually and is reduced when habitat profiles reconverge.
- const isolationStrength=clamp(0.30+divergence*7.0,0.20,1.0);
+ const currentPair=ecologicalNicheSeparation(pair.a,pair.b);
+ // Subdivision proceeds gradually; isolation weakens when the focal niches reconverge.
+ const isolationStrength=clamp(0.30+currentPair.score*7.0,0.20,1.0);
  const baseRate=clamp(0.008+Math.min(age,50)*0.00062,0.008,0.039);
  const snapshot=world.strains.filter(s=>s.domain==='PRE_SPLIT_SHARED'&&totalOf(s.counts)>0);
  for(const parent of snapshot){
   for(const h of COMPARTMENTS){
    const available=parent.counts[h]||0;if(available<3)continue;
    let branchRates=[];
-   if(h==='vent')branchRates=[['VENT_ECO',1.0]];
-   else if(h==='mix'){
-    const fv=fitnessFor(parent,'vent').fitness,fo=fitnessFor(parent,'ocean_deep').fitness;
-    const ventPreference=clamp(0.5+(fv-fo)*1.8,0.25,0.75);
-    branchRates=[['VENT_ECO',ventPreference],['OCEAN_ECO',1-ventPreference]];
-   }else branchRates=[['OCEAN_ECO',1.0]];
-   const emigrants=binomial(available,baseRate*isolationStrength*(h==='mix'?0.75:1));
+   if(h===pair.a)branchRates=[['ECO_A',1.0]];
+   else if(h===pair.b)branchRates=[['ECO_B',1.0]];
+   else{
+    const fitA=fitnessFor(parent,pair.a).fitness,fitB=fitnessFor(parent,pair.b).fitness;
+    const preferenceA=clamp(0.5+(fitA-fitB)*1.8,0.20,0.80);
+    branchRates=[['ECO_A',preferenceA],['ECO_B',1-preferenceA]];
+   }
+   const emigrants=binomial(available,baseRate*isolationStrength*(branchRates.length===2?0.75:1));
    if(!emigrants)continue;
    parent.counts[h]-=emigrants;
    if(branchRates.length===1){
     const child=findOrCreateStemFounder(parent,branchRates[0][0]);if(child)child.counts[h]+=emigrants;else parent.counts[h]+=emigrants;
    }else{
-    const ventN=binomial(emigrants,branchRates[0][1]),oceanN=emigrants-ventN;
-    const vChild=ventN?findOrCreateStemFounder(parent,'VENT_ECO'):null;
-    const oChild=oceanN?findOrCreateStemFounder(parent,'OCEAN_ECO'):null;
-    if(vChild)vChild.counts[h]+=ventN;else parent.counts[h]+=ventN;
-    if(oChild)oChild.counts[h]+=oceanN;else parent.counts[h]+=oceanN;
+    const aN=binomial(emigrants,branchRates[0][1]),bN=emigrants-aN;
+    const aChild=aN?findOrCreateStemFounder(parent,'ECO_A'):null,bChild=bN?findOrCreateStemFounder(parent,'ECO_B'):null;
+    if(aChild)aChild.counts[h]+=aN;else parent.counts[h]+=aN;
+    if(bChild)bChild.counts[h]+=bN;else parent.counts[h]+=bN;
    }
   }
  }
- world.metrics.divergenceProgress={age,baseRate,isolationStrength,sharedPopulation:world.strains.filter(s=>s.domain==='PRE_SPLIT_SHARED').reduce((a,s)=>a+totalOf(s.counts),0),ventEcotype:world.strains.filter(s=>s.domain==='UNRESOLVED_STEM'&&s.candidateBranch==='VENT_ECO').reduce((a,s)=>a+totalOf(s.counts),0),oceanEcotype:world.strains.filter(s=>s.domain==='UNRESOLVED_STEM'&&s.candidateBranch==='OCEAN_ECO').reduce((a,s)=>a+totalOf(s.counts),0)};
+ world.metrics.divergenceProgress={age,baseRate,isolationStrength,ecotypeA:world.strains.filter(s=>s.domain==='UNRESOLVED_STEM'&&s.candidateBranch==='ECO_A').reduce((a,s)=>a+totalOf(s.counts),0),ecotypeB:world.strains.filter(s=>s.domain==='UNRESOLVED_STEM'&&s.candidateBranch==='ECO_B').reduce((a,s)=>a+totalOf(s.counts),0),sharedPopulation:world.strains.filter(s=>s.domain==='PRE_SPLIT_SHARED').reduce((a,s)=>a+totalOf(s.counts),0),focalHabitats:[pair.a,pair.b]};
 }
 function attemptBranchSplit(){
- if(world.splitGen!==null||world.gen<25)return;
- const total=totalPop();if(popAt('vent')<20||popAt('ocean')<20||total<200){world.splitStreak=0;return;}
- const ventProfile=meanHabitatProfile('vent'),oceanProfile=meanHabitatProfile('ocean');
- const divergence=profileDistance(ventProfile,oceanProfile);
+ if(world.splitGen!==null)return;
+ const total=totalPop(),p=DOMAIN_DIVERGENCE_PARAMETERS;
+ if(total<p.minimumTotalCells){world.splitStreak=0;return;}
+ const niche=findMostDivergentEcologicalDemePair();
+ if(!niche){world.splitStreak=0;return;}
  const migrationPressure=clamp(num('migrationRate',0.02),0,0.3);
- const effectiveIsolation=divergence*(1-migrationPressure*1.4);
- if(effectiveIsolation>=0.035)world.splitStreak++;else world.splitStreak=0;
- if(world.splitStreak<10)return;
- beginGradualLineageDivergence(effectiveIsolation);
+ const effectiveIsolation=niche.score*(1-migrationPressure*1.4);
+ world.metrics.ecologicalIsolation={...niche,migrationPressure,effectiveIsolation,required:p.minimumEffectiveIsolation,persistence:world.splitStreak};
+ if(effectiveIsolation>=p.minimumEffectiveIsolation)world.splitStreak++;else world.splitStreak=0;
+ if(world.splitStreak<p.persistenceGenerations)return;
+ beginGradualLineageDivergence({...niche,effectiveIsolation,migrationPressure});
+ world.domainDivergence.isolationEvidence={environmentalContrast:niche.environment,phenotypicContrast:niche.traits,combinedScore:niche.score,migrationPressure,effectiveIsolation,threshold:p.minimumEffectiveIsolation,persistenceGenerations:p.persistenceGenerations,focalHabitats:[niche.a,niche.b]};
+}
+function lineageDescendsFromOrIs(organismId,ancestorId){
+ if(!organismId||!ancestorId)return false;
+ let id=organismId;const seen=new Set();
+ for(let guard=0;id&&guard<1200&&!seen.has(id);guard++){
+  if(id===ancestorId)return true;
+  seen.add(id);const rec=lineageRecordFor(id);
+  if(rec?.parent_organism_id){id=rec.parent_organism_id;continue;}
+  const live=world.strains.find(x=>x.id===id);id=live?.parentId||null;
+ }
+ return false;
+}
+function mostRecentCommonAncestorBetweenDomainStems(){
+ const roots=world.domainStemRoots||{},a=roots.ARCHAEA,b=roots.BACTERIA;
+ if(!a||!b)return {organism_id:null,reason:'Kedua akar batang domain belum tersedia.'};
+ const pa=lineageAncestorPath(a),pb=lineageAncestorPath(b);
+ if(!pa.length||!pb.length)return {organism_id:null,reason:'Jejak ancestry akar batang belum lengkap.'};
+ const depthB=new Map(pb.map((r,i)=>[r.organism_id,i]));
+ const common=pa.filter(r=>depthB.has(r.organism_id));
+ if(!common.length)return {organism_id:null,reason:'Kedua akar batang tidak memiliki leluhur bersama pada arsip vertikal.'};
+ common.sort((x,y)=>Math.max(pa.findIndex(r=>r.organism_id===x.organism_id),depthB.get(x.organism_id))-Math.max(pa.findIndex(r=>r.organism_id===y.organism_id),depthB.get(y.organism_id)));
+ const mrca=common[0],rootA=lineageRecordFor(a),rootB=lineageRecordFor(b);
+ const nested=lineageDescendsFromOrIs(a,b)||lineageDescendsFromOrIs(b,a);
+ const preDomain=!['ARCHAEA','BACTERIA'].includes(mrca.domain_id);
+ const beforeBoth=(mrca.created_generation??mrca.generation??0)<Math.max(rootA?.created_generation??world.gen,rootB?.created_generation??world.gen);
+ return {organism_id:mrca.organism_id,domain_id:mrca.domain_id||null,branch_root_id:mrca.branch_root_id||null,generation:mrca.created_generation??mrca.generation??null,nested,valid:!nested&&preDomain&&beforeBoth,reason:(!nested&&preDomain&&beforeBoth)?'Akar Archaea dan Bacteria memiliki MRCA pra-domain yang sama; keduanya bukan leluhur satu sama lain.':'MRCA akar domain belum valid: akar bersarang, ancestor sudah domain-spesifik, atau urutan generasi tidak konsisten.'};
+}
+function assignDomainStemRoot(rootInput,domain){
+ const key=domain,other=domain==='ARCHAEA'?'BACTERIA':'ARCHAEA';
+ world.domainStemRoots=world.domainStemRoots||{ARCHAEA:null,BACTERIA:null};
+ world.domainStemRootAssignedGen=world.domainStemRootAssignedGen||{ARCHAEA:null,BACTERIA:null};
+ const rootId=typeof rootInput==='string'?rootInput:(rootInput?.organism_id||rootInput?.id||null);
+ const rootStrain=world.strains.find(x=>x.id===rootId)||null;
+ const rootRec=lineageRecordFor(rootId),parentRec=rootRec?.parent_organism_id?lineageRecordFor(rootRec.parent_organism_id):null;
+ if(world.domainStemRoots[key]||!rootId||!rootRec||!parentRec||rootRec.created_generation<=world.splitGen)return false;
+ if(['ARCHAEA','BACTERIA'].includes(parentRec.domain_id))return false;
+ if(world.domainStemRoots[other]&&(lineageDescendsFromOrIs(rootId,world.domainStemRoots[other])||lineageDescendsFromOrIs(world.domainStemRoots[other],rootId)))return false;
+ const descendants=world.lineage.organisms.filter(r=>lineageDescendsFromOrIs(r.organism_id,rootId));
+ for(const r of descendants)if(r.domain_id&&r.domain_id!==domain)return false;
+ world.domainStemRoots[key]=rootId;world.domainStemRootAssignedGen[key]=world.gen;
+ for(const r of descendants){r.domain_id=domain;r.branch_root_id=domain+'_STEM';r.stem_root_organism_id=rootId;r.node_id=domain+'_STEM';r.domain_assigned_generation=world.gen;}
+ for(const s of world.strains){
+  if(!lineageDescendsFromOrIs(s.id,rootId))continue;
+  s.domain=domain;s.branchRoot=domain+'_STEM';s.domainAssignedGen=s.domainAssignedGen??world.gen;
+  const rec=lineageRecordFor(s.id);if(rec){rec.domain_id=domain;rec.branch_root_id=domain+'_STEM';rec.stem_root_organism_id=rootId;rec.node_id=domain+'_STEM';rec.domain_assigned_generation=world.gen;}
+ }
+ if(rootStrain){rootStrain.domain=domain;rootStrain.branchRoot=domain+'_STEM';rootStrain.domainAssignedGen=world.gen;}
+ ensurePhylogeneticNode(domain+'_STEM','LUCA',domain+' stem · garis batang', 'domain_stem',world.gen,'Akar vertikal dapat berupa genotipe arsip yang menjadi leluhur keturunan domain hidup; identitas tidak ditentukan habitat.');
+ if(world.domainDivergence)world.domainDivergence.status='one_domain_stem_established';
+ const basis=domain==='ARCHAEA'?'lipid eter + perangkat pendukung Archaea yang diwariskan vertikal':'prekursor selubung + perangkat RNA/enzim multifungsi Bacteria yang diwariskan vertikal; lipid ester hanya bukti pendukung';
+ pushEvolutionaryEvent('AKAR_BATANG_DOMAIN_DITETAPKAN',rootId,{domainId:domain,branchRootId:domain+'_STEM',stemRootOrganismId:rootId,parentOrganismId:rootRec.parent_organism_id,basis,persistenceGenerations:8,habitatNotUsedAsIdentity:true,archivedAncestorRoot:!rootStrain});
+ logEvent('AKAR BATANG DOMAIN TERBENTUK',`${rootId} menjadi akar vertikal tunggal garis ${domain}. Akar boleh berupa genotipe leluhur dalam arsip; keturunan hidup mewarisi identitas. Habitat/ecotype tidak menentukan domain dan HGT/rekombinasi tidak menjadi bukti vertikal.`);
+ return true;
 }
 function updateStemIdentity(){
  if(world.splitGen===null)return;
- for(const s of world.strains){
-  if(s.domain!=='UNRESOLVED_STEM')continue;
-  const n=totalOf(s.counts),arch=hasArchaealSignature(s),bact=hasBacterialSignature(s);
-  s.domainEvidenceStreak=s.domainEvidenceStreak||{ARCHAEA:0,BACTERIA:0};
-  s.domainEvidenceStreak.ARCHAEA=(arch&&!bact&&n>=4)?(s.domainEvidenceStreak.ARCHAEA||0)+1:0;
-  s.domainEvidenceStreak.BACTERIA=(bact&&!arch&&n>=4)?(s.domainEvidenceStreak.BACTERIA||0)+1:0;
-  let target=null;
-  if(s.domainEvidenceStreak.ARCHAEA>=5)target='ARCHAEA';
-  if(s.domainEvidenceStreak.BACTERIA>=5)target='BACTERIA';
-  if(target){
-   s.domain=target;s.branchRoot=target+'_STEM';s.domainAssignedGen=world.gen;
-   ensurePhylogeneticNode(target+'_STEM','LUCA',target+' stem · garis batang','domain_stem',world.gen,'Node garis batang operasional yang dibedakan oleh paket ciri genetik persisten; bukan tanggal historis.');
-   pushEvolutionaryEvent('IDENTITAS_DOMAIN_DITETAPKAN',s.id,{domainId:target,branchRootId:target+'_STEM',basis:target==='ARCHAEA'?'lipid eter archaeal + ciri pendukung':'lipid ester bakteri + ciri pendukung',persistenceGenerations:5});
-   logEvent('IDENTITAS GARIS BATANG TERBENTUK',`${s.id} diklasifikasikan sebagai ${target} setelah mewarisi paket ciri ${target==='ARCHAEA'?'lipid eter archaeal + modul pendukung archaeal':'lipid ester bakteri + modul pendukung bacterial'} yang bertahan lima generasi. Penetapan berbasis karakter genetik, bukan lokasi atau undian.`);
+ world.domainStemRoots=world.domainStemRoots||{ARCHAEA:null,BACTERIA:null};
+ world.domainStemRootAssignedGen=world.domainStemRootAssignedGen||{ARCHAEA:null,BACTERIA:null};
+ // First, restore immutable identity to every archived/live descendant of an established stem root.
+ for(const d of ['ARCHAEA','BACTERIA']){
+  const rootId=world.domainStemRoots[d];if(!rootId)continue;
+  for(const rec of world.lineage?.organisms||[]){
+   if(!lineageDescendsFromOrIs(rec.organism_id,rootId))continue;
+   if(rec.domain_id&&rec.domain_id!==d)continue;
+   rec.domain_id=d;rec.branch_root_id=d+'_STEM';rec.stem_root_organism_id=rootId;rec.node_id=d+'_STEM';
+  }
+  for(const s of world.strains){
+   if(!lineageDescendsFromOrIs(s.id,rootId))continue;
+   s.domain=d;s.branchRoot=d+'_STEM';s.domainAssignedGen=s.domainAssignedGen??world.domainStemRootAssignedGen[d]??world.gen;
+  }
+ }
+ // A domain-stem root may be an archived ancestor: a branch can retain its identity
+ // after the particular genotype that first carried the diagnostic bundle has gone extinct.
+ // Evidence still must be vertically inherited, and the root's living descendants must persist.
+ world.domainRootCandidatePersistence=world.domainRootCandidatePersistence||{ARCHAEA:{},BACTERIA:{}};
+ for(const d of ['ARCHAEA','BACTERIA']){
+  if(world.domainStemRoots[d])continue; // one vertical root per domain; no parallel re-rooting
+  const signature=d==='ARCHAEA'?recordHasArchaealSignature:recordHasBacterialSignature;
+  const opposite=d==='ARCHAEA'?recordHasBacterialSignature:recordHasArchaealSignature;
+  const candidates=world.lineage.organisms.filter(rec=>{
+   const gen=rec.created_generation??rec.generation??0;
+   if(gen<=world.splitGen||!rec.parent_organism_id||rec.domain_id)return false;
+   if(!signature(rec))return false;
+   const parent=lineageRecordFor(rec.parent_organism_id);
+   // Use the first node on a vertical path that completes the marker bundle.
+   if(parent&&signature(parent))return false;
+   return true;
+  });
+  const eligible=[];
+  for(const root of candidates){
+   const descendants=world.lineage.organisms.filter(r=>lineageDescendsFromOrIs(r.organism_id,root.organism_id));
+   const living=world.strains.filter(x=>lineageDescendsFromOrIs(x.id,root.organism_id)&&totalOf(x.counts)>0);
+   const population=living.reduce((sum,x)=>sum+totalOf(x.counts),0);
+   const oppositeDescendant=descendants.some(opposite);
+   const key=root.organism_id,qualified=population>=25&&living.length>=2&&!oppositeDescendant;
+   const previous=world.domainRootCandidatePersistence[d][key]||0;
+   world.domainRootCandidatePersistence[d][key]=qualified?previous+1:0;
+   if(world.domainRootCandidatePersistence[d][key]>=8)eligible.push({root,population,genotypes:living.length});
+  }
+  eligible.sort((a,b)=>(a.root.created_generation??a.root.generation??0)-(b.root.created_generation??b.root.generation??0)||b.population-a.population||String(a.root.organism_id).localeCompare(String(b.root.organism_id)));
+  if(eligible.length)assignDomainStemRoot(eligible[0].root,d);
+ }
+ for(const d of ['ARCHAEA','BACTERIA']){
+  for(const id of Object.keys(world.domainRootCandidatePersistence[d]||{})){
+   const rec=lineageRecordFor(id);
+   if(!rec||!world.lineage.organisms.some(x=>x.organism_id===id))delete world.domainRootCandidatePersistence[d][id];
   }
  }
  for(const d of ['ARCHAEA','BACTERIA']){
-  const subset=world.strains.filter(s=>s.domain===d&&totalOf(s.counts)>0);
+  const rootId=world.domainStemRoots[d];
+  const subset=world.strains.filter(s=>s.domain===d&&totalOf(s.counts)>0&&rootId&&lineageDescendsFromOrIs(s.id,rootId));
   const pop=subset.reduce((a,s)=>a+totalOf(s.counts),0);
-  world.branchPersistence[d]=(pop>=25&&subset.length>=2)?(world.branchPersistence[d]||0)+1:0;
+  world.branchPersistence[d]=(rootId&&pop>=25&&subset.length>=2)?(world.branchPersistence[d]||0)+1:0;
   if(world.branchPersistence[d]>=8&&world.domainFoundGen[d]===null){
    world.domainFoundGen[d]=world.gen;
-   logEvent('GARIS BATANG PERSISTEN',`Garis ${d} memiliki ≥25 sel dan ≥2 genotipe selama delapan generasi. Domain ini kini dianggap terbentuk secara operasional dalam simulasi; bukan tanggal atau bukti historis.`);
+   logEvent('GARIS BATANG PERSISTEN',`Garis ${d} yang berakar pada ${rootId} memiliki ≥25 sel dan ≥2 unit genotipe selama delapan generasi. Identitas garis domain dinyatakan persisten secara operasional; bukan tanggal atau bukti historis.`);
   }
  }
- if(world.domainFoundGen.ARCHAEA!==null&&world.domainFoundGen.BACTERIA!==null&&world.splitCompleteGen===null){
+ const common=mostRecentCommonAncestorBetweenDomainStems();
+ if(world.domainDivergence){
+  world.domainDivergence.commonAncestorOrganismId=common.organism_id||null;
+  world.domainDivergence.commonAncestorGeneration=common.generation??null;
+  world.domainDivergence.status=world.domainStemRoots.ARCHAEA&&world.domainStemRoots.BACTERIA?(common.valid?'two_independent_stems':'two_roots_unverified'):world.domainStemRoots.ARCHAEA||world.domainStemRoots.BACTERIA?'one_domain_stem_established':'population_subdivision';
+ }
+ if(world.domainFoundGen.ARCHAEA!==null&&world.domainFoundGen.BACTERIA!==null&&common.valid&&world.splitCompleteGen===null){
   world.splitCompleteGen=world.gen;
-  logEvent('DUA GARIS DOMAIN TERBENTUK',`Garis Archaea dan Bacteria kini sama-sama memenuhi persistensi demografis dan ciri genetik. Populasi leluhur bersama tidak dihapus; ia tetap dapat bertahan atau menyusut melalui dinamika ekologis.`);
+  if(world.domainDivergence)world.domainDivergence.status='two_independent_stems_persistent';
+  logEvent('DUA GARIS DOMAIN PERSISTEN',`Garis Archaea (${world.domainStemRoots.ARCHAEA}) dan Bacteria (${world.domainStemRoots.BACTERIA}) bertahan secara independen. MRCA keduanya adalah ${common.organism_id} pada generasi ${common.generation}; ancestor ini berada sebelum identitas domain. HGT tidak mengubah garis vertikal.`);
  }
 }
+
 function trackSelection(){
  for(const h of COMPARTMENTS){
   const act=activeStrains(h),N=popAt(h);if(!N||!act.length)continue;
@@ -5754,7 +6153,6 @@ function trackSelection(){
 }
 function evaluateLineageMilestones(){
  if(world.splitGen===null)return;
- const since=world.gen-world.splitGen;
  for(const d of ['ARCHAEA','BACTERIA']){
   const subset=world.strains.filter(s=>s.domain===d&&totalOf(s.counts)>0);
   const pop=subset.reduce((a,s)=>a+totalOf(s.counts),0);
@@ -5762,8 +6160,10 @@ function evaluateLineageMilestones(){
   // never from the presence of a particular metabolic module or trait package.
   const ancestry=mostRecentCommonAncestorForDomain(d);
   const mrca=ancestry.organism_id?lineageRecordFor(ancestry.organism_id):null;
-  const validDomainMRCA=!!(mrca&&mrca.domain_id===d&&mrca.branch_root_id===d+'_STEM');
-  if(pop>=50&&subset.length>=5&&since>=30&&world.branchPersistence[d]>=8&&world.domainFoundGen[d]!==null&&validDomainMRCA){
+  const stemRootId=world.domainStemRoots?.[d]||null;
+  const validDomainMRCA=!!(mrca&&stemRootId&&mrca.domain_id===d&&mrca.branch_root_id===d+'_STEM'&&mrca.stem_root_organism_id===stemRootId&&lineageDescendsFromOrIs(mrca.organism_id,stemRootId));
+  const generationsAfterStemPersistence=world.domainFoundGen[d]===null?-1:world.gen-world.domainFoundGen[d];
+  if(pop>=50&&subset.length>=5&&generationsAfterStemPersistence>=30&&world.branchPersistence[d]>=8&&world.domainFoundGen[d]!==null&&validDomainMRCA){
    const isArchaea=d==='ARCHAEA',already=isArchaea?world.candidateLACA:world.candidateLBCA;
    if(!already){
     const nodeId=isArchaea?'LACA':'LBCA';
@@ -5882,6 +6282,8 @@ function updateMetabolism(){
 }
 function genStep(){
  if(!world)return;
+ // Complete the finite geochemical delivery transaction before evaluating habitat capacity or reproduction.
+ prepareGeochemicalHabitatInputs();
  updateCellularMembraneStates();
  const Nbefore=Object.fromEntries(COMPARTMENTS.map(h=>[h,popAt(h)]));
  const pending=[],birthRecords=Object.fromEntries(COMPARTMENTS.map(h=>[h,[]]));let births=0,deaths=0,birthFailures=0;const deathByHab=Object.fromEntries(COMPARTMENTS.map(h=>[h,0]));const deathMassByHab={};
@@ -5905,12 +6307,27 @@ function genStep(){
    deaths+=n-survivors;deathByHab[h]+=n-survivors;
   }
  }
+ const postMortalitySupport=Object.fromEntries(COMPARTMENTS.map(h=>[h,dynamicCapacityAt(h)]));
+ world.metrics.dynamicCapacity=postMortalitySupport;
+ world.metrics.resourceBudgetByHabitat={};
  for(const h of COMPARTMENTS){
-  const records=birthRecords[h],proposed=records.reduce((a,r)=>a+r.born,0),e=world.env[h],volume=clamp(e.volumeFactor||1,0.1,100);
+  const records=birthRecords[h],proposed=records.reduce((a,r)=>a+r.born,0),support=postMortalitySupport[h];
+  const survivors=popAt(h),budget=reproductiveNutrientBudget(h,support,survivors);
+  const nutrientAvailability=continuousNutrientAvailability(h);
+  const {inventory,metabolicReserveN,metabolicReserveP,reproductiveN,reproductiveP}=budget;
+  const maxByN=budget.stoichiometricLimitN,maxByP=budget.stoichiometricLimitP;
+  const ledger=world.metrics.resourceBudgetByHabitat[h]={
+   availableN:inventory.N,availableP:inventory.P,metabolicReserveN,metabolicReserveP,
+   reproductiveN,reproductiveP,maxBirthsN:maxByN,maxBirthsP:maxByP,
+   nitrogenAvailability:nutrientAvailability.nitrogen,phosphorusAvailability:nutrientAvailability.phosphorus,
+   nutrientBirthFactor:nutrientAvailability.factor,
+   proposed,accepted:0,rejected:proposed,growthNSpent:0,growthPSpent:0,
+   actualMetabolicN:0,actualMetabolicP:0,metabolicReserveOverrunN:0,metabolicReserveOverrunP:0,
+   closingN:inventory.N,closingP:inventory.P
+  };
   if(!proposed)continue;
-  const nBudget=((e.NH4||0)+(e.DON||0)*0.25)*volume;
-  const pBudget=((e.PO4||0)+(e.DOP||0)*0.25)*volume;
-  const maxByN=Math.floor(nBudget/CELL_N),maxByP=Math.floor(pBudget/CELL_P);
+  // Only a final elemental conservation ceiling remains. Smooth N/P limitation already
+  // reduced the stochastic birth proposal above; no extra ecological threshold is imposed here.
   const maxAccepted=Math.max(0,Math.min(proposed,maxByN,maxByP));
   const scale=maxAccepted/proposed;
   let localAccepted=0;
@@ -5922,7 +6339,7 @@ function genStep(){
    if(acceptedMutants>0)pending.push({parent:r.strain,hab:h,count:acceptedMutants});
    localAccepted+=acceptedDirect+acceptedMutants;
   }
-  // Rounding is reconciled so accepted offspring cannot exceed the shared N/P budget.
+  // Reconcile rounding so accepted offspring never exceed either element budget.
   let excess=localAccepted-maxAccepted;
   while(excess>0){
    const candidates=records.filter(r=>r.strain.counts[h]>r.survivors || pending.some(p=>p.parent===r.strain&&p.hab===h&&p.count>0));
@@ -5933,9 +6350,12 @@ function genStep(){
    if(r.strain.counts[h]>r.survivors){r.strain.counts[h]--;excess--;localAccepted--;}
   }
   if(localAccepted>0){
-   withdrawGrowthNutrients(h,localAccepted);
+   const withdrawal=withdrawGrowthNutrients(h,localAccepted);
+   ledger.growthNSpent=withdrawal.N;ledger.growthPSpent=withdrawal.P;
    births+=localAccepted;
   }
+  ledger.accepted=localAccepted;ledger.rejected=proposed-localAccepted;
+  const remaining=assimilableGrowthNutrientInventory(h);ledger.closingN=remaining.N;ledger.closingP=remaining.P;
   birthFailures+=proposed-localAccepted;
  }
  pending.filter(p=>p.count>0).forEach(p=>{
@@ -5946,7 +6366,8 @@ function genStep(){
  world.totals.births+=births;world.totals.deaths+=deaths;world.totals.birthFailures=(world.totals.birthFailures||0)+birthFailures;
  for(const h of COMPARTMENTS)deathMassByHab[h]=depositDeadBiomass(h,deathByHab[h]);
  world.metrics.pendingDeath=deathMassByHab;
- world.strains=world.strains.filter(s=>totalOf(s.counts)>0 && (totalOf(s.counts)>=2 || world.gen-s.createdGen<4));
+ // Hanya genotipe dengan nol sel yang keluar dari daftar populasi aktif; singleton tetap hidup dan tercatat.
+ world.strains=world.strains.filter(s=>totalOf(s.counts)>0);
  // Resource-driven passive dispersal conserves total amounts when reservoir volumes differ.
  const mr=clamp(num('migrationRate',0.02),0,0.3);
  let moved=0;
@@ -5960,11 +6381,19 @@ function genStep(){
  world.totals.migration+=moved;world.metrics.lastMigration=moved;
  world.gen++;
  for(const s of world.strains)s.innovationAge=(s.innovationAge||0)+1;
- prepareGeochemicalHabitatInputs();
  updateMetabolism();
  updateCatalogReactions();
   consumeOxygenWithReducedChemistry();
   updatePlanetaryBiogeochemicalCycles();
+  for(const h of COMPARTMENTS){
+   const d=world.metrics.resourceBudgetByHabitat?.[h];if(!d)continue;
+   const used=world.metrics.lastHabitatResourceCoupling?.[h]?.catalogConsumed||{};
+   d.actualMetabolicN=Math.max(0,Number(used.NH4)||0);
+   d.actualMetabolicP=Math.max(0,Number(used.PO4)||0);
+   d.metabolicReserveOverrunN=Math.max(0,d.actualMetabolicN-d.metabolicReserveN);
+   d.metabolicReserveOverrunP=Math.max(0,d.actualMetabolicP-d.metabolicReserveP);
+   const closing=assimilableGrowthNutrientInventory(h);d.closingN=closing.N;d.closingP=closing.P;
+  }
   updateEnvironmentalFeedback();
  runHGT();
  runRecombination();
@@ -5981,7 +6410,7 @@ function genStep(){
  const ocean=popAt('ocean');world.oceanPersistence=ocean>=10?world.oceanPersistence+1:0;
  world.metrics.dynamicCapacity=syncOceanCapacityMetrics(Object.fromEntries(COMPARTMENTS.map(h=>[h,dynamicCapacityAt(h)])));
  if(world.gen%10===0)logEvent('RINGKASAN',`N=${fmt(totalPop(),0)}; vent=${fmt(popAt('vent'),0)}; mixing=${fmt(popAt('mix'),0)}; laut dalam=${fmt(popAt('ocean_deep'),0)}; sedimen=${fmt(popAt('ocean_sediment'),0)}; fotik=${fmt(popAt('ocean_photic'),0)}; genotipe=${world.strains.length}.`);
- if(world.strains.length>320){world.strains.sort((a,b)=>totalOf(b.counts)-totalOf(a.counts));const removed=world.strains.slice(280);for(const x of removed)recordComputationalCensoring(x);world.strains=world.strains.slice(0,280);}
+ // Tidak ada cap jumlah genotipe dan tidak ada pemangkasan komputasional.
  updateEvolutionaryLineageEngine();
  updateInnovationSelectionOutcomes();
  refreshMetabolicRegulationStates();
@@ -5992,8 +6421,8 @@ function genStep(){
 
 function averageEconomyAt(h){
  const keys=h==='ocean'?OCEAN_MICROHABITATS:[h],n=keys.reduce((a,k)=>a+popAt(k),0);if(!n)return null;
- const out={gross:0,core:0,base:0,innovation:0,startup:0,cofactor:0,regulation:0,net:0,fitness:0};
- for(const key of keys)for(const s of world.strains){const k=s.counts[key]||0;if(!k)continue;const x=fitnessFor(s,key);out.gross+=k*x.grossEnergy;out.core+=k*x.coreCost;out.base+=k*(x.baseMaintenance+x.nutrientCost+x.competitionCost);out.innovation+=k*(x.moduleCost+x.traitCost+x.symCost+x.substrateCost);out.startup+=k*x.startupCost;out.cofactor+=k*x.cofactorCost;out.regulation+=k*(x.regulationCost||0);out.net+=k*x.netEnergy;out.fitness+=k*x.fitness;}
+ const out={gross:0,core:0,base:0,innovation:0,response:0,startup:0,cofactor:0,regulation:0,net:0,fitness:0};
+ for(const key of keys)for(const s of world.strains){const k=s.counts[key]||0;if(!k)continue;const x=fitnessFor(s,key);out.gross+=k*x.grossEnergy;out.core+=k*x.coreCost;out.base+=k*(x.baseMaintenance+x.nutrientCost+x.competitionCost);out.innovation+=k*(x.moduleCost+x.traitCost+x.symCost+x.substrateCost);out.response+=k*(x.resilienceResponseCost||0);out.startup+=k*x.startupCost;out.cofactor+=k*x.cofactorCost;out.regulation+=k*(x.regulationCost||0);out.net+=k*x.netEnergy;out.fitness+=k*x.fitness;}
  for(const k of Object.keys(out))out[k]/=n;
  return out;
 }
@@ -6013,7 +6442,7 @@ function innovationLedger(){
  }
  return rows.sort((a,b)=>b.carriers-a.carriers).slice(0,12);
 }
-function labelLineage(s){if(s.domain==='ARCHAEA')return 'Archaea stem';if(s.domain==='BACTERIA')return 'Bacteria stem';if(s.domain==='UNRESOLVED_STEM')return s.candidateBranch==='VENT_ECO'?'Batang transisi · ecotype vent':s.candidateBranch==='OCEAN_ECO'?'Batang transisi · ecotype samudera':'Batang transisi belum terpetakan';return 'LUCA / populasi leluhur bersama';}
+function labelLineage(s){if(s.domain==='ARCHAEA')return 'Archaea stem';if(s.domain==='BACTERIA')return 'Bacteria stem';if(s.domain==='UNRESOLVED_STEM')return s.candidateBranch==='ECO_A'?'Batang transisi · ecotype A':s.candidateBranch==='ECO_B'?'Batang transisi · ecotype B':'Batang transisi belum terpetakan';return 'LUCA / populasi leluhur bersama';}
 function habitatLabel(s){const h=habitatOf(s);return HABITAT_NAMES[h];}
 function renderCatalogLineagePanel(force=false){
  const panel=$('engineDetailAccordion'),tbody=$('catalogLineageRows');
@@ -6075,6 +6504,10 @@ function updateUI(){
  }).join('');
  const capacities=world.metrics.dynamicCapacity||{};
  if($('dynamicCapacityRows'))$('dynamicCapacityRows').innerHTML=POPULATION_DISPLAY_ORDER.map(h=>{const x=capacities[h]||dynamicCapacityAt(h);return `<tr><td>${HABITAT_NAMES[h]}</td><td class="num">${fmt(popAt(h),0)}</td><td class="num">${fmt(x.capacity,0)}</td><td>${esc(x.limiting||'—')}</td><td class="num">${fmt(x.volumeFactor,2)}×</td><td class="num">${fmt(x.wasteMultiplier,3)}</td></tr>`;}).join('');
+ if($('resourceBudgetRows'))$('resourceBudgetRows').innerHTML=POPULATION_DISPLAY_ORDER.map(h=>{
+  const x=world.metrics.resourceBudgetByHabitat?.[h];if(!x)return `<tr><td>${HABITAT_NAMES[h]}</td><td colspan="7">Menunggu transaksi reproduksi.</td></tr>`;
+  return `<tr><td>${HABITAT_NAMES[h]}</td><td class="num">${fmt(x.availableN,8)} / ${fmt(x.availableP,8)}</td><td class="num">${fmt(x.nitrogenAvailability,3)} / ${fmt(x.phosphorusAvailability,3)} → ${fmt(x.nutrientBirthFactor,3)}</td><td class="num">${fmt(x.metabolicReserveN,8)} / ${fmt(x.metabolicReserveP,8)}</td><td class="num">${fmt(x.proposed,0)} → ${fmt(x.accepted,0)}</td><td class="num">${fmt(x.maxBirthsN,0)} / ${fmt(x.maxBirthsP,0)}</td><td class="num">${fmt(x.actualMetabolicN,8)} / ${fmt(x.actualMetabolicP,8)}</td><td class="num">${fmt(x.closingN,8)} / ${fmt(x.closingP,8)}</td></tr>`;
+ }).join('');
  const m=world.metrics.lastMetabolism||{};
  $('metabolicRows').innerHTML=POPULATION_DISPLAY_ORDER.map(h=>{const x=m[h]||{h2:0,co2:0,acetate:0,biomassC:0};return `<tr><td>${HABITAT_NAMES[h]}</td><td class="num">${fmt(x.h2,6)}</td><td class="num">${fmt(x.co2,6)}</td><td class="num">${fmt(x.acetate,6)}</td><td class="num">${fmt(x.biomassC,6)}</td></tr>`;}).join('');
  $('biogeochemicalRows').innerHTML=HABITATS.map(h=>{const e=h==='ocean'?aggregateOceanEnv():world.env[h];return `<tr><td>${HABITAT_NAMES[h]}</td><td class="num">${fmt(e.POM_C||0,6)}</td><td class="num">${fmt(e.POM_PROTEIN_C||0,6)}</td><td class="num">${fmt(e.POM_POLYSACCHARIDE_C||0,6)}</td><td class="num">${fmt(e.POM_LIPID_C||0,6)}</td><td class="num">${fmt(e.organicC||0,6)}</td><td class="num">${fmt(e.DON||0,6)}</td><td class="num">${fmt(e.NH4||0,6)}</td><td class="num">${fmt(e.DOP||0,6)}</td><td class="num">${fmt(e.PO4||0,6)}</td><td class="num">${fmt(e.H2S||0,6)}</td></tr>`;}).join('');
@@ -6086,7 +6519,7 @@ function updateUI(){
  $('feedbackRows').innerHTML=HABITATS.map(h=>{const x=bg[h]||{},q=fb[h]||{};return `<tr><td>${HABITAT_NAMES[h]}</td><td class="num">${fmt(x.carbon||0,7)}</td><td class="num">${fmt(x.hydrolyzedC||0,7)}</td><td class="num">${fmt(x.docUsed||0,7)}</td><td class="num">${fmt(x.biomassCarbonFromDOC||0,7)}</td><td class="num">${fmt(q.chemicalPressure||0,3)}</td><td class="num">${fmt(q.nutrientFit||0,3)}</td><td class="num">${fmt(q.pH??(h==='ocean'?aggregateOceanEnv().pH:world.env[h].pH),2)}</td></tr>`;}).join('');
  const pr=world.metrics.lastProductRelease||{};
  $('productReleaseRows').innerHTML=HABITATS.map(h=>{const x=pr[h]||{};return `<tr><td>${HABITAT_NAMES[h]}</td><td class="num">${fmt((x.acetate||0)+(x.acetatePool||0),7)}</td><td class="num">${fmt(x.DIC||0,7)}</td><td class="num">${fmt(x.CH4||0,7)}</td><td class="num">${fmt(x.H2S||0,7)}</td><td class="num">${fmt(x.lactate||0,7)}</td><td class="num">${fmt(x.ethanol||0,7)}</td><td class="num">${fmt(x.butyrate||0,7)}</td></tr>`;}).join('');
- $('economyRows').innerHTML=HABITATS.map(h=>{const x=averageEconomyAt(h);if(!x)return `<tr><td>${HABITAT_NAMES[h]}</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>`;const cost=x.base+x.core;const inv=x.innovation+x.startup+x.cofactor;const c=x.net>=0?'budget-positive':'budget-negative';return `<tr><td>${HABITAT_NAMES[h]}</td><td class="num">${fmt(x.gross,4)}</td><td class="num">${fmt(cost,4)}</td><td class="num">${fmt(inv,4)}</td><td class="num">${fmt(x.regulation,5)}</td><td class="num ${c}">${fmt(x.net,4)}</td></tr>`;}).join('');
+ $('economyRows').innerHTML=HABITATS.map(h=>{const x=averageEconomyAt(h);if(!x)return `<tr><td>${HABITAT_NAMES[h]}</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>`;const cost=x.base+x.core;const inv=x.innovation+x.startup+x.cofactor;const c=x.net>=0?'budget-positive':'budget-negative';return `<tr><td>${HABITAT_NAMES[h]}</td><td class="num">${fmt(x.gross,4)}</td><td class="num">${fmt(cost,4)}</td><td class="num">${fmt(inv,4)}</td><td class="num">${fmt(x.response,5)}</td><td class="num">${fmt(x.regulation,5)}</td><td class="num ${c}">${fmt(x.net,4)}</td></tr>`;}).join('');
  if(world.gen-world.lastLedgerGen>=5){world.cachedInnovationLedger=innovationLedger();world.lastLedgerGen=world.gen;}
  const ledger=world.cachedInnovationLedger||[];
  $('innovationRows').innerHTML=ledger.map(r=>{const cls=r.delta>0.004?'budget-positive':r.delta< -0.004?'budget-negative':'budget-neutral';const scale=clamp(num('innovationCostScale',1),0.25,3);return `<tr><td>${esc(r.meta.label)}</td><td class="num">${fmt(r.carriers,0)}</td><td class="num">${fmt(r.meta.setup*scale,3)}</td><td class="num">${fmt(r.meta.cost*scale,3)}</td><td class="num ${cls}">${r.delta>=0?'+':''}${fmt(r.delta,4)}</td><td>${esc(HABITAT_NAMES[r.habitat])}: ${esc(r.status)}</td></tr>`;}).join('')||'<tr><td colspan="6">Belum ada modul inovasi yang bertahan.</td></tr>';
@@ -6105,7 +6538,7 @@ function updateUI(){
    const names=s.modules.filter(x=>!CORE_MODULES.includes(x)).map(x=>MODULE_LABELS[x]||x);
    const traits=`H₂ ${fmt(s.traits.hydrogenase,2)} · fiksasi C ${fmt(s.traits.carbonFixation,2)} · Topt ${fmt(s.traits.thermalOptimum,0)}°C · pHopt ${fmt(s.traits.phOptimum,1)} · stabilitas membran ${fmt(s.traits.membraneStability,2)}`;
    const mods=names.length?names.join(' · '):'belum ada modul tambahan';
-   const parent=`Parent vertikal: ${s.parentId||'LUCA-POP'}${s.candidateBranch?' · ecotype: '+(s.candidateBranch==='VENT_ECO'?'vent':s.candidateBranch==='OCEAN_ECO'?'samudera':'leluhur bersama'):''}${s.domainAssignedGen?' · identitas domain gen ${s.domainAssignedGen}':''}${s.geneDonorId?' · donor HGT: '+s.geneDonorId:''}`;
+   const parent=`Parent vertikal: ${s.parentId||'LUCA-POP'}${s.candidateBranch?' · ecotype: '+(s.candidateBranch==='ECO_A'?'A ('+(world.ecologicalDemePair?.a||'habitat belum tercatat')+')':s.candidateBranch==='ECO_B'?'B ('+(world.ecologicalDemePair?.b||'habitat belum tercatat')+')':'leluhur bersama'):''}${s.domainAssignedGen?' · identitas domain gen ${s.domainAssignedGen}':''}${s.geneDonorId?' · donor HGT: '+s.geneDonorId:''}`;
    const lineageClades=(s.cladeIds||[]).map(id=>world.lineage?.clades.find(c=>c.clade_id===id)?.label).filter(Boolean);
    const lineageGuilds=(s.guildIds||[]).map(id=>CATALOG_LINEAGE_DEFS.find(g=>g.id===id)?.label).filter(Boolean);
    const candidateGroups=(s.candidateGroupIds||[]).map(id=>CATALOG_LINEAGE_DEFS.find(g=>g.id===id)?.label).filter(Boolean);
@@ -6144,9 +6577,9 @@ function updateUI(){
   const n=subset.reduce((a,s)=>a+totalOf(s.counts),0);const mods=new Set(subset.flatMap(s=>s.modules));
   const special=d==='ARCHAEA'?['ether_lipid','mcr_methanogenesis','archaea_quality_control','archaellum_like']:d==='BACTERIA'?['bacteria_ester_lipid','cell_envelope','multifunctional_enzymes','rna_modification']:d==='UNRESOLVED_STEM'?['ether_lipid','archaea_quality_control','bacteria_ester_lipid','cell_envelope']:[];
   const count=special.filter(x=>mods.has(x)).length;
-  const name=d==='PRE_SPLIT_SHARED'?'LUCA / populasi leluhur bersama':d==='UNRESOLVED_STEM'?'Ecotype batang belum terklasifikasi':d==='ARCHAEA'?'ARCHAEA STEM → kandidat LACA':'BACTERIA STEM → kandidat LBCA';
-  const ventN=subset.filter(s=>s.candidateBranch==='VENT_ECO').reduce((a,s)=>a+totalOf(s.counts),0),oceanN=subset.filter(s=>s.candidateBranch==='OCEAN_ECO').reduce((a,s)=>a+totalOf(s.counts),0);
-  let status=d==='PRE_SPLIT_SHARED'?(world.splitGen===null?'populasi leluhur bersama; belum terisolasi':(n>0?'residu leluhur tetap hidup / dapat menyusut':'tidak ada sel leluhur bersama yang masih hidup; sejarah tetap tercatat')):d==='UNRESOLVED_STEM'?`belum diberi identitas domain; ecotype vent ${fmt(ventN,0)} sel, ecotype samudera ${fmt(oceanN,0)} sel`:d==='ARCHAEA'?(world.domainFoundGen.ARCHAEA!==null?(world.candidateLACA?'kandidat LACA (proksi)':'garis Archaea persisten'):'identitas genetik mulai muncul'):(world.domainFoundGen.BACTERIA!==null?(world.candidateLBCA?'kandidat LBCA (proksi)':'garis Bacteria persisten'):'identitas genetik mulai muncul');
+  const name=d==='PRE_SPLIT_SHARED'?'LUCA / populasi leluhur bersama':d==='UNRESOLVED_STEM'?'Ecotype pasca-subdivisi · domain belum terklasifikasi':d==='ARCHAEA'?'ARCHAEA STEM → kandidat LACA':'BACTERIA STEM → kandidat LBCA';
+  const ventN=subset.filter(s=>s.candidateBranch==='ECO_A').reduce((a,s)=>a+totalOf(s.counts),0),oceanN=subset.filter(s=>s.candidateBranch==='ECO_B').reduce((a,s)=>a+totalOf(s.counts),0);
+  let status=d==='PRE_SPLIT_SHARED'?(world.splitGen===null?'populasi leluhur bersama; belum terisolasi':(n>0?'residu leluhur tetap hidup / dapat menyusut':'tidak ada sel leluhur bersama yang masih hidup; sejarah tetap tercatat')):d==='UNRESOLVED_STEM'?`belum diberi identitas domain; ecotype A ${fmt(ventN,0)} sel, ecotype B ${fmt(oceanN,0)} sel`:d==='ARCHAEA'?(world.domainFoundGen.ARCHAEA!==null?(world.candidateLACA?'kandidat LACA (proksi)':'garis Archaea persisten'):'identitas genetik mulai muncul'):(world.domainFoundGen.BACTERIA!==null?(world.candidateLBCA?'kandidat LBCA (proksi)':'garis Bacteria persisten'):'identitas genetik mulai muncul');
   return `<tr><td>${name}</td><td class="num">${fmt(n,0)}</td><td class="num">${subset.length}</td><td class="num">${d==='PRE_SPLIT_SHARED'?'—':count}</td><td>${status}</td></tr>`;
  }).join('');
  renderCatalogLineagePanel();
@@ -6154,10 +6587,11 @@ function updateUI(){
  renderScientificIntegrityPanel();
  renderEcologicalInteractionNetwork();
  renderEmergentBiosphereDynamics();
+ renderResilienceEconomicsAudit();
  renderInnovationEngine();
- if(world.splitGen===null)setText('splitNote',`Belum ada isolasi ekologis yang bertahan. Pemisahan dimulai setelah profil vent–samudera berbeda ≥0,035 selama 10 generasi dengan aliran migrasi yang diperhitungkan. Generasi sekarang: ${world.gen}.`);
- else if(world.splitCompleteGen===null){const u=world.strains.filter(s=>s.domain==='UNRESOLVED_STEM').reduce((a,s)=>a+totalOf(s.counts),0),l=world.strains.filter(s=>s.domain==='PRE_SPLIT_SHARED').reduce((a,s)=>a+totalOf(s.counts),0);setText('splitNote',`Divergensi ekologis dimulai pada generasi ${world.splitGen}. Kandidat batang belum terklasifikasi: ${fmt(u,0)} sel; populasi leluhur bersama yang tersisa: ${fmt(l,0)} sel. Domain baru dikenali setelah penanda membran dan modul pendukung diwariskan ≥5 generasi; tidak ada pembagian label acak.`);}
- else setText('splitNote',`Divergensi ekologis dimulai pada generasi ${world.splitGen}; kedua garis domain memenuhi ciri genetik dan persistensi pada generasi ${world.splitCompleteGen}. Populasi leluhur bersama tetap dibiarkan mengikuti seleksi alam; HGT tidak mengubah identitas penerima.`);
+ if(world.splitGen===null)setText('splitNote',`Belum ada subdivisi populasi ekologis yang persisten. Indeks isolasi menggabungkan kontras lingkungan (60%) dan fenotipe komunitas (40%), dikurangi migrasi; ambang ${DOMAIN_DIVERGENCE_PARAMETERS.minimumEffectiveIsolation} selama ${DOMAIN_DIVERGENCE_PARAMETERS.persistenceGenerations} generasi dengan ≥${DOMAIN_DIVERGENCE_PARAMETERS.minimumCellsPerHabitat} sel/habitat. Ini bukan penetapan domain; Archaea/Bacteria tetap memerlukan dua akar keturunan dengan bukti vertikal independen. Generasi sekarang: ${world.gen}.`);
+ else if(world.splitCompleteGen===null){const u=world.strains.filter(s=>s.domain==='UNRESOLVED_STEM').reduce((a,s)=>a+totalOf(s.counts),0),l=world.strains.filter(s=>s.domain==='PRE_SPLIT_SHARED').reduce((a,s)=>a+totalOf(s.counts),0),ar=world.domainStemRoots?.ARCHAEA||'belum terbentuk',br=world.domainStemRoots?.BACTERIA||'belum terbentuk';setText('splitNote',`Subdivisi populasi ekologis dimulai G${world.splitGen} antara ${world.ecologicalDemePair?.a||'deme A'} dan ${world.ecologicalDemePair?.b||'deme B'} (bukan pemisahan domain). Ecotype A: ${fmt(u,0)} sel belum terklasifikasi; residu LUCA: ${fmt(l,0)} sel. Akar Archaea: ${ar}; akar Bacteria: ${br}. Habitat tidak menentukan domain; identitas memerlukan akar vertikal independen.`);}
+ else setText('splitNote',`Dua batang domain persisten sejak G${world.splitCompleteGen}. Archaea berakar pada ${world.domainStemRoots.ARCHAEA}; Bacteria pada ${world.domainStemRoots.BACTERIA}. MRCA pra-domain: ${world.domainDivergence?.commonAncestorOrganismId||'tercatat'}. LACA/LBCA tetap menunggu inferensi MRCA tiap domain. HGT/rekombinasi tidak mengubah parentage atau identitas penerima.`);
  const stages=[
   ['Populasi awal LUCA',true,'100 sel awal di vent hidrotermal'],
   ['Variasi genetik',world.strains.length>=3&&world.totals.mutations>=10,'≥3 genotipe dan ≥10 peristiwa mutasi'],
@@ -6189,10 +6623,10 @@ function updateUI(){
   ['Kandidat sintrofi / pertukaran timbal balik',world.symbioses.some(p=>p.stable&&p.type==='syntrophy_candidate'),'Pertukaran metabolit dua arah yang persisten; bukan bukti sintrofi wajib atau endosimbiosis'],
   ['Kompetisi substrat antarguild',Object.values(world.metrics.competitionSummary||{}).some(x=>x.competitors>=2),'Dua atau lebih unit populasi-genotipe memakai substrat yang sama; anggaran fluks bersama membatasi pemakaian'],
   ['Simbiosis metabolik stabil',world.symbioses.some(p=>p.stable),'Cross-feeding atau pertukaran metabolit persisten ≥3 generasi'],
-  ['Isolasi ekologis bertahap dimulai',world.splitGen!==null,'Ecotype vent dan samudera terbentuk; sebagian populasi leluhur bersama tetap hidup'],
-  ['Identitas genetik Archaea stem',world.domainFoundGen.ARCHAEA!==null,'Paket lipid eter archaeal dan ciri pendukung diwariskan serta persisten'],
-  ['Identitas genetik Bacteria stem',world.domainFoundGen.BACTERIA!==null,'Paket lipid ester bakteri dan ciri pendukung diwariskan serta persisten'],
-  ['Dua garis domain terbentuk persisten',world.splitCompleteGen!==null,'Kedua garis memiliki populasi dan genotipe yang bertahan; bukan label hasil undian'],
+  ['Subdivisi populasi ekologis dimulai',world.splitGen!==null,'Ecotype vent dan samudera dapat terbentuk; ini belum menentukan identitas Archaea/Bacteria'],
+  ['Akar vertikal Archaea stem ditetapkan',!!world.domainStemRoots?.ARCHAEA,'Satu founder dengan lipid eter + perangkat pendukung yang ditelusuri vertikal; habitat tidak dipakai sebagai identitas'],
+  ['Akar vertikal Bacteria stem ditetapkan',!!world.domainStemRoots?.BACTERIA,'Satu founder dengan lipid ester + perangkat pendukung yang ditelusuri vertikal; habitat tidak dipakai sebagai identitas'],
+  ['Dua batang domain independen persisten',world.splitCompleteGen!==null,'Dua akar domain tunggal, persisten, dan memiliki MRCA pra-domain; bukan label hasil undian'],
   ['Kandidat LACA (proksi)',world.candidateLACA,'MRCA genealogis dari keturunan Archaea hidup; proksi model'],
   ['Kandidat LBCA (proksi)',world.candidateLBCA,'MRCA genealogis dari keturunan Bacteria hidup; proksi model'],
   ['Pigmen / penangkap cahaya Bacteria',world.strains.some(s=>s.domain==='BACTERIA'&&s.modules.includes('bacteria_light_harvesting')),'Inovasi fotosintetik awal; memerlukan cahaya'],
@@ -6224,7 +6658,7 @@ function resetSim(){
  const chosenSalinity={};for(const h of HABITATS){const el=$('salinity_'+h);if(el){const v=Number(el.value);if(Number.isFinite(v)&&v>=0&&v<=2)chosenSalinity[h]=v;}}
  const chosenPhysical={};for(const h of COMPARTMENTS){const pressure=Number($('pressure_'+h)?.value),uv=Number($('uv_'+h)?.value);if(Number.isFinite(pressure)&&pressure>=0&&pressure<=100&&Number.isFinite(uv)&&uv>=0&&uv<=1)chosenPhysical[h]={pressureMPa:pressure,uvIndex:uv};}
  const chosenGeoSources={};for(const r of GEOCHEMICAL_RESERVOIRS){const value=Number($('geoSource_'+r.id)?.value);if(Number.isFinite(value)&&value>=0&&value<=2)chosenGeoSources[r.id]=value;}
- const chosenGeoReaction={serpentinizationEnabled:!!$('geoSerpEnabled')?.checked,temperatureC:Number($('geoSerpTemp')?.value),rateScale:Number($('geoSerpRateScale')?.value),waterActivity:Number($('geoSerpWaterActivity')?.value)};
+ const chosenGeoReaction={serpentinizationEnabled:!!$('geoSerpEnabled')?.checked,phosphateDissolutionEnabled:!!$('geoPhosphateDissolutionEnabled')?.checked,phosphateDissolutionRate:Number($('geoPhosphateDissolutionRate')?.value),temperatureC:Number($('geoSerpTemp')?.value),rateScale:Number($('geoSerpRateScale')?.value),waterActivity:Number($('geoSerpWaterActivity')?.value)};
  const chosenGeoBoundary={mantleH2InputUIM:Number($('geoMantleH2Input')?.value),atmosphericH2EscapeFraction:Number($('geoAtmosH2Escape')?.value)};
  const chosenRecharge={},chosenResources={};
  for(const h of HABITATS){chosenRecharge[h]={};for(const r of RECHARGE_FIELDS){const el=$('recharge_'+r.key+'_'+h);if(el){const v=Number(el.value);if(Number.isFinite(v)&&v>=0&&v<=10)chosenRecharge[h][r.key]=v;}}chosenResources[h]={};for(const r of RESOURCE_FIELDS){const el=$('res_'+r.key+'_'+h);if(el){const v=Number(el.value);if(Number.isFinite(v)&&v>=0&&v<=10)chosenResources[h][r.key]=v;}}}
@@ -6239,6 +6673,9 @@ function resetSim(){
  for(const [h,vals] of Object.entries(chosenResources)){if(h==='ocean')applyOceanResourceValues(vals,oldOceanResources);else Object.assign(world.env[h],vals);}
  for(const [h,vals] of Object.entries(chosenRecharge))Object.assign(world.recharge[h],vals);
  syncOceanRechargeFromParent();
+ // Initial dissolved/substrate pools are seeded from the explicit planetary reservoirs once.
+ // This prevents the starting habitat chemistry from appearing as unaccounted free material.
+ seedInitialHabitatPoolsFromReservoirs(world.env,world.geochemicalReservoirState);
  for(const h of COMPARTMENTS)world.env[h].POM_C=(world.env[h].POM_PROTEIN_C||0)+(world.env[h].POM_POLYSACCHARIDE_C||0)+(world.env[h].POM_LIPID_C||0);
  syncOceanAggregate();updateEnvironmentalFeedback(false);
  world.metrics.dynamicCapacity=syncOceanCapacityMetrics(Object.fromEntries(COMPARTMENTS.map(h=>[h,dynamicCapacityAt(h)])));
@@ -6251,9 +6688,9 @@ function applyEnvironment(){
  const salinityValues={};for(const h of HABITATS){const v=Number($('salinity_'+h)?.value);if(!Number.isFinite(v)||v<0||v>2){setText('environmentStatus','Salinitas harus berada pada rentang indeks 0–2.');$('environmentStatus').className='small status-bad';return;}salinityValues[h]=v;}
  const physicalValues={};for(const h of COMPARTMENTS){const pressure=Number($('pressure_'+h)?.value),uv=Number($('uv_'+h)?.value);if(!Number.isFinite(pressure)||pressure<0||pressure>100||!Number.isFinite(uv)||uv<0||uv>1){setText('environmentStatus','Tekanan harus 0–100 MPa dan UV harus 0–1.');$('environmentStatus').className='small status-bad';return;}physicalValues[h]={pressureMPa:pressure,uvIndex:uv};}
  const sourceScales={};for(const r of GEOCHEMICAL_RESERVOIRS){const value=Number($('geoSource_'+r.id)?.value);if(!Number.isFinite(value)||value<0||value>2){setText('environmentStatus','Intensitas setiap reservoir geokimia harus 0–2.');$('environmentStatus').className='small status-bad';return;}sourceScales[r.id]=value;}
- const reactionParameters={serpentinizationEnabled:!!$('geoSerpEnabled')?.checked,temperatureC:Number($('geoSerpTemp')?.value),rateScale:Number($('geoSerpRateScale')?.value),waterActivity:Number($('geoSerpWaterActivity')?.value)};
+ const reactionParameters={serpentinizationEnabled:!!$('geoSerpEnabled')?.checked,phosphateDissolutionEnabled:!!$('geoPhosphateDissolutionEnabled')?.checked,phosphateDissolutionRate:Number($('geoPhosphateDissolutionRate')?.value),temperatureC:Number($('geoSerpTemp')?.value),rateScale:Number($('geoSerpRateScale')?.value),waterActivity:Number($('geoSerpWaterActivity')?.value)};
  const boundaryParameters={mantleH2InputUIM:Number($('geoMantleH2Input')?.value),atmosphericH2EscapeFraction:Number($('geoAtmosH2Escape')?.value)};
- if(!Number.isFinite(reactionParameters.temperatureC)||reactionParameters.temperatureC<20||reactionParameters.temperatureC>400||!Number.isFinite(reactionParameters.rateScale)||reactionParameters.rateScale<0||reactionParameters.rateScale>3||!Number.isFinite(reactionParameters.waterActivity)||reactionParameters.waterActivity<0||reactionParameters.waterActivity>1||!Number.isFinite(boundaryParameters.mantleH2InputUIM)||boundaryParameters.mantleH2InputUIM<0||boundaryParameters.mantleH2InputUIM>0.01||!Number.isFinite(boundaryParameters.atmosphericH2EscapeFraction)||boundaryParameters.atmosphericH2EscapeFraction<0||boundaryParameters.atmosphericH2EscapeFraction>0.05){setText('environmentStatus','Parameter reaksi: suhu 20–400 °C, skala 0–3, aktivitas air 0–1; batas H₂: input 0–0,01 UIM/generasi dan escape 0–0,05.');$('environmentStatus').className='small status-bad';return;}
+ if(!Number.isFinite(reactionParameters.temperatureC)||reactionParameters.temperatureC<20||reactionParameters.temperatureC>400||!Number.isFinite(reactionParameters.rateScale)||reactionParameters.rateScale<0||reactionParameters.rateScale>3||!Number.isFinite(reactionParameters.waterActivity)||reactionParameters.waterActivity<0||reactionParameters.waterActivity>1||!Number.isFinite(reactionParameters.phosphateDissolutionRate)||reactionParameters.phosphateDissolutionRate<0||reactionParameters.phosphateDissolutionRate>0.000001||!Number.isFinite(boundaryParameters.mantleH2InputUIM)||boundaryParameters.mantleH2InputUIM<0||boundaryParameters.mantleH2InputUIM>0.01||!Number.isFinite(boundaryParameters.atmosphericH2EscapeFraction)||boundaryParameters.atmosphericH2EscapeFraction<0||boundaryParameters.atmosphericH2EscapeFraction>0.05){setText('environmentStatus','Parameter reaksi: suhu 20–400 °C, skala 0–3, aktivitas air 0–1, pelarutan apatit 0–0,000001/gen; batas H₂: input 0–0,01 UIM/generasi dan escape 0–0,05.');$('environmentStatus').className='small status-bad';return;}
  for(const [h,ids] of Object.entries(defs)){
   const vals=ids.map(id=>Number($(id).value));
   if(vals.some(v=>!Number.isFinite(v))||vals[0]<0||vals[1]<0||vals[1]>14||vals[2]<0||vals[3]<0||vals[4]<0||vals[4]>1||vals[5]<0||vals[5]>1||vals[6]<0.1||vals[6]>100){setText('environmentStatus','Input tidak valid. Suhu ≥0; pH 0–14; substrat ≥0; O₂/kofaktor 0–1; volume relatif 0,1–100.');$('environmentStatus').className='small status-bad';return;}
@@ -6281,6 +6718,7 @@ $('toggleEbdButton')?.addEventListener('click',()=>{const content=$('biosphereDy
 $('biosphereResilienceDetails')?.addEventListener('toggle',()=>{if($('biosphereResilienceDetails')?.open)renderHabitatResilience();});
 $('biosphereDependencyDetails')?.addEventListener('toggle',()=>{if($('biosphereDependencyDetails').open)renderEcologicalDependencyNetwork();});
 $('engineDetailAccordion')?.addEventListener('toggle',()=>{if($('engineDetailAccordion').open)renderCatalogLineagePanel(true);});
+$('resilienceEconomicsAuditDetails')?.addEventListener('toggle',()=>{if($('resilienceEconomicsAuditDetails').open)renderResilienceEconomicsAudit(true);});
 $('metabolicRegulationDetails')?.addEventListener('toggle',()=>{if($('metabolicRegulationDetails').open)renderMetabolicRegulationEngine(true);});
 $('membraneBioenergeticsDetails')?.addEventListener('toggle',()=>{if($('membraneBioenergeticsDetails').open)renderMembraneBioenergetics(true);});
 $('runToggle').addEventListener('click',()=>running?stopSim():startSim());
